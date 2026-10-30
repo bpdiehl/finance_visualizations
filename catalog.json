@@ -1,0 +1,64 @@
+{
+  "subject": "Finance",
+  "repository": "https://github.com/bpdiehl/finance_visualizations",
+  "sibling_subject": "Operations",
+  "sibling_repository": "https://github.com/bpdiehl/ops_visualizations",
+  "demos": [
+    {
+      "id": "F1",
+      "slug": "time-value",
+      "title": "Time Value of Money",
+      "question": "What are future dollars worth today?",
+      "wave": 2,
+      "status": "planned"
+    },
+    {
+      "id": "F2",
+      "slug": "risk-capm",
+      "title": "Risk, Diversification & CAPM",
+      "question": "Which risks earn a required return?",
+      "wave": 3,
+      "status": "planned"
+    },
+    {
+      "id": "F3",
+      "slug": "wacc",
+      "title": "WACC & Capital Structure",
+      "question": "How do the costs of debt and equity combine?",
+      "wave": 1,
+      "status": "planned"
+    },
+    {
+      "id": "F4",
+      "slug": "free-cash-flow",
+      "title": "Accounting to Free Cash Flow",
+      "question": "Which accounting amounts turn into cash for investors?",
+      "wave": 2,
+      "status": "planned"
+    },
+    {
+      "id": "F5",
+      "slug": "dcf",
+      "title": "Forecasting & DCF Valuation",
+      "question": "How do assumptions determine company value?",
+      "wave": 1,
+      "status": "planned"
+    },
+    {
+      "id": "F6",
+      "slug": "npv-irr",
+      "title": "Investment Decisions: NPV & IRR",
+      "question": "Is this project worth doing?",
+      "wave": 2,
+      "status": "planned"
+    },
+    {
+      "id": "F7",
+      "slug": "performance",
+      "title": "Financial Performance & DuPont",
+      "question": "What drives return on equity?",
+      "wave": 3,
+      "status": "planned"
+    }
+  ]
+}
