@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Explore return on assets and WACC with live equations and an interactive financing diagram.">
+  <link rel="icon" href="data:,">
+  <title>Return on assets & WACC | MBA Interactive Learning Lab</title>
+  <style>{{STYLES}}</style>
+</head>
+<body class="wacc-app">
+  <a class="skip" href="#controls">Skip to controls</a>
+  <header class="lab-header">
+    <div class="masthead"><span>MBA INTERACTIVE LEARNING LAB</span><span>FINANCE / 03</span></div>
+    <div class="heading-row"><h1>Return on assets & WACC</h1><span class="version">Pilot · v0.3.1</span></div>
+  </header>
+  <main class="lab-main">
+    <div class="preset-row" aria-label="Illustrative scenarios">
+      <button type="button" class="preset active" data-preset="baseline" aria-pressed="true">Starting example</button>
+      <button type="button" class="preset" data-preset="all-equity" aria-pressed="false">All equity</button>
+      <button type="button" class="preset" data-preset="no-tax" aria-pressed="false">No tax shield</button>
+      <button type="button" class="preset" data-preset="more-debt" aria-pressed="false">More debt, same rates</button>
+      <button type="button" class="reset" id="reset">Reset</button>
+      <button type="button" class="download-action" id="download-file">Download offline copy</button>
+    </div>
+    <p id="input-error" class="input-error" role="alert" hidden></p>
+    <section class="equation-panel" aria-label="Solve return on assets, then WACC">
+      <div class="equation-row">
+        <div class="equation-heading"><h2><span class="step-number">1</span> Return on assets <span class="notation">r<sub>a</sub></span></h2><button class="info" type="button" data-help="assetReturn" aria-label="Explain return on assets" aria-haspopup="dialog">i</button></div>
+        <div class="symbolic-equation" role="math" aria-label="r a equals E over V times r e plus D over V times r d"><strong>r<sub>a</sub></strong><span>=</span><span class="eq-part equity-term"><span class="eq-token" data-vars="debtWeight">E/V</span><span>×</span><span class="eq-token" data-vars="equityRate">r<sub>e</sub></span></span><span>+</span><span class="eq-part debt-term"><span class="eq-token" data-vars="debtWeight">D/V</span><span>×</span><span class="eq-token" data-vars="debtRate">r<sub>d</sub></span></span></div>
+        <div class="live-values" id="asset-worked" aria-label="Return on assets with current values"><span class="num-part"><span class="eq-token" data-value="equityWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="equityRate" data-vars="equityRate"></span></span><span>+</span><span class="num-part"><span class="eq-token" data-value="debtWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="debtRate" data-vars="debtRate"></span></span><span>=</span><strong class="eq-token result-value" data-value="assetReturn" data-precision="3"></strong></div>
+      </div>
+      <div class="equation-row">
+        <div class="equation-heading"><h2><span class="step-number">2</span> WACC</h2><button class="info" type="button" data-help="taxBenefit" aria-label="Explain the WACC tax adjustment" aria-haspopup="dialog">i</button></div>
+        <div class="symbolic-equation" role="math" aria-label="WACC equals r a minus D over V times r d times T"><strong>WACC</strong><span>=</span><span>r<sub>a</sub></span><span>−</span><span class="eq-part debt-term"><span class="eq-token" data-vars="debtWeight">D/V</span><span>×</span><span class="eq-token" data-vars="debtRate">r<sub>d</sub></span><span>×</span><span class="eq-token" data-vars="taxRate">T</span></span></div>
+        <div class="live-values" id="shield-worked" aria-label="WACC from return on assets with current values"><span class="eq-token result-value" data-value="assetReturn" data-precision="3"></span><span>−</span><span class="num-part"><span class="eq-token" data-value="debtWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="debtRate" data-vars="debtRate"></span><span>×</span><span class="eq-token" data-value="taxRate" data-vars="taxRate"></span></span><span>=</span><strong class="eq-token result-value" data-value="wacc" data-precision="3"></strong></div>
+      </div>
+      <div class="equation-row">
+        <div class="equation-heading"><h2><span class="step-number">3</span> WACC, expanded</h2><button class="info" type="button" data-help="wacc" aria-label="Explain the expanded WACC equation" aria-haspopup="dialog">i</button></div>
+        <div class="symbolic-equation" role="math" aria-label="WACC equals E over V times r e plus D over V times r d times one minus T"><strong>WACC</strong><span>=</span><span class="eq-part equity-term"><span class="eq-token" data-vars="debtWeight">E/V</span><span>×</span><span class="eq-token" data-vars="equityRate">r<sub>e</sub></span></span><span>+</span><span class="eq-part debt-term"><span class="eq-token" data-vars="debtWeight">D/V</span><span>×</span><span class="eq-token" data-vars="debtRate">r<sub>d</sub></span><span>× (1 −</span><span class="eq-token" data-vars="taxRate">T</span><span>)</span></span></div>
+        <div class="live-values" id="main-worked-equation" aria-label="Expanded WACC with current values"><span class="num-part"><span class="eq-token" data-value="equityWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="equityRate" data-vars="equityRate"></span></span><span>+</span><span class="num-part"><span class="eq-token" data-value="debtWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="debtRate" data-vars="debtRate"></span><span>× (1 −</span><span class="eq-token" data-value="taxRate" data-vars="taxRate"></span><span>)</span></span><span>=</span><strong class="eq-token result-value" data-value="wacc" data-precision="3"></strong></div>
+      </div>
+    </section>
+    <div class="workspace">
+      <section class="visual-panel" aria-labelledby="visual-title">
+        <div class="panel-heading"><h2 id="visual-title">Assets & financing</h2><button class="info" type="button" data-help="balance" aria-label="Explain the assets and financing diagram" aria-haspopup="dialog">i</button></div>
+        <div id="valid-results">
+          <div class="market-balance">
+            <div class="asset-side"><span class="asset-name">ASSETS <span class="notation">A</span></span><strong>$100.00</strong><div class="asset-rate-label">Return on assets <span class="notation">r<sub>a</sub></span><button class="info" type="button" data-help="assetReturn" aria-label="Explain the asset-side return" aria-haspopup="dialog">i</button></div><output id="asset-return">9.900%</output></div>
+            <div class="capital-mix" role="img" id="capital-mix" aria-label="30 percent debt above 70 percent equity">
+              <div class="capital debt" id="debt-block"><span>DEBT · D</span><strong id="debt-amount">$30.00</strong><small id="debt-diagram-rate">r<sub>d</sub> = <span>5.00%</span></small></div>
+              <div class="capital equity" id="equity-block"><span>EQUITY · E</span><strong id="equity-amount">$70.00</strong><small id="equity-diagram-rate">r<sub>e</sub> = <span>12.00%</span></small></div>
+            </div>
+          </div>
+          <div class="mix-key"><span><i class="swatch debt-color"></i>Debt <strong id="debt-share-label">30.00%</strong><button class="info" type="button" data-help="debtValue" aria-label="What counts as financing debt D?" aria-haspopup="dialog">i</button></span><span><i class="swatch equity-color"></i>Equity <strong id="equity-share-label">70.00%</strong><button class="info" type="button" data-help="equityValue" aria-label="How is market equity E calculated?" aria-haspopup="dialog">i</button></span></div>
+          <div class="wacc-result"><div><div class="term-label">WACC <button class="info" type="button" data-help="wacc" aria-label="Explain WACC" aria-haspopup="dialog">i</button></div><output id="wacc" aria-label="WACC">9.525%</output></div><div><div class="term-label">Tax shield <button class="info" type="button" data-help="taxBenefit" aria-label="Explain debt tax shield" aria-haspopup="dialog">i</button></div><output id="tax-benefit">0.375 pp</output></div></div>
+        </div>
+        <noscript><p>Enable JavaScript to use this visualization.</p></noscript>
+      </section>
+      <section id="controls" class="controls-panel" aria-labelledby="controls-title">
+        <div class="panel-heading"><h2 id="controls-title">Assumptions</h2></div>
+        <div class="control-group"><div class="control-label"><label for="debtWeight-number">Debt share <span class="notation">D/V</span></label><button class="info" type="button" data-help="weights" aria-label="Explain debt share" aria-haspopup="dialog">i</button></div><div class="number-row"><input id="debtWeight-number" type="number" min="0" max="100" step="0.01" value="30.00" inputmode="decimal"><span>%</span></div><input id="debtWeight-range" type="range" min="0" max="100" step="0.01" value="30" aria-label="Debt share slider, percent"></div>
+        <div class="control-group"><div class="control-label"><label for="equityRate-number">Cost of equity <span class="notation">r<sub>e</sub></span></label><button class="info" type="button" data-help="equityRate" aria-label="Explain cost of equity" aria-haspopup="dialog">i</button></div><div class="number-row"><input id="equityRate-number" type="number" min="0" max="100" step="0.01" value="12.00" inputmode="decimal"><span>%/yr</span></div><input id="equityRate-range" type="range" min="0" max="30" step="0.01" value="12" aria-label="Cost of equity slider, percent"></div>
+        <div class="control-group"><div class="control-label"><label for="debtRate-number">Cost of debt <span class="notation">r<sub>d</sub></span></label><button class="info" type="button" data-help="debtRate" aria-label="Explain cost of debt" aria-haspopup="dialog">i</button></div><div class="number-row"><input id="debtRate-number" type="number" min="0" max="100" step="0.01" value="5.00" inputmode="decimal"><span>%/yr</span></div><input id="debtRate-range" type="range" min="0" max="30" step="0.01" value="5" aria-label="Cost of debt slider, percent"></div>
+        <div class="control-group"><div class="control-label"><label for="taxRate-number">Corporate tax rate <span class="notation">T</span></label><button class="info" type="button" data-help="taxRate" aria-label="Explain corporate tax rate" aria-haspopup="dialog">i</button></div><div class="number-row"><input id="taxRate-number" type="number" min="0" max="100" step="0.01" value="25.00" inputmode="decimal"><span>%</span></div><input id="taxRate-range" type="range" min="0" max="100" step="0.01" value="25" aria-label="Corporate tax rate slider, percent"></div>
+      </section>
+    </div>
+    <section class="comparison-panel" aria-label="Scenario comparison"><p id="explanation" role="status" aria-live="polite"></p><button type="button" class="secondary-action" id="save-baseline">Save comparison</button><button class="info" type="button" data-help="comparison" aria-label="Explain the saved comparison" aria-haspopup="dialog">i</button></section>
+    <details class="curve-panel" id="curve-details"><summary>Explore debt share</summary><div class="curve-content"><svg id="curve" role="img" aria-labelledby="curve-title curve-description"><title id="curve-title">WACC versus debt share</title><desc id="curve-description">WACC at the current component rates.</desc></svg><p id="curve-summary" class="sr-only"></p><button class="info" type="button" data-help="curve" aria-label="Explain the debt-share chart" aria-haspopup="dialog">i</button></div></details>
+  </main>
+  <footer class="lab-footer"><span>F3 · v0.3.1 · October 30, 2026</span><div><button class="text-info" type="button" data-help="model">Fixed-rate model ⓘ</button><button class="text-info" type="button" data-help="challenge">Try a question ⓘ</button></div><span id="download-status" role="status"></span></footer>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button type="button" id="close-help" aria-label="Close explanation" autofocus>×</button></div><p id="help-body"></p><p class="help-formula" id="help-formula"></p></dialog>
+  <script>{{MODEL}}</script>
+  <script>{{APP}}</script>
+</body>
+</html>

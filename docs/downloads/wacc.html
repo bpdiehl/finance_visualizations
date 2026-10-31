@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Explore return on assets and WACC with live equations and an interactive financing diagram.">
+  <link rel="icon" href="data:,">
+  <title>Return on assets & WACC | MBA Interactive Learning Lab</title>
+  <style>:root{color-scheme:light;--ink:#172838;--muted:#50616f;--blue:#1452a1;--line:#d7e0e6;--paper:#fff;--wash:#f2f5f7;--radius:12px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55;color:var(--ink);background:var(--wash)}
+*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1080px;margin:auto;padding:32px 40px}header{padding-top:56px;padding-bottom:20px}h1{font-size:clamp(2.25rem,5vw,3.7rem);line-height:1.1;letter-spacing:-.045em;margin:10px 0 20px}h2{font-size:1.1rem;line-height:1.35;margin:0 0 6px}p{margin:8px 0;color:var(--muted)}a{color:var(--blue);text-underline-offset:3px}a:focus-visible,summary:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #a5480b;outline-offset:4px}.eyebrow{font-size:.75rem;font-weight:750;letter-spacing:.16em;color:var(--blue)}.intro{font-size:1.3rem;color:var(--ink)}.instructions{padding:24px 28px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:36px}.instructions ol{padding-left:22px}.instructions li{margin:8px 0}.instructions p{font-size:.92rem}summary{cursor:pointer;padding:8px 0;min-height:44px;font-weight:650}.section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.section-heading h2{font-size:1.45rem}.section-heading p{font-size:.85rem}.notice{padding:14px 18px;border-left:3px solid var(--blue);background:#e8eff8;font-size:.94rem}.notice strong{color:var(--ink)}.demo-list{list-style:none;padding:0;margin:24px 0 0}.demo{display:grid;grid-template-columns:36px 1fr auto;gap:16px;padding:24px 0;border-top:1px solid var(--line);align-items:center}.demo p{margin:0;font-size:.95rem}.code{align-self:start;margin-top:2px;font-size:.8rem;color:var(--blue);font-weight:750}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.status{font-size:.8rem;font-weight:650;color:var(--muted);border:1px solid var(--line);border-radius:30px;padding:5px 12px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border-radius:7px;border:1px solid var(--blue);background:var(--blue);color:white;text-decoration:none;font-size:.88rem;font-weight:650}.button.secondary{background:white;color:var(--blue)}.button:hover{filter:brightness(.93)}footer{font-size:.83rem;border-top:1px solid var(--line);padding-bottom:36px}.skip{position:absolute;left:-10000px;top:8px;background:white;padding:12px;z-index:10}.skip:focus{left:12px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}@media(max-width:680px){header,main,footer{padding-left:20px;padding-right:20px}header{padding-top:32px}.instructions{padding:20px}.demo{grid-template-columns:28px 1fr;gap:10px}.actions{grid-column:2;justify-content:flex-start}.section-heading{align-items:start;flex-direction:column;gap:0}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.wacc-app { --debt:#176d65; --equity:#2458a8; background:#f5f6f8; }
+.wacc-app header,.wacc-app main,.wacc-app footer { max-width:1220px; padding:0 32px; }
+.wacc-app button,.wacc-app input { font:inherit; }.wacc-app button { cursor:pointer; }.wacc-app button:disabled { opacity:.5; cursor:default; }.wacc-app [hidden] { display:none!important; }
+.lab-header { padding-top:24px!important; padding-bottom:20px!important; }.masthead { display:flex; justify-content:space-between; gap:15px; color:#536574; letter-spacing:.13em; font-size:.66rem; font-weight:750; padding-bottom:17px; border-bottom:1px solid var(--line); }
+.heading-row { display:flex; align-items:center; justify-content:space-between; gap:15px; padding-top:20px; }.wacc-app h1 { font-size:clamp(1.8rem,3.4vw,2.5rem); letter-spacing:-.035em; margin:0; line-height:1.2; }.version { border:1px solid var(--line); border-radius:24px; padding:5px 11px; flex-shrink:0; color:var(--muted); font-size:.72rem; }
+.preset-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:0 0 20px; }.preset,.reset,.secondary-action,.download-action { min-height:44px; padding:9px 13px; border:1px solid #c7d2dd; border-radius:7px; background:white; color:var(--ink); font-size:.8rem!important; font-weight:650; }.preset:hover,.secondary-action:hover { background:#ebf1f9; }.preset.active { background:#e8effa; border-color:var(--blue); color:#174c8b; }.reset { margin-left:auto; background:transparent; border-color:transparent; color:var(--blue); text-decoration:underline; text-underline-offset:3px; }.download-action { background:var(--blue); color:white; border-color:var(--blue); }.download-action:hover { background:#103e7a; }
+.info { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:28px; min-width:28px; height:28px; border:1px solid #c4cfd9; border-radius:50%; background:white; color:#456070; padding:0; font-size:.73rem!important; font-weight:750; }.info:hover { background:#e8eff8; border-color:var(--blue); }
+.notation { font-family:Georgia,"Times New Roman",serif; font-style:italic; margin-left:4px; color:#234b74; }.panel-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }.panel-heading h2 { font-size:.98rem; margin:0; }.units { font-size:.72rem; color:var(--muted); }
+.equation-panel { border:1px solid #c8d5e6; border-radius:12px; background:#fff; padding:0 26px; margin-bottom:20px; }.equation-row { padding:15px 0; }.equation-row+.equation-row { border-top:1px solid #e0e7ef; }.equation-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; }.equation-heading h2 { font-size:.85rem; margin:0; font-weight:650; display:flex; align-items:center; gap:7px; }.step-number { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; font-size:.65rem; color:#5a6f82; background:#edf2f7; border-radius:50%; }.equation-heading .notation { margin-left:1px; }
+.symbolic-equation { display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:1.2rem; font-family:Georgia,"Times New Roman",serif; color:var(--ink); margin:7px 0 3px; line-height:1.45; }.symbolic-equation strong { font-weight:650; }.eq-part { display:inline-flex; align-items:center; gap:5px; }.equity-term { color:var(--equity); }.debt-term { color:var(--debt); }
+.live-values { display:flex; flex-wrap:wrap; align-items:center; gap:3px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-variant-numeric:tabular-nums lining-nums; font-size:.89rem; color:#364d62; line-height:1.6; }.num-part { display:inline-flex; align-items:center; gap:2px; white-space:nowrap; }.eq-token { border-radius:4px; padding:2px 3px; transition:background-color .75s ease,box-shadow .75s ease; }.live-values .eq-token { display:inline-block; width:8ch; min-width:8ch; text-align:right; flex-shrink:0; }.live-values .result-value { width:9ch; min-width:9ch; color:var(--ink); }.eq-token.is-editing { background:#dfeaff; box-shadow:0 0 0 3px #8fb7ff30,0 0 12px #8fb7ff45; transition-duration:90ms; }
+.workspace { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr); gap:20px; align-items:stretch; }.visual-panel,.controls-panel { background:white; border:1px solid var(--line); border-radius:12px; padding:20px 24px; }
+.market-balance { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px; }.asset-side { height:220px; min-width:0; padding:16px 10px; display:flex; flex-direction:column; justify-content:center; align-items:center; border:1px solid #c2cfdb; border-radius:8px; background:#f0f3f7; color:var(--ink); text-align:center; }.asset-name { font-size:.68rem; font-weight:750; letter-spacing:.09em; }.asset-name .notation { font-size:.9rem; }.asset-side>strong { font-size:2.1rem; line-height:1.3; font-variant-numeric:tabular-nums; margin:9px 0 14px; }.asset-rate-label { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:4px; width:100%; border-top:1px solid #c8d3de; padding-top:11px; font-size:.7rem; }#asset-return { font-size:1.4rem; font-weight:700; font-variant-numeric:tabular-nums; margin-top:6px; }
+.capital-mix { display:flex; flex-direction:column; height:220px; overflow:hidden; border-radius:8px; background:#edf1f5; border:1px solid #d0d9e2; }.capital { display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; flex-shrink:0; min-width:0; color:white; overflow:hidden; }.capital>span { font-size:.64rem; letter-spacing:.1em; font-weight:750; white-space:nowrap; }.capital strong { font-size:1.55rem; line-height:1.15; font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; }.capital small { font-size:.7rem; line-height:1.2; }.debt,.debt-color { background:var(--debt); }.equity,.equity-color { background:var(--equity); }.swatch { display:inline-block; width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+.mix-key { display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px 12px; margin:10px 0 15px; font-size:.73rem; }.mix-key>span { display:inline-flex; align-items:center; gap:5px; }.mix-key strong { font-variant-numeric:tabular-nums; min-width:7ch; text-align:right; }.mix-key .info { width:25px; min-width:25px; height:25px; font-size:.65rem!important; }
+.wacc-result { display:flex; justify-content:space-between; align-items:center; gap:16px; padding-top:13px; border-top:1px solid var(--line); }.term-label { display:flex; align-items:center; gap:6px; font-size:.75rem; color:var(--muted); }#wacc { display:block; font-size:2.75rem; letter-spacing:-.04em; line-height:1.2; font-weight:750; font-variant-numeric:tabular-nums; }#tax-benefit { display:block; font-size:1.15rem; line-height:1.5; font-weight:700; font-variant-numeric:tabular-nums; }
+.controls-panel { padding-bottom:10px; }.controls-panel>.panel-heading { margin-bottom:3px; }.control-group { padding:11px 0 7px; border-bottom:1px solid #e5ebf0; }.control-group:last-child { border-bottom:0; }.control-label { display:flex; align-items:center; justify-content:space-between; gap:6px; }.control-label label { font-size:.82rem; font-weight:650; }.number-row { display:flex; align-items:center; gap:6px; margin:6px 0 0; font-size:.83rem; }.number-row input { width:96px; height:38px; border:1px solid #c8d2dd; border-radius:5px; padding:5px 8px; background:white; color:var(--ink); font-variant-numeric:tabular-nums; font-weight:650; }.number-row input[aria-invalid=true] { border-color:#ae362c; background:#fff7f6; }.control-group input[type=range] { width:100%; margin:3px 0 0; height:25px; accent-color:var(--blue); cursor:pointer; }
+.comparison-panel { display:flex; align-items:center; gap:12px; padding:15px 0; }.comparison-panel>p { flex:1; font-size:.82rem; margin:0; color:var(--muted); }.secondary-action { background:transparent; padding:8px 11px; flex-shrink:0; }
+.curve-panel { background:white; border:1px solid var(--line); border-radius:10px; margin-bottom:20px; }.curve-panel>summary { font-size:.86rem; padding:13px 20px; }.curve-content { position:relative; padding:0 22px 17px; }#curve { display:block; width:100%; height:230px; font-family:inherit; }.curve-content>.info { position:absolute; top:0; right:15px; }
+.lab-footer { display:flex; align-items:center; flex-wrap:wrap; justify-content:space-between; gap:10px; padding-top:15px!important; padding-bottom:24px!important; border-top:1px solid var(--line); color:var(--muted); font-size:.68rem; }.lab-footer>div { display:flex; gap:16px; }.text-info { padding:8px 0; min-height:36px; border:0; background:transparent; color:var(--muted); font-size:.72rem!important; text-decoration:underline; text-underline-offset:3px; }
+.input-error { border:1px solid #c85c50; padding:12px 15px; border-radius:7px; background:#fff4f2; color:#893329; font-size:.85rem; }
+#help-dialog { width:min(490px,calc(100vw - 32px)); border:1px solid #c1ccd8; border-radius:12px; padding:22px; color:var(--ink); box-shadow:0 14px 60px #16283c30; }#help-dialog::backdrop { background:#17283866; }.dialog-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; }.dialog-heading h2 { font-size:1.1rem; margin:0; }.dialog-heading button { width:44px; min-width:44px; height:44px; background:#edf1f5; border:0; border-radius:50%; color:var(--ink); font-size:1.5rem!important; }#help-body { font-size:.92rem; line-height:1.7; margin-top:14px; }.help-formula { background:#edf2f8; color:var(--ink); padding:12px; border-radius:6px; font-size:.86rem; line-height:1.6; }
+@media(max-width:800px) { .workspace { grid-template-columns:1fr; }.controls-panel { display:grid; grid-template-columns:1fr 1fr; gap:0 24px; }.controls-panel>.panel-heading { grid-column:1/-1; }.control-group:nth-last-child(2) { border-bottom:0; } }
+@media(max-width:520px) { .wacc-app header,.wacc-app main,.wacc-app footer { padding-left:16px; padding-right:16px; }.masthead { font-size:.56rem; letter-spacing:.07em; }.version { display:none; }.heading-row { padding-top:17px; }.preset { padding:8px 10px; font-size:.7rem!important; }.reset { margin-left:0; }.download-action { font-size:.73rem!important; }.equation-panel { padding:0 14px; }.equation-row { padding:13px 0; }.equation-heading h2 { font-size:.78rem; }.symbolic-equation { gap:5px; font-size:1.02rem; margin:8px 0 6px; }.eq-part { gap:3px; }.live-values { font-size:.76rem; gap:2px; row-gap:5px; }.num-part { gap:1px; }.live-values .eq-token { width:7.6ch; min-width:7.6ch; padding:2px; }.live-values .result-value { width:8.6ch; min-width:8.6ch; }.visual-panel,.controls-panel { padding:18px 15px; }.market-balance { gap:10px; }.asset-side { padding:12px 5px; }.asset-side>strong { font-size:1.65rem; }.asset-name { font-size:.6rem; }.asset-rate-label { font-size:.6rem; gap:2px; }#asset-return { font-size:1.2rem; }.capital>span { font-size:.59rem; }.capital strong { font-size:1.35rem; }.mix-key { gap:6px; font-size:.65rem; }.mix-key>span { gap:3px; }.mix-key .info { width:24px; min-width:24px; height:24px; }#wacc { font-size:2.4rem; }#tax-benefit { font-size:1rem; }.controls-panel { grid-template-columns:1fr; padding-bottom:8px; }.control-group:nth-last-child(2) { border-bottom:1px solid #e5ebf0; }.comparison-panel { flex-wrap:wrap; gap:8px; }.comparison-panel>p { flex-basis:100%; }.curve-content { padding-left:12px; padding-right:12px; }.lab-footer { align-items:start; flex-direction:column; } }
+@media(prefers-reduced-motion:reduce) { .eq-token,.eq-token.is-editing { transition:none!important; } }
+.control-group { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:3px 10px; }
+.control-group .number-row { margin:0; white-space:nowrap; }.control-group input[type=range] { grid-column:1/-1; }.control-group .number-row input { width:88px; }
+</style>
+</head>
+<body class="wacc-app">
+  <a class="skip" href="#controls">Skip to controls</a>
+  <header class="lab-header">
+    <div class="masthead"><span>MBA INTERACTIVE LEARNING LAB</span><span>FINANCE / 03</span></div>
+    <div class="heading-row"><h1>Return on assets & WACC</h1><span class="version">Pilot · v0.3.1</span></div>
+  </header>
+  <main class="lab-main">
+    <div class="preset-row" aria-label="Illustrative scenarios">
+      <button type="button" class="preset active" data-preset="baseline" aria-pressed="true">Starting example</button>
+      <button type="button" class="preset" data-preset="all-equity" aria-pressed="false">All equity</button>
+      <button type="button" class="preset" data-preset="no-tax" aria-pressed="false">No tax shield</button>
+      <button type="button" class="preset" data-preset="more-debt" aria-pressed="false">More debt, same rates</button>
+      <button type="button" class="reset" id="reset">Reset</button>
+      <button type="button" class="download-action" id="download-file">Download offline copy</button>
+    </div>
+    <p id="input-error" class="input-error" role="alert" hidden></p>
+    <section class="equation-panel" aria-label="Solve return on assets, then WACC">
+      <div class="equation-row">
+        <div class="equation-heading"><h2><span class="step-number">1</span> Return on assets <span class="notation">r<sub>a</sub></span></h2><button class="info" type="button" data-help="assetReturn" aria-label="Explain return on assets" aria-haspopup="dialog">i</button></div>
+        <div class="symbolic-equation" role="math" aria-label="r a equals E over V times r e plus D over V times r d"><strong>r<sub>a</sub></strong><span>=</span><span class="eq-part equity-term"><span class="eq-token" data-vars="debtWeight">E/V</span><span>×</span><span class="eq-token" data-vars="equityRate">r<sub>e</sub></span></span><span>+</span><span class="eq-part debt-term"><span class="eq-token" data-vars="debtWeight">D/V</span><span>×</span><span class="eq-token" data-vars="debtRate">r<sub>d</sub></span></span></div>
+        <div class="live-values" id="asset-worked" aria-label="Return on assets with current values"><span class="num-part"><span class="eq-token" data-value="equityWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="equityRate" data-vars="equityRate"></span></span><span>+</span><span class="num-part"><span class="eq-token" data-value="debtWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="debtRate" data-vars="debtRate"></span></span><span>=</span><strong class="eq-token result-value" data-value="assetReturn" data-precision="3"></strong></div>
+      </div>
+      <div class="equation-row">
+        <div class="equation-heading"><h2><span class="step-number">2</span> WACC</h2><button class="info" type="button" data-help="taxBenefit" aria-label="Explain the WACC tax adjustment" aria-haspopup="dialog">i</button></div>
+        <div class="symbolic-equation" role="math" aria-label="WACC equals r a minus D over V times r d times T"><strong>WACC</strong><span>=</span><span>r<sub>a</sub></span><span>−</span><span class="eq-part debt-term"><span class="eq-token" data-vars="debtWeight">D/V</span><span>×</span><span class="eq-token" data-vars="debtRate">r<sub>d</sub></span><span>×</span><span class="eq-token" data-vars="taxRate">T</span></span></div>
+        <div class="live-values" id="shield-worked" aria-label="WACC from return on assets with current values"><span class="eq-token result-value" data-value="assetReturn" data-precision="3"></span><span>−</span><span class="num-part"><span class="eq-token" data-value="debtWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="debtRate" data-vars="debtRate"></span><span>×</span><span class="eq-token" data-value="taxRate" data-vars="taxRate"></span></span><span>=</span><strong class="eq-token result-value" data-value="wacc" data-precision="3"></strong></div>
+      </div>
+      <div class="equation-row">
+        <div class="equation-heading"><h2><span class="step-number">3</span> WACC, expanded</h2><button class="info" type="button" data-help="wacc" aria-label="Explain the expanded WACC equation" aria-haspopup="dialog">i</button></div>
+        <div class="symbolic-equation" role="math" aria-label="WACC equals E over V times r e plus D over V times r d times one minus T"><strong>WACC</strong><span>=</span><span class="eq-part equity-term"><span class="eq-token" data-vars="debtWeight">E/V</span><span>×</span><span class="eq-token" data-vars="equityRate">r<sub>e</sub></span></span><span>+</span><span class="eq-part debt-term"><span class="eq-token" data-vars="debtWeight">D/V</span><span>×</span><span class="eq-token" data-vars="debtRate">r<sub>d</sub></span><span>× (1 −</span><span class="eq-token" data-vars="taxRate">T</span><span>)</span></span></div>
+        <div class="live-values" id="main-worked-equation" aria-label="Expanded WACC with current values"><span class="num-part"><span class="eq-token" data-value="equityWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="equityRate" data-vars="equityRate"></span></span><span>+</span><span class="num-part"><span class="eq-token" data-value="debtWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="debtRate" data-vars="debtRate"></span><span>× (1 −</span><span class="eq-token" data-value="taxRate" data-vars="taxRate"></span><span>)</span></span><span>=</span><strong class="eq-token result-value" data-value="wacc" data-precision="3"></strong></div>
+      </div>
+    </section>
+    <div class="workspace">
+      <section class="visual-panel" aria-labelledby="visual-title">
+        <div class="panel-heading"><h2 id="visual-title">Assets & financing</h2><button class="info" type="button" data-help="balance" aria-label="Explain the assets and financing diagram" aria-haspopup="dialog">i</button></div>
+        <div id="valid-results">
+          <div class="market-balance">
+            <div class="asset-side"><span class="asset-name">ASSETS <span class="notation">A</span></span><strong>$100.00</strong><div class="asset-rate-label">Return on assets <span class="notation">r<sub>a</sub></span><button class="info" type="button" data-help="assetReturn" aria-label="Explain the asset-side return" aria-haspopup="dialog">i</button></div><output id="asset-return">9.900%</output></div>
+            <div class="capital-mix" role="img" id="capital-mix" aria-label="30 percent debt above 70 percent equity">
+              <div class="capital debt" id="debt-block"><span>DEBT · D</span><strong id="debt-amount">$30.00</strong><small id="debt-diagram-rate">r<sub>d</sub> = <span>5.00%</span></small></div>
+              <div class="capital equity" id="equity-block"><span>EQUITY · E</span><strong id="equity-amount">$70.00</strong><small id="equity-diagram-rate">r<sub>e</sub> = <span>12.00%</span></small></div>
+            </div>
+          </div>
+          <div class="mix-key"><span><i class="swatch debt-color"></i>Debt <strong id="debt-share-label">30.00%</strong><button class="info" type="button" data-help="debtValue" aria-label="What counts as financing debt D?" aria-haspopup="dialog">i</button></span><span><i class="swatch equity-color"></i>Equity <strong id="equity-share-label">70.00%</strong><button class="info" type="button" data-help="equityValue" aria-label="How is market equity E calculated?" aria-haspopup="dialog">i</button></span></div>
+          <div class="wacc-result"><div><div class="term-label">WACC <button class="info" type="button" data-help="wacc" aria-label="Explain WACC" aria-haspopup="dialog">i</button></div><output id="wacc" aria-label="WACC">9.525%</output></div><div><div class="term-label">Tax shield <button class="info" type="button" data-help="taxBenefit" aria-label="Explain debt tax shield" aria-haspopup="dialog">i</button></div><output id="tax-benefit">0.375 pp</output></div></div>
+        </div>
+        <noscript><p>Enable JavaScript to use this visualization.</p></noscript>
+      </section>
+      <section id="controls" class="controls-panel" aria-labelledby="controls-title">
+        <div class="panel-heading"><h2 id="controls-title">Assumptions</h2></div>
+        <div class="control-group"><div class="control-label"><label for="debtWeight-number">Debt share <span class="notation">D/V</span></label><button class="info" type="button" data-help="weights" aria-label="Explain debt share" aria-haspopup="dialog">i</button></div><div class="number-row"><input id="debtWeight-number" type="number" min="0" max="100" step="0.01" value="30.00" inputmode="decimal"><span>%</span></div><input id="debtWeight-range" type="range" min="0" max="100" step="0.01" value="30" aria-label="Debt share slider, percent"></div>
+        <div class="control-group"><div class="control-label"><label for="equityRate-number">Cost of equity <span class="notation">r<sub>e</sub></span></label><button class="info" type="button" data-help="equityRate" aria-label="Explain cost of equity" aria-haspopup="dialog">i</button></div><div class="number-row"><input id="equityRate-number" type="number" min="0" max="100" step="0.01" value="12.00" inputmode="decimal"><span>%/yr</span></div><input id="equityRate-range" type="range" min="0" max="30" step="0.01" value="12" aria-label="Cost of equity slider, percent"></div>
+        <div class="control-group"><div class="control-label"><label for="debtRate-number">Cost of debt <span class="notation">r<sub>d</sub></span></label><button class="info" type="button" data-help="debtRate" aria-label="Explain cost of debt" aria-haspopup="dialog">i</button></div><div class="number-row"><input id="debtRate-number" type="number" min="0" max="100" step="0.01" value="5.00" inputmode="decimal"><span>%/yr</span></div><input id="debtRate-range" type="range" min="0" max="30" step="0.01" value="5" aria-label="Cost of debt slider, percent"></div>
+        <div class="control-group"><div class="control-label"><label for="taxRate-number">Corporate tax rate <span class="notation">T</span></label><button class="info" type="button" data-help="taxRate" aria-label="Explain corporate tax rate" aria-haspopup="dialog">i</button></div><div class="number-row"><input id="taxRate-number" type="number" min="0" max="100" step="0.01" value="25.00" inputmode="decimal"><span>%</span></div><input id="taxRate-range" type="range" min="0" max="100" step="0.01" value="25" aria-label="Corporate tax rate slider, percent"></div>
+      </section>
+    </div>
+    <section class="comparison-panel" aria-label="Scenario comparison"><p id="explanation" role="status" aria-live="polite"></p><button type="button" class="secondary-action" id="save-baseline">Save comparison</button><button class="info" type="button" data-help="comparison" aria-label="Explain the saved comparison" aria-haspopup="dialog">i</button></section>
+    <details class="curve-panel" id="curve-details"><summary>Explore debt share</summary><div class="curve-content"><svg id="curve" role="img" aria-labelledby="curve-title curve-description"><title id="curve-title">WACC versus debt share</title><desc id="curve-description">WACC at the current component rates.</desc></svg><p id="curve-summary" class="sr-only"></p><button class="info" type="button" data-help="curve" aria-label="Explain the debt-share chart" aria-haspopup="dialog">i</button></div></details>
+  </main>
+  <footer class="lab-footer"><span>F3 · v0.3.1 · October 30, 2026</span><div><button class="text-info" type="button" data-help="model">Fixed-rate model ⓘ</button><button class="text-info" type="button" data-help="challenge">Try a question ⓘ</button></div><span id="download-status" role="status"></span></footer>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button type="button" id="close-help" aria-label="Close explanation" autofocus>×</button></div><p id="help-body"></p><p class="help-formula" id="help-formula"></p></dialog>
+  <script>/* Pure calculations. Inputs are decimal fractions; no DOM or display rounding. */
+(() => {
+  "use strict";
+  const DEFAULTS = Object.freeze({
+    debtWeight: 0.30, equityRate: 0.12, debtRate: 0.05, taxRate: 0.25
+  });
+  const LABELS = Object.freeze({
+    debtWeight: "Debt share", equityRate: "Cost of equity",
+    debtRate: "Cost of debt", taxRate: "Corporate tax rate"
+  });
+  const PRESETS = Object.freeze([
+    Object.freeze({ id: "baseline", name: "Starting example", inputs: DEFAULTS }),
+    Object.freeze({ id: "all-equity", name: "All equity", inputs: Object.freeze({ ...DEFAULTS, debtWeight: 0 }) }),
+    Object.freeze({ id: "no-tax", name: "No tax shield", inputs: Object.freeze({ ...DEFAULTS, taxRate: 0 }) }),
+    Object.freeze({ id: "more-debt", name: "More debt, same rates", inputs: Object.freeze({ ...DEFAULTS, debtWeight: 0.60 }) })
+  ]);
+
+  function validateInputs(raw) {
+    const inputs = {}, errors = {};
+    for (const key of Object.keys(DEFAULTS)) {
+      const value = raw && raw[key];
+      if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1) {
+        errors[key] = LABELS[key] + " must be a number from 0% to 100%.";
+      } else inputs[key] = value;
+    }
+    return { ok: Object.keys(errors).length === 0, inputs, errors };
+  }
+
+  function metrics(inputs) {
+    const { debtWeight, equityRate, debtRate, taxRate } = inputs;
+    const equityWeight = 1 - debtWeight;
+    const afterTaxDebtRate = debtRate * (1 - taxRate);
+    const equityContribution = equityWeight * equityRate;
+    const debtContribution = debtWeight * afterTaxDebtRate;
+    const grossDebtContribution = debtWeight * debtRate;
+    const taxBenefit = grossDebtContribution * taxRate;
+    // Course notation: the pretax weighted-provider return, not an estimate
+    // of a leverage-invariant unlevered business cost of capital.
+    const assetReturn = equityContribution + grossDebtContribution;
+    return {
+      equityWeight, afterTaxDebtRate, equityContribution, debtContribution,
+      grossDebtContribution, taxBenefit,
+      assetReturn, pretaxBlend: assetReturn,
+      wacc: equityContribution + debtContribution
+    };
+  }
+
+  function calculateModel(raw) {
+    const checked = validateInputs(raw);
+    if (!checked.ok) throw new RangeError(Object.values(checked.errors).join(" "));
+    const inputs = checked.inputs;
+    return {
+      inputs, ...metrics(inputs),
+      // Every plotted point uses the same calculation as the main result.
+      curve: Array.from({ length: 21 }, (_, index) => {
+        const debtWeight = index / 20;
+        return { debtWeight, wacc: metrics({ ...inputs, debtWeight }).wacc };
+      })
+    };
+  }
+
+  function compareScenarios(currentRaw, baselineRaw) {
+    const current = calculateModel(currentRaw);
+    const baseline = calculateModel(baselineRaw);
+    return {
+      delta: current.wacc - baseline.wacc,
+      changed: Object.keys(DEFAULTS).filter(key => current.inputs[key] !== baseline.inputs[key]),
+      current, baseline
+    };
+  }
+
+  globalThis.DemoModel = Object.freeze({
+    DEFAULTS, LABELS, PRESETS, validateInputs, calculateModel, compareScenarios
+  });
+})();
+</script>
+  <script>(() => {
+  "use strict";
+  const percent = (value, precision = 2) => Number.isFinite(value) ? (value * 100).toFixed(precision) + "%" : "—";
+  const points = value => Number.isFinite(value) ? (value * 100).toFixed(3) + " pp" : "—";
+  const inputValue = value => Number.isFinite(value) ? (value * 100).toFixed(2) : "";
+  const money = value => "$" + value.toFixed(2);
+  // Pure presentation helpers are also checked without a browser.
+  globalThis.DemoPresentation = Object.freeze({ percent, points, inputValue, money });
+  if (typeof document === "undefined") return;
+
+  const model = globalThis.DemoModel;
+  const byId = id => document.getElementById(id);
+  const keys = Object.keys(model.DEFAULTS);
+  let inputs = { ...model.DEFAULTS };
+  let baseline = { ...model.DEFAULTS };
+  let latest = null;
+  let helpTrigger = null;
+  let highlightTimer = null;
+  let pointerEditing = false;
+  let keyEditing = false;
+  const setText = (id, text) => { byId(id).textContent = text; };
+  const HELP = {
+    assetReturn: {
+      title: "Return on assets · r_a",
+      body: "The assets must support the returns required by the people financing them. Following the course notation, r_a here is the weighted return before the interest tax adjustment. It is a required return, not accounting ROA or a promised realized return. This lab holds debt and equity rates fixed; it does not estimate a separate, leverage-invariant unlevered business-risk rate with corporate taxes.",
+      formula: "r_a = (E/V)r_e + (D/V)r_d"
+    },
+    weights: {
+      title: "Debt share · D/V",
+      body: "D is the market value of financing debt and E is market equity. Total financing value V = D + E. Debt share is D/V; equity takes the rest, E/V. The two weights always sum to 100%. The diagram normalizes V to $100. Use the debt and equity info buttons below the diagram for help estimating those values.",
+      formula: "Debt share = D/V; equity share = E/V; V = D + E"
+    },
+    debtValue: {
+      title: "Financing debt · D",
+      body: "Include interest-bearing loans, notes and bonds: short-term borrowings, current maturities and remaining long-term debt, counting each amount once. Ordinary trade payables and accrued operating expenses are not D; they belong in operating working capital. Use market value. Book debt can approximate market value when the two are close, but rate changes or distress can make that shortcut poor. Treat leases and debt-like claims consistently with the cash flows. This two-source model omits preferred shares and hybrids and uses gross debt, without subtracting excess cash.",
+      formula: "D = short-term borrowing + current maturities + remaining long-term financing debt"
+    },
+    equityValue: {
+      title: "Market equity · E",
+      body: "For a public company, multiply common shares outstanding by their current market price. Value each share class separately and add them if needed. Use shares outstanding, not only freely traded float. This is market capitalization—not book shareholders’ equity, paid-in capital or retained earnings. For a private company, market equity must be estimated using a valuation method; book equity is not automatically a market-value estimate.",
+      formula: "E = shares outstanding × current market price per share"
+    },
+    balance: {
+      title: "The market-value picture",
+      body: "The left side represents business assets, net of operating liabilities; the right side shows debt and equity financing them. Both sides are normalized to $100. This is a conceptual market-value diagram, not a book-value balance sheet. It omits excess cash and other financing claims. Changing the debt share changes the proportions, not the diagram’s total value.",
+      formula: "A = V = D + E, under the simplified two-source assumptions"
+    },
+    equityRate: {
+      title: "Cost of equity · r_e",
+      body: "The annual return shareholders require for ownership risk. It is an opportunity cost, not a promised dividend. In this model it is held fixed when the financing mix changes. Its contribution to the asset return and WACC is weighted by the equity share. Input rates use two decimal places; calculated rates use three.",
+      formula: "Equity contribution = (E/V)r_e"
+    },
+    debtRate: {
+      title: "Cost of debt · r_d",
+      body: "The annual borrowing rate lenders require, entered before the corporate interest tax adjustment. WACC uses the after-tax rate r_d(1 − T), assuming the deduction is usable. Lenders still require the original borrowing rate. A real company’s borrowing cost can rise with leverage; this teaching model holds it fixed.",
+      formula: "After-tax cost of debt = r_d(1 − T)"
+    },
+    taxRate: {
+      title: "Corporate tax rate · T",
+      body: "The marginal corporate tax rate applied to a usable interest deduction. A higher T lowers debt’s after-tax contribution. The calculation assumes the deduction is fully usable; it does not model tax-loss or deduction limits. With no debt, changing T has no effect on WACC. The 0–100% range includes mathematical endpoints, not suggested tax assumptions.",
+      formula: "WACC tax adjustment = (D/V)r_d T"
+    },
+    taxBenefit: {
+      title: "The interest tax shield",
+      body: "pp means percentage points: the difference between two percentage rates. Going from 10% to 9% is a drop of 1 pp; the relative decrease is 10%. Here, the interest tax shield lowers r_a to WACC by (D/V)r_d T, assuming the interest deduction can be used. It does not increase the operating return of the assets. When discounting unlevered operating cash flow with WACC, do not also subtract financing interest in that cash flow.",
+      formula: "WACC = r_a − (D/V)r_d T"
+    },
+    wacc: {
+      title: "Weighted average cost of capital",
+      body: "WACC combines the required equity return and the after-tax debt cost using market-value weights. Use it with unlevered operating free cash flows of matching risk and periods. The expanded equation is the same calculation as subtracting the interest tax adjustment from r_a. It is a required discount rate, not a guaranteed actual return or an annual cash payment to all investors.",
+      formula: "WACC = (E/V)r_e + (D/V)r_d(1 − T)"
+    },
+    comparison: {
+      title: "Saved comparison",
+      body: "Save comparison keeps the current assumptions as a baseline. Presets and input changes then compare with that baseline. Reset restores both the original inputs and original comparison. pp means percentage points: 10% minus 9% is 1 pp. If several assumptions change, their combined effect is reported rather than assigning the whole change to one input.",
+      formula: ""
+    },
+    curve: {
+      title: "Changing the debt share",
+      body: "The chart varies only D/V while keeping your current debt rate, equity rate and tax rate fixed. This makes the line straight. In a real company, changing leverage can change investor risk and both component rates. This plot is not an optimization model and its all-debt endpoint is not a recommendation.",
+      formula: ""
+    },
+    model: {
+      title: "Fixed-rate teaching model",
+      body: "All rates are annual, and all financing weights use market values. The model has debt and common equity only, holds their required rates fixed as weights change, and assumes a fully usable interest tax deduction. It omits distress costs, financing fees, preferred stock and tax-loss limits. All presets are illustrative. The return on assets notation follows the course model and is distinct from accounting ROA. Downloaded copies reopen with the starting example.",
+      formula: "V = D + E"
+    },
+    challenge: {
+      title: "Does tax matter with no debt?",
+      body: "Choose All equity. Predict what will happen, then change the corporate tax rate. The debt weight is zero, so the debt term and its tax adjustment are both zero. WACC and r_a both equal the cost of equity under these assumptions.",
+      formula: "If D = 0, WACC = r_a = r_e"
+    }
+  };
+
+  function notation(target, text) {
+    target.replaceChildren();
+    let last = 0;
+    for (const match of text.matchAll(/r_([ade])\b/g)) {
+      target.appendChild(document.createTextNode(text.slice(last, match.index) + "r"));
+      const sub = document.createElement("sub");
+      sub.textContent = match[1];
+      target.appendChild(sub);
+      last = match.index + match[0].length;
+    }
+    target.appendChild(document.createTextNode(text.slice(last)));
+  }
+
+  function syncRange(key) {
+    if (!Number.isFinite(inputs[key]) || inputs[key] < 0 || inputs[key] > 1) return;
+    const range = byId(key + "-range");
+    if (key === "equityRate" || key === "debtRate") range.max = Math.max(30, Math.ceil(inputs[key] * 100));
+    range.value = inputs[key] * 100;
+  }
+  function syncControls() {
+    for (const key of keys) {
+      byId(key + "-number").value = inputValue(inputs[key]);
+      syncRange(key);
+    }
+  }
+  function releaseHighlight() {
+    window.clearTimeout(highlightTimer);
+    document.querySelectorAll(".eq-token.is-editing").forEach(el => el.classList.remove("is-editing"));
+  }
+  function markEditing(changedKeys) {
+    window.clearTimeout(highlightTimer);
+    document.querySelectorAll(".eq-token[data-vars]").forEach(el => {
+      el.classList.toggle("is-editing", changedKeys.some(key => el.dataset.vars.split(" ").includes(key)));
+    });
+  }
+  function scheduleRelease() {
+    window.clearTimeout(highlightTimer);
+    highlightTimer = window.setTimeout(releaseHighlight, 900);
+  }
+  function showHelp(button) {
+    const help = HELP[button.dataset.help];
+    helpTrigger = button;
+    notation(byId("help-title"), help.title);
+    notation(byId("help-body"), help.body);
+    notation(byId("help-formula"), help.formula);
+    byId("help-formula").hidden = !help.formula;
+    if (button.dataset.help === "comparison") {
+      byId("help-body").appendChild(document.createTextNode(" Saved inputs: " + keys.map(key => model.LABELS[key] + " " + percent(baseline[key])).join("; ") + "."));
+    }
+    byId("help-dialog").showModal();
+  }
+  document.querySelectorAll("[data-help]").forEach(button => button.addEventListener("click", () => showHelp(button)));
+  byId("close-help").addEventListener("click", () => byId("help-dialog").close());
+  byId("help-dialog").addEventListener("close", () => { if (helpTrigger) helpTrigger.focus(); });
+  byId("help-dialog").addEventListener("click", event => {
+    if (event.target !== byId("help-dialog")) return;
+    const box = event.target.getBoundingClientRect();
+    if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) event.target.close();
+  });
+
+  function explain(comparison) {
+    const { current, changed, delta } = comparison;
+    if (!changed.length) return "No change from the saved comparison.";
+    const result = Math.abs(delta) < 1e-12 ? "WACC is unchanged." : "WACC is " + points(Math.abs(delta)) + (delta < 0 ? " lower." : " higher.");
+    if (changed.length > 1) return changed.length + " assumptions changed. " + result;
+    if (changed[0] === "taxRate" && !current.inputs.debtWeight) return "With no debt, changing the tax rate leaves WACC unchanged.";
+    const cause = {
+      debtWeight: "The financing weights changed. ", equityRate: "The equity contribution changed. ",
+      debtRate: "The debt contribution changed. ", taxRate: "The interest tax adjustment changed. "
+    };
+    return cause[changed[0]] + result;
+  }
+
+  function drawCurve(result) {
+    const svg = byId("curve");
+    const width = Math.max(280, svg.getBoundingClientRect().width);
+    const left = 48, right = width - 18, top = 30, bottom = 188;
+    const maxRate = Math.max(0.05, Math.ceil(Math.max(result.inputs.equityRate, result.afterTaxDebtRate) * 100 / 5) * 5 / 100);
+    const x = value => left + value * (right - left);
+    const y = value => bottom - value / maxRate * (bottom - top);
+    svg.setAttribute("viewBox", "0 0 " + width + " 230");
+    svg.replaceChildren();
+    const add = (tag, attrs, text) => {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+      for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, String(value));
+      if (text !== undefined) el.textContent = text;
+      svg.appendChild(el);
+    };
+    add("title", { id: "curve-title" }, "WACC versus debt share");
+    add("desc", { id: "curve-description" }, "Current rates held fixed. Current mix: " + percent(result.inputs.debtWeight) + " debt; WACC " + percent(result.wacc, 3) + ".");
+    add("text", { x: left, y: 14, fill: "#50616f", "font-size": 11 }, "WACC (% / year)");
+    for (const value of [0, maxRate / 2, maxRate]) {
+      add("line", { x1: left, x2: right, y1: y(value), y2: y(value), stroke: "#e0e6ec" });
+      add("text", { x: left - 9, y: y(value) + 4, fill: "#50616f", "text-anchor": "end", "font-size": 11 }, (value * 100).toFixed(1));
+    }
+    for (const value of [0, 0.25, 0.5, 0.75, 1]) add("text", { x: x(value), y: 207, fill: "#50616f", "text-anchor": "middle", "font-size": 11 }, (value * 100).toFixed(0));
+    add("text", { x: (left + right) / 2, y: 226, fill: "#50616f", "text-anchor": "middle", "font-size": 11 }, "Debt share D/V (%)");
+    const coords = result.curve.map(p => x(p.debtWeight) + "," + y(p.wacc)).join(" ");
+    add("polygon", { points: left + "," + bottom + " " + coords + " " + right + "," + bottom, fill: "#edf3fb" });
+    add("polyline", { points: coords, fill: "none", stroke: "#1452a1", "stroke-width": 2.5 });
+    add("line", { x1: x(result.inputs.debtWeight), x2: x(result.inputs.debtWeight), y1: y(result.wacc), y2: bottom, stroke: "#1452a1", "stroke-dasharray": "4 4" });
+    add("circle", { cx: x(result.inputs.debtWeight), cy: y(result.wacc), r: 5.5, fill: "white", stroke: "#1452a1", "stroke-width": 2.5 });
+    const end = result.inputs.debtWeight > 0.8;
+    add("text", { x: x(result.inputs.debtWeight) + (end ? -10 : 10), y: Math.max(25, y(result.wacc) - 12), fill: "#1452a1", "font-size": 12, "font-weight": 700, "text-anchor": end ? "end" : "start" }, percent(result.wacc, 3));
+  }
+
+  function render() {
+    const checked = model.validateInputs(inputs);
+    for (const key of keys) byId(key + "-number").setAttribute("aria-invalid", checked.errors[key] ? "true" : "false");
+    byId("input-error").hidden = checked.ok;
+    byId("valid-results").hidden = !checked.ok;
+    byId("save-baseline").disabled = !checked.ok;
+    document.querySelectorAll(".live-values").forEach(el => { el.hidden = !checked.ok; });
+    document.querySelectorAll("[data-preset]").forEach(button => {
+      const p = model.PRESETS.find(preset => preset.id === button.dataset.preset);
+      const active = keys.every(key => Math.abs(p.inputs[key] - inputs[key]) < 1e-12);
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    if (!checked.ok) {
+      latest = null;
+      setText("input-error", Object.values(checked.errors).join(" "));
+      byId("curve").replaceChildren();
+      setText("curve-summary", "Enter valid assumptions to display the chart.");
+      setText("explanation", "Enter valid assumptions to compare results.");
+      return;
+    }
+    const result = model.calculateModel(inputs);
+    latest = result;
+    const values = { ...result.inputs, ...result };
+    document.querySelectorAll("[data-value]").forEach(el => {
+      el.textContent = percent(values[el.dataset.value], Number(el.dataset.precision || 2));
+    });
+    byId("debt-block").style.height = percent(inputs.debtWeight, 6);
+    byId("equity-block").style.height = percent(result.equityWeight, 6);
+    for (const [id, weight] of [["debt-block", inputs.debtWeight], ["equity-block", result.equityWeight]]) {
+      Array.from(byId(id).children).forEach(el => { el.hidden = weight < 0.25; });
+    }
+    setText("debt-amount", money(inputs.debtWeight * 100));
+    setText("equity-amount", money(result.equityWeight * 100));
+    document.querySelector("#debt-diagram-rate span").textContent = percent(inputs.debtRate);
+    document.querySelector("#equity-diagram-rate span").textContent = percent(inputs.equityRate);
+    byId("capital-mix").setAttribute("aria-label", percent(inputs.debtWeight) + " debt above " + percent(result.equityWeight) + " equity; 100 dollars total market-value financing.");
+    setText("debt-share-label", percent(inputs.debtWeight));
+    setText("equity-share-label", percent(result.equityWeight));
+    setText("asset-return", percent(result.assetReturn, 3));
+    setText("wacc", percent(result.wacc, 3));
+    setText("tax-benefit", points(result.taxBenefit));
+    setText("explanation", explain(model.compareScenarios(inputs, baseline)));
+    setText("curve-summary", "At current rates, all-equity WACC is " + percent(inputs.equityRate, 3) + "; all-debt WACC is " + percent(result.afterTaxDebtRate, 3) + ".");
+    if (byId("curve-details").open) drawCurve(result);
+  }
+
+  for (const key of keys) {
+    const number = byId(key + "-number"), range = byId(key + "-range");
+    number.addEventListener("input", event => {
+      inputs[key] = event.target.valueAsNumber / 100;
+      syncRange(key);
+      markEditing([key]);
+      render();
+      scheduleRelease();
+    });
+    number.addEventListener("blur", () => {
+      if (!model.validateInputs(inputs).errors[key]) {
+        inputs[key] = Number(inputValue(inputs[key])) / 100;
+        number.value = inputValue(inputs[key]);
+        syncRange(key);
+        render();
+      }
+      releaseHighlight();
+    });
+    range.addEventListener("pointerdown", () => { pointerEditing = true; markEditing([key]); });
+    range.addEventListener("keydown", event => {
+      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(event.key)) {
+        keyEditing = true;
+        markEditing([key]);
+      }
+    });
+    range.addEventListener("keyup", () => { keyEditing = false; releaseHighlight(); });
+    range.addEventListener("input", event => {
+      inputs[key] = event.target.valueAsNumber / 100;
+      number.value = inputValue(inputs[key]);
+      markEditing([key]);
+      render();
+      if (!pointerEditing && !keyEditing) scheduleRelease();
+    });
+    range.addEventListener("blur", () => { keyEditing = false; pointerEditing = false; releaseHighlight(); });
+  }
+  for (const event of ["pointerup", "pointercancel"]) window.addEventListener(event, () => {
+    if (!pointerEditing) return;
+    pointerEditing = false;
+    releaseHighlight();
+  });
+  window.addEventListener("blur", () => { pointerEditing = false; keyEditing = false; releaseHighlight(); });
+  document.querySelectorAll("[data-preset]").forEach(button => button.addEventListener("click", () => {
+    const next = model.PRESETS.find(preset => preset.id === button.dataset.preset).inputs;
+    const changed = keys.filter(key => inputs[key] !== next[key]);
+    inputs = { ...next };
+    syncControls(); render(); markEditing(changed); scheduleRelease();
+  }));
+  byId("reset").addEventListener("click", () => {
+    inputs = { ...model.DEFAULTS }; baseline = { ...model.DEFAULTS };
+    pointerEditing = false; keyEditing = false;
+    releaseHighlight(); syncControls(); render();
+  });
+  byId("save-baseline").addEventListener("click", () => {
+    if (!model.validateInputs(inputs).ok) return;
+    baseline = { ...inputs }; render(); setText("explanation", "Comparison saved.");
+  });
+  byId("curve-details").addEventListener("toggle", () => { if (latest && byId("curve-details").open) drawCurve(latest); });
+  window.addEventListener("resize", () => { if (latest && byId("curve-details").open) drawCurve(latest); });
+  byId("download-file").addEventListener("click", () => {
+    const snapshot = document.documentElement.cloneNode(true);
+    snapshot.querySelectorAll(".is-editing").forEach(el => el.classList.remove("is-editing"));
+    snapshot.querySelector("#download-status").textContent = "";
+    const file = new Blob(["<!doctype html>\n", snapshot.outerHTML], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(file);
+    const link = document.createElement("a"); link.href = url; link.download = "wacc.html";
+    document.body.appendChild(link); link.click(); link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setText("download-status", "Downloaded wacc.html");
+  });
+  syncControls(); render();
+})();
+</script>
+</body>
+</html>
