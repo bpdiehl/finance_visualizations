@@ -2,7 +2,7 @@
 
 ## Current status
 
-As checked on 2026-10-30, this repository is public and GitHub Pages is enabled. main already has the initial scaffold commit. The accepted WACC visualization is included in docs/downloads/ and the generated catalog. See verification/wacc.md for browser coverage and known limits.
+As checked on 2026-10-30, this repository is public and GitHub Pages is enabled. main already has the initial scaffold commit. The accepted WACC and DCF visualizations are included in docs/downloads/ and the generated catalog. See verification/wacc.md and verification/dcf.md for browser coverage and known limits.
 
 ## Recommended route: GitHub Pages
 
@@ -30,5 +30,4 @@ The catalog's same-origin download attribute is designed for Pages. Test the act
 - [Choose branch and /docs publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 - [Licensing a repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
 
-Expected URL after Pages is configured and verified: https://bpdiehl.github.io/finance_visualizations/
-This is a planned URL, not a live deployment claim.
+Catalog URL: https://bpdiehl.github.io/finance_visualizations/ . Pages serves the checked-in docs/ folder; verify each new deployment before sharing its new visualization.

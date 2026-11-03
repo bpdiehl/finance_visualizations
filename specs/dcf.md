@@ -1,6 +1,6 @@
 # F5 — Forecasting & DCF Valuation
 
-Status: planned. Catalog slug: dcf. Recommended build wave: 1.
+Status: ready, owner accepted 2026-11-03. Catalog slug: dcf. Recommended build wave: 1.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -55,3 +55,71 @@ Specify whether forecast `FCF_(N+1)` is calculated from a **steady-state driver 
 **Tests:** Annual projection and ΔNWC match independently calculated table values; for FCF_1=$100, WACC=.10 and g=.02 growing-perpetuity starting at t=1, value is $1,250. For a 5-year forecast with terminal at N=5, discount terminal value by exactly 5 periods (not 6). WACC<=g marks invalid terminal model. Changing excess nonoperating cash must affect equity value but not the operating FCF PV. Increasing debt while holding operating EV and nonoperating assets fixed lowers equity value dollar for dollar (assuming no other change). Shares 0 or negative rejected. The heatmap shares the exact calculation function used by the primary valuation.
 
 **Out of scope:** Full three-statement model, comparable-company valuation, market data integrations, stock recommendations, Monte Carlo distributions and probabilistic forecasting until core scenario model is trusted.
+
+
+## Implemented owner-review draft — v0.1, 2026-11-02
+
+The pilot is a driver-based annual unlevered DCF, not a direct-FCF input mode. Four main controls (sales growth s, EBIT margin m, WACC r, terminal growth g) sit beside the cash-flow chart. Base revenue R0, tax T, depreciation/revenue d, CapEx/revenue c, operating NWC/revenue w, forecast length N, terminal return on capital q, excess cash C, claims D and diluted shares S are in the detailed-input disclosure.
+
+- Four equation cards precede the charts/controls: revenue and FCF for the selected year; terminal cash flow and TV_N; discounted operating value; equity/per-share bridge. Worked values update live with stable two-decimal slots and matching-term highlights. Select a year with the picker or a keyboard-accessible chart bar.
+- Light/dark annual bars compare FCF_t with its PV. Terminal PV is a separate contribution, not an annual bar. The value-composition bar appears only for nonnegative contributions; signed values remain visible numerically.
+- WACC/g sensitivity uses the exact same core valuation routine as the main answer. Axes move with current inputs in 0.50 percentage-point steps; desktop shows 5×5, phones the central 3×3. Invalid/out-of-range cells are hatched, never treated as zero.
+- A signed waterfall bridges operating value plus excess cash less debt/other claims to common equity. Negative equity is retained as a shortfall, with share price unavailable rather than an invented negative stock price.
+- Full annual forecast table and explicit input definitions are included. All money is nominal USD million, shares are millions, and resulting price is dollars/share. Cash flows are at year-end; year 0 is the valuation date, not an initial-investment subtraction.
+
+### Terminal mechanism and limits
+
+Terminal revenue is R_N(1+g), using the same margin and tax rate. Terminal NOPAT is terminal revenue × m × (1−T). Terminal net reinvestment is NOPAT_(N+1) × g/q, so FCF_(N+1) = NOPAT_(N+1)(1−g/q). q is an explicit stable after-tax return-on-capital assumption. This replaces the forecast CapEx/depreciation/NWC ratios for terminal cash flow; those investments are not deducted again. This is not FCF_N × (1+g), and it does not track or reconcile a full invested-capital balance at the transition. Negative g assumes capital can be released. Positive stable NOPAT is required for this simplified terminal model.
+
+r≤g invalidates the perpetuity and aggregate valuation while retaining known forecast cash flows/PVs. A positive NOPAT with reinvestment above 100% can produce negative terminal FCF; signed values and a visible funding warning are retained. Forecast taxes use an explicitly disclosed symmetric immediate-tax-benefit simplification, not a tax-loss schedule. Debt/cash/share changes do not automatically change operating cash flow or WACC.
+
+Sources checked: the private course deck for broad FCF/terminal/equity framing, and original primary references for the mathematical contract: [NYU Stern DCF framework](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/lectures/val.html) and [terminal growth/reinvestment](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/termvalueexreturns.htm). Examples and graphics are original and illustrative; no case tables or handwritten notes are exported. See verification/dcf.md for tested coverage and limitations.
+
+Deferred: separate direct-FCF mode, year-specific growth/margins, full balance-sheet/capital tracking, three-statement forecasting, tax-loss carryforwards, liquidation/exit multiples, market data, probabilistic forecasting, and separate valuation of complex claims. No commit/push is authorized until owner review.
+
+
+### Owner feedback — notation key v0.2, 2026-11-02
+
+Owner explicitly accepted R₁ for revenue and requested a key rather than renamed symbols. Retain the pilot notation. A collapsed-by-default Notation key sits above the equation cards, defines every symbol/acronym and units, explains R₁/R₀ and N+1, and distinguishes lowercase sales growth s from uppercase shares S. No model or input changes.
+
+
+### Owner feedback — statement layout v0.3, 2026-11-02
+
+The owner requested the forecast table as the main view and explicitly requested toggleable equations combined with the collapsible key, default collapsed. This DCF-specific instruction supersedes the earlier always-visible-equation layout for this demo; it does not change the other demos’ standard. One native disclosure contains all four live equation cards followed by the notation key. It closes on startup and in exported copies.
+
+The primary table now reads vertically from revenue, implied operating costs before depreciation and depreciation to EBIT, operating tax, NOPAT, depreciation addback, capital spending, change in operating NWC and FCF. Deductions/negative amounts use parentheses; subtotals are ruled and FCF has a double rule. Discount factor and present value follow, with the NWC balance in a separate memo row. Implied costs and taxes come from pure-model output; the existing margin remains the profit driver. This is an operating income statement extended to cash flow, not a full accounting statement. A help button explains the distinction.
+
+Primary sliders sit beside the statement on wide screens and below at narrower widths. Plots remain below. Table header year buttons support keyboard selection, retain focus and update the same inspected year as the dropdown and chart. The table scrolls within its region on small screens with sticky row labels. Model precision, terminal assumptions and validation remain unchanged.
+
+
+### Owner feedback — forecast disclosure v0.3.1, 2026-11-03
+
+Operating forecast is now a native disclosure, independent of Equations & notation key. Default startup/export state is forecast expanded and equations/key collapsed. Toggling either does not reset inputs, selected year or live calculations. This lets the owner focus on either view or show both.
+
+
+### Owner feedback — linked key and conceptual reminder v0.4, 2026-11-03
+
+Removed visible equation-card titles/number badges and notation subgroup headings; descriptive accessible labels and information controls remain. Each key symbol is a keyboard-accessible button. Hover/focus previews a distinct symbol highlight, click/Enter pins it and scrolls the first matching equation term into view, and Escape clears it. Matching is case sensitive (s growth versus S shares). Worked values use explicit symbol mappings distinct from the existing input-dependency editing highlights. The d/c/w ratio links identify their related depreciation/CapEx/working-capital contributions. Symbol states are cleared in exported copies.
+
+A default-collapsed From profit to cash flow reminder explains EBIT, operating tax, the depreciation addback, capital spending, and investment/release of working capital, ending with cash available to debt and equity providers. Original teaching copy follows the same conceptual sequence verified against the private course deck. No private slides/annotations are published.
+
+The final table row is NWC balance (reference only), muted gray with a white gap and separate rule. The Memo prefix is removed. Only the change in NWC is a cash-flow adjustment, now made explicit by a worked ΔNWC_t = NWC_t − NWC_(t−1) relation in the equations. The balance is not deducted a second time.
+
+
+### Owner feedback — notation audit and input placement v0.4.1, 2026-11-03
+
+Each of the 29 key symbols now has its own definition row, including t/N, R_t/R_0 and d/c/w. All time indices are independently tagged inside subscripts and superscripts, so choosing N includes terminal-year indices, N+1, the summation upper bound, discount exponents and the numerical horizon; t includes forecast subscripts, prior-year indices and the selected-year numerical exponent. Selecting the summation sign highlights the sign itself.
+
+Removed inaccurate d/c/w aliases from depreciation/CapEx/working-capital cash amounts. Explicit ratio equations and live percentage substitutions now give those symbols correct targets. The forecast also explicitly shows NOPAT = EBIT(1−T), making the operating-profit quantity and its numerical value direct targets. Worked values carry their symbol at rendering time, replacing the fragile post-render positional map. Valuation mechanics are unchanged.
+
+The complete Forecast & ownership inputs disclosure now follows Main assumptions in the same responsive stack. All ten detailed controls remain present once, collapsible, with wider amount fields and a compact sidebar layout when the forecast is open on a wide screen. When the forecast is collapsed, assumptions use the full width rather than retaining empty forecast space.
+
+
+### Owner feedback — input alignment v0.4.2, 2026-11-03
+
+Detailed controls use aligned label, 28-pixel info, 104-pixel field and reserved unit columns. Both number inputs and the forecast-length selector share the field column. Operating/ownership sections share identical columns when stacked; long units such as million shares no longer change field alignment or wrap beneath the input. Sidebar and phone widths put the label above a consistently aligned info/field/unit row. Mobile main-control labels reserve equal height, and their fields, units and sliders align within each pair. No model or interaction changes.
+
+
+### Owner acceptance — 2026-11-03
+
+Owner accepted v0.4.2 and explicitly authorized commit/push. The catalog now includes the standalone DCF download. Prior draft approval restrictions are historical; offline/browser coverage limits are retained in verification/dcf.md.

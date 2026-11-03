@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Explore how operating assumptions, WACC and terminal growth drive a discounted cash flow valuation.">
+  <link rel="icon" href="data:,"><title>DCF Valuation · Finance Lab</title>
+  <style>:root{color-scheme:light;--ink:#172838;--muted:#50616f;--blue:#1452a1;--line:#d7e0e6;--paper:#fff;--wash:#f2f5f7;--radius:12px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55;color:var(--ink);background:var(--wash)}
+*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1080px;margin:auto;padding:32px 40px}header{padding-top:56px;padding-bottom:20px}h1{font-size:clamp(2.25rem,5vw,3.7rem);line-height:1.1;letter-spacing:-.045em;margin:10px 0 20px}h2{font-size:1.1rem;line-height:1.35;margin:0 0 6px}p{margin:8px 0;color:var(--muted)}a{color:var(--blue);text-underline-offset:3px}a:focus-visible,summary:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #a5480b;outline-offset:4px}.eyebrow{font-size:.75rem;font-weight:750;letter-spacing:.16em;color:var(--blue)}.intro{font-size:1.3rem;color:var(--ink)}.instructions{padding:24px 28px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:36px}.instructions ol{padding-left:22px}.instructions li{margin:8px 0}.instructions p{font-size:.92rem}summary{cursor:pointer;padding:8px 0;min-height:44px;font-weight:650}.section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.section-heading h2{font-size:1.45rem}.section-heading p{font-size:.85rem}.notice{padding:14px 18px;border-left:3px solid var(--blue);background:#e8eff8;font-size:.94rem}.notice strong{color:var(--ink)}.demo-list{list-style:none;padding:0;margin:24px 0 0}.demo{display:grid;grid-template-columns:36px 1fr auto;gap:16px;padding:24px 0;border-top:1px solid var(--line);align-items:center}.demo p{margin:0;font-size:.95rem}.code{align-self:start;margin-top:2px;font-size:.8rem;color:var(--blue);font-weight:750}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.status{font-size:.8rem;font-weight:650;color:var(--muted);border:1px solid var(--line);border-radius:30px;padding:5px 12px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border-radius:7px;border:1px solid var(--blue);background:var(--blue);color:white;text-decoration:none;font-size:.88rem;font-weight:650}.button.secondary{background:white;color:var(--blue)}.button:hover{filter:brightness(.93)}footer{font-size:.83rem;border-top:1px solid var(--line);padding-bottom:36px}.skip{position:absolute;left:-10000px;top:8px;background:white;padding:12px;z-index:10}.skip:focus{left:12px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}@media(max-width:680px){header,main,footer{padding-left:20px;padding-right:20px}header{padding-top:32px}.instructions{padding:20px}.demo{grid-template-columns:28px 1fr;gap:10px}.actions{grid-column:2;justify-content:flex-start}.section-heading{align-items:start;flex-direction:column;gap:0}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.dcf-app{--raw:#a6bddd;--pv:#2458a8;--terminal:#14786d;--warning:#995013;background:#f5f6f8}
+.dcf-app header,.dcf-app main,.dcf-app footer{max-width:1280px;padding:0 32px}.dcf-app [hidden]{display:none!important}.dcf-app button,.dcf-app input,.dcf-app select{font:inherit}.dcf-app button{cursor:pointer}.dcf-app button:disabled{opacity:.5;cursor:default}.dcf-app svg{display:block;width:100%;font-family:inherit;overflow:visible}.dcf-app output,.dcf-app input,.dcf-app strong{font-variant-numeric:tabular-nums}.lab-header{padding-top:24px!important;padding-bottom:20px!important}.masthead{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:16px;color:#536574;letter-spacing:.13em;font-size:.66rem;font-weight:750}.heading-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:20px}.dcf-app h1{margin:0;font-size:clamp(1.9rem,3.4vw,2.5rem);line-height:1.2;letter-spacing:-.035em}.heading-row p{font-size:.9rem;margin:8px 0 0}.action,.preset,.reset{min-height:44px;padding:9px 13px;border:1px solid #c7d2dd;border-radius:7px;background:white;color:var(--ink);font-size:.8rem!important;font-weight:650}.primary{background:var(--blue);color:white;border-color:var(--blue)}.action:hover,.preset:hover{background:#edf2f9}.primary:hover{background:#103e7a}.preset-row{display:flex;align-items:center;gap:8px;margin-bottom:20px}.preset-row>div{display:flex;gap:8px;flex-wrap:wrap}.preset.active{background:#e8effa;border-color:var(--blue);color:#174c8b}.reset{margin-left:auto;background:transparent;border-color:transparent;color:var(--blue);text-decoration:underline;text-underline-offset:3px}.panel{background:white;border:1px solid var(--line);border-radius:12px;padding:20px 24px;min-width:0}.section-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.section-top h2{margin:0;font-size:.96rem}.info{width:30px;min-width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:1px solid #c4cfd9;border-radius:50%;background:white;color:#456070;font-size:.73rem!important;font-weight:750}.info:hover{background:#e8eff8;border-color:var(--blue)}.symbol,.formula{font-family:Georgia,"Times New Roman",serif}.symbol{font-style:italic;margin-left:3px}.symbol sub,.formula sub{font-size:.72em}.units{font-size:.72rem;color:var(--muted)}
+.equations{background:white;border:1px solid #c8d5e6;border-radius:12px;padding:15px 24px;margin-bottom:20px}.equation-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}.eq{min-width:0;padding:12px 0;border-bottom:1px solid #e2e8f0}.eq:nth-last-child(-n+2){border-bottom:0}.eq-title{display:flex;align-items:center;gap:7px;margin-bottom:7px}.eq-title h3{font-size:.77rem;font-weight:650;margin:0}.eq-title .info{margin-left:auto;width:25px;min-width:25px;height:25px}.step{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;font-size:.6rem;color:#5a6f82;background:#edf2f7;border-radius:50%;flex-shrink:0}.formula{font-size:1rem;line-height:1.65;overflow-wrap:anywhere}.formula sup{font-size:.7em}.term{display:inline-block;border-radius:3px;padding:0 1px}.worked{display:flex;flex-wrap:wrap;align-items:center;gap:2px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.73rem;color:#364d62;line-height:1.75;font-variant-numeric:tabular-nums}.worked .group{display:inline-flex;align-items:center;white-space:nowrap}.eq-token{display:inline-block;padding:1px 2px;border-radius:4px;width:10ch;min-width:10ch;text-align:right;white-space:nowrap;flex-shrink:0}.eq-token.rate{width:8ch;min-width:8ch}.eq-token.small{width:3ch;min-width:3ch}.eq-token.result{width:13ch;min-width:13ch;font-weight:700;color:var(--ink)}.eq-token,.term{transition:background-color .75s ease,box-shadow .75s ease}.is-editing{background:#dfeaff;box-shadow:0 0 0 3px #8fb7ff30,0 0 12px #8fb7ff45;transition-duration:90ms}.year-picker{display:flex;align-items:center;gap:5px;font-size:.69rem;color:var(--muted);margin:0 0 5px}.year-picker select{padding:3px 6px!important;height:29px!important}.workspace{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(290px,1fr);gap:20px}.headline-result{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:5px}.headline-result output{font-size:2.5rem;line-height:1.25;font-weight:750;letter-spacing:-.035em}.headline-result>span{font-size:.74rem;color:var(--muted)}#cashflow-chart{height:242px;margin-top:5px}.chart-key{display:flex;gap:17px;flex-wrap:wrap;font-size:.72rem;margin:5px 0 12px}.chart-key>span{display:flex;align-items:center;gap:5px}.swatch{display:inline-block;width:9px;height:9px;border-radius:2px;flex-shrink:0}.raw{background:var(--raw)}.present{background:var(--pv)}.current{border:2px solid #172838;background:#e7eff9}.invalid{background:repeating-linear-gradient(135deg,#f5f1ed,#f5f1ed 3px,#ded9d3 3px,#ded9d3 5px)}.composition{border-top:1px solid var(--line);padding-top:12px}.composition-bar{display:flex;overflow:hidden;border-radius:3px;height:12px;background:#edf1f5}.composition-bar>span:first-child{background:var(--pv)}.composition-bar>span:last-child{background:var(--terminal)}.composition-key{display:flex;align-items:center;justify-content:space-between;gap:6px 13px;flex-wrap:wrap;margin-top:7px;font-size:.69rem}.composition-key>span{display:flex;align-items:center;gap:4px}.composition-key .info{width:23px;min-width:23px;height:23px;font-size:.64rem!important}.control{padding:13px 0 9px;border-bottom:1px solid var(--line)}.control:last-child{border-bottom:0}.control-name{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:.81rem;font-weight:650}.number-row{display:flex;align-items:center;gap:7px;margin:5px 0 0;font-size:.73rem;color:var(--muted)}.dcf-app input[type=number],.dcf-app select{border:1px solid #c8d2dd;border-radius:5px;padding:6px 8px;color:var(--ink);background:white;height:38px}.number-row input{width:95px;font-weight:650;font-size:.93rem!important}.dcf-app input[aria-invalid=true]{border-color:#ad382b;background:#fff4f1}.control input[type=range]{width:100%;height:25px;margin:3px 0 0;accent-color:var(--blue);cursor:pointer}.secondary-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}.matrix-heading{text-align:center;font-size:.74rem;color:var(--muted);padding:12px 0 8px}.matrix-layout{display:flex;align-items:stretch;gap:8px}.matrix-y{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;white-space:nowrap;font-size:.73rem;color:var(--muted)}.matrix-wrap{flex:1;min-width:0}#heatmap{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed;font-variant-numeric:tabular-nums;font-size:.72rem}#heatmap td,#heatmap th{text-align:center;padding:10px 2px;white-space:nowrap}#heatmap th{font-size:.69rem;font-weight:650;color:var(--muted)}#heatmap td{border:1px solid #c5d5e5;border-radius:4px;color:#143e67}#heatmap .current-cell{outline:2px solid #172838;outline-offset:-2px;font-weight:750}#heatmap .invalid-cell{background:repeating-linear-gradient(135deg,#f8f5f1,#f8f5f1 4px,#e5dfd7 4px,#e5dfd7 6px);color:#686159}.matrix-key{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;font-size:.65rem;color:var(--muted);padding-top:12px}.matrix-key>span{display:flex;align-items:center;gap:5px}.matrix-key>span:last-child{margin-left:auto}#bridge-chart{height:230px;margin-top:10px}.price-result{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px;font-size:.75rem}.price-result output{font-size:1.9rem;font-weight:750;letter-spacing:-.025em;margin-left:auto}.price-result>span:last-child{font-size:.7rem;color:var(--muted)}.comparison-row{display:flex;align-items:center;gap:10px;padding:13px 0}.comparison-row>p{flex:1;font-size:.8rem;margin:0}.settings,.forecast-table-section{background:white;border:1px solid var(--line);border-radius:12px;margin:6px 0 18px}.settings>summary,.forecast-table-section>summary{padding:15px 24px;font-size:.85rem}.settings-content{padding:0 24px 20px;display:grid;grid-template-columns:1fr 1fr;gap:28px}.settings-group h2{font-size:.88rem;margin:8px 0 5px}.settings-grid .control{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:10px 0}.settings-grid .control-name{font-size:.75rem;flex:1}.settings-grid .number-row{margin:0;flex-wrap:wrap;justify-content:flex-end;max-width:150px}.settings-grid input{width:86px}.settings-grid .number-row>span{font-size:.63rem}.settings-grid .info{width:25px;min-width:25px;height:25px}.table-scroll{overflow:auto;margin:0 24px 20px;max-width:calc(100% - 48px)}#forecast-table{border-collapse:collapse;width:100%;font-size:.75rem;font-variant-numeric:tabular-nums;white-space:nowrap}#forecast-table caption{text-align:left;color:var(--muted);padding-bottom:10px}#forecast-table td,#forecast-table th{padding:9px 12px;border-bottom:1px solid var(--line);text-align:right}#forecast-table th:first-child{text-align:left;position:sticky;left:0;background:white}#forecast-table tbody th{font-weight:500}#forecast-table .inspected{background:#eaf1fb}#forecast-table .strong-row{font-weight:750;color:var(--ink)}.input-error,.model-warning{border:1px solid #c85c50;padding:12px 15px;border-radius:7px;background:#fff4f2;color:#893329;font-size:.83rem;margin:0 0 18px}.model-warning{border-color:#d8b98f;background:#fff7ed;color:#87501d}.lab-footer{border-top:1px solid var(--line);padding-top:14px!important;padding-bottom:24px!important;display:flex;align-items:center;flex-wrap:wrap;gap:10px 24px;color:var(--muted);font-size:.7rem}.lab-footer>span:first-child{margin-right:auto}.text-button{border:0;background:transparent;color:var(--muted);padding:8px 0;min-height:36px;text-decoration:underline;text-underline-offset:3px;font-size:.72rem!important}#help-dialog{width:min(540px,calc(100vw - 32px));border:1px solid #c1ccd8;border-radius:12px;padding:22px;color:var(--ink);box-shadow:0 14px 60px #16283c30}#help-dialog::backdrop{background:#17283866}.dialog-heading{display:flex;justify-content:space-between;align-items:center;gap:10px}.dialog-heading h2{margin:0;font-size:1.1rem}.dialog-heading button{width:44px;min-width:44px;height:44px;background:#edf1f5;border:0;border-radius:50%;font-size:1.5rem!important;color:var(--ink)}#help-body{font-size:.9rem;line-height:1.75;margin-top:12px}#help-body p{color:var(--ink)}#help-body a{overflow-wrap:anywhere}
+@media(max-width:900px){.workspace{grid-template-columns:1fr}.controls #primary-controls{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}.control:nth-last-child(-n+2){border-bottom:0}.secondary-grid{grid-template-columns:1fr}.settings-content{grid-template-columns:1fr;gap:12px}}@media(max-width:600px){.dcf-app header,.dcf-app main,.dcf-app footer{padding-left:16px;padding-right:16px}.masthead{font-size:.56rem;letter-spacing:.07em}.heading-row{flex-wrap:wrap;gap:12px}.heading-row p{font-size:.8rem}.preset-row{align-items:end}.preset-row>div{gap:6px}.preset{padding:8px 9px;font-size:.68rem!important}.reset{font-size:.73rem!important;padding:8px 2px}.panel{padding:16px}.equations{padding:14px 16px}.equation-grid{grid-template-columns:1fr}.eq:nth-last-child(-n+2){border-bottom:1px solid #e2e8f0}.eq:last-child{border-bottom:0}.formula{font-size:.91rem}.worked{font-size:.68rem}.eq-token{width:9.5ch;min-width:9.5ch}.eq-token.result{width:12ch;min-width:12ch}.eq-title h3{font-size:.73rem}.units{font-size:.64rem}.headline-result output{font-size:2rem}.headline-result>span{font-size:.66rem}.section-top h2{font-size:.85rem}.control-name{font-size:.73rem}.number-row{flex-wrap:wrap}.number-row input{width:95px}.number-row>span{font-size:.66rem}.control .info{width:27px;min-width:27px;height:27px}.composition-key{font-size:.64rem}.composition-key>span{flex-wrap:wrap}#heatmap{font-size:.64rem;border-spacing:2px}#heatmap td,#heatmap th{padding:9px 0}#heatmap th{font-size:.61rem}.matrix-y{font-size:.66rem}.matrix-layout{gap:4px}.matrix-key{font-size:.61rem}.matrix-heading{font-size:.68rem}.price-result{font-size:.69rem}.comparison-row{flex-wrap:wrap}.comparison-row p{flex-basis:100%}.settings>summary,.forecast-table-section>summary{padding:15px 16px;font-size:.8rem}.settings-content{padding:0 16px 16px}.settings-grid .control-name{font-size:.71rem}.settings-grid .number-row{max-width:126px}.table-scroll{margin-left:16px;margin-right:16px;max-width:calc(100% - 32px)}.lab-footer{gap:6px 18px}.lab-footer>span:first-child{flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.eq-token,.term,.is-editing{transition:none!important}}
+#cashflow-chart [role=button]{cursor:pointer}#cashflow-chart [role=button]:focus-visible{outline:2px solid #a5480b;outline-offset:3px}
+#bridge-chart{height:250px}@media(max-width:480px){#heatmap{font-size:.73rem}#heatmap th{font-size:.70rem}#heatmap td,#heatmap th{padding:10px 2px}}
+
+.notation-key{margin-top:9px;border-top:1px solid var(--line)}.notation-key>summary{font-size:.8rem;color:var(--blue);padding:9px 0}.notation-intro{font-size:.8rem;line-height:1.65;margin:2px 0 14px}.notation-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding-bottom:15px}.notation-grid h3{font-size:.84rem;margin:0 0 8px}.notation-grid dl{display:grid;grid-template-columns:88px minmax(0,1fr);margin:0;font-size:.78rem}.notation-grid dt,.notation-grid dd{margin:0;padding:7px 0;border-top:1px solid #e3e9ee}.notation-grid dt{font-family:Georgia,serif;color:var(--ink)}.notation-grid dd{color:var(--muted);line-height:1.55}@media(max-width:700px){.notation-grid{grid-template-columns:1fr;gap:16px}.notation-grid dl{grid-template-columns:78px minmax(0,1fr)}.notation-intro{font-size:.75rem}}
+
+/* Statement-first owner-review layout. */
+.equations{padding:0;margin-bottom:18px}.equations>summary{padding:14px 24px;color:var(--blue);font-size:.82rem;font-weight:650}.equation-content{padding:0 24px 8px}.notation-key{margin-top:12px;padding-top:16px}.notation-key h2{font-size:.88rem;margin:0 0 12px}.workspace{grid-template-columns:minmax(0,2.7fr) minmax(255px,1fr);gap:18px;align-items:start}.statement-panel{padding:20px 0 8px;overflow:hidden}.statement-panel>.section-top,.statement-toolbar{padding:0 22px}.statement-subtitle{font-size:.72rem;color:var(--muted);margin:5px 0 0}.statement-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 10px}.statement-toolbar .year-picker{margin:0;white-space:nowrap}.statement-panel .table-scroll{margin:0;max-width:100%;padding:0 0 6px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+#forecast-table{font-size:.73rem;min-width:100%}#forecast-table td,#forecast-table th{padding:9px 10px}#forecast-table th:first-child{min-width:240px;padding-left:22px;z-index:1;box-shadow:1px 0 0 var(--line)}#forecast-table thead th{background:#f4f7fb;border-bottom:1px solid #c8d4e1;color:var(--muted);font-weight:500}#forecast-table thead th:first-child{background:#f4f7fb}#forecast-table thead button{border:0;background:transparent;color:var(--blue);font-weight:650;padding:5px 8px;min-width:32px;min-height:32px;border-radius:4px;cursor:pointer}#forecast-table thead button[aria-pressed=true]{background:#2458a8;color:white}#forecast-table tbody th{white-space:normal;line-height:1.4}#forecast-table .row-symbol{font-family:Georgia,serif;font-size:.72rem;color:var(--muted);margin-left:8px;white-space:nowrap}#forecast-table .deduction th,#forecast-table .adjustment th{padding-left:34px;color:#536574}#forecast-table .subtotal td,#forecast-table .subtotal th{border-top:1px solid #91a5ba;font-weight:650}#forecast-table .total-row td,#forecast-table .total-row th{border-top:2px solid #7792ae;border-bottom:3px double #7792ae;background:#edf4fc;font-weight:750}#forecast-table .pv-row td,#forecast-table .pv-row th{font-weight:700;background:#f6f9fc}#forecast-table .memo-row td,#forecast-table .memo-row th{border-bottom:0;border-top:1px solid #c8d4e1;color:var(--muted);font-size:.68rem;padding-top:14px}#forecast-table .memo-row th:before{content:"Memo · ";font-size:.65rem}#forecast-table .inspected{background:#eaf1fb}#forecast-table tr.is-editing td,#forecast-table tr.is-editing th{background:#e4edfc}#forecast-table tr{transition:background-color .75s ease,box-shadow .75s ease}.chart-row{margin-top:20px}.chart-row .headline-result output{font-size:2rem}.chart-row #cashflow-chart{height:220px}.controls .control{padding-top:11px;padding-bottom:8px}.controls{padding:20px}.settings{margin-top:18px}.secondary-grid{margin-top:18px}
+@media(max-width:1100px){.workspace{grid-template-columns:minmax(0,1fr)}.controls #primary-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 20px}.controls .control{border-bottom:0}.statement-panel .table-scroll{max-width:100%}}
+@media(max-width:700px){.controls #primary-controls{grid-template-columns:1fr 1fr;gap:0 18px}.statement-toolbar{align-items:flex-start;flex-wrap:wrap}.statement-panel>.section-top,.statement-toolbar{padding-left:16px;padding-right:16px}#forecast-table th:first-child{min-width:174px;max-width:174px;padding-left:16px}#forecast-table .deduction th,#forecast-table .adjustment th{padding-left:24px}#forecast-table .row-symbol{display:block;margin-left:0;margin-top:2px;font-size:.65rem}#forecast-table td,#forecast-table th{padding-top:9px;padding-bottom:9px}.equations>summary{padding:14px 16px}.equation-content{padding:0 16px 8px}.statement-panel{padding-top:16px}.statement-panel .units{font-size:.64rem}.statement-toolbar .year-picker{font-size:.68rem}.statement-panel .table-scroll:focus-visible{outline-offset:-3px}}
+@media(prefers-reduced-motion:reduce){#forecast-table tr{transition:none}}
+
+.statement-panel{padding:0}.statement-panel>summary{padding:18px 22px;font-size:.96rem;font-weight:700;color:var(--ink);cursor:pointer}.statement-panel[open]>summary{padding-bottom:8px}.statement-content{padding-bottom:8px}.statement-content>.section-top{padding:0 22px}.statement-content .statement-subtitle{margin:0}.statement-panel:not([open]){overflow:visible}@media(max-width:700px){.statement-panel>summary{padding:16px;font-size:.85rem}.statement-content>.section-top{padding:0 16px}.statement-panel[open]>summary{padding-bottom:8px}}
+
+.equation-info{float:right;margin:1px 0 5px 10px;width:25px;min-width:25px;height:25px}.eq{display:flow-root}.formula [data-symbols]{border-radius:3px}.is-symbol-highlight{background:#fff0b8!important;box-shadow:0 0 0 2px #bc8c30!important;color:#553b0a!important}.symbol-link{font:inherit;color:var(--blue);background:transparent;border:0;border-bottom:1px dotted #7899bd;border-radius:3px;min-width:26px;min-height:30px;padding:3px 4px;cursor:pointer}.symbol-link[aria-pressed=true]{border-bottom:2px solid #8b621c}.notation-grid dl{grid-template-columns:100px minmax(0,1fr)}.notation-grid dt{padding:4px 0}.notation-intro{margin-bottom:12px;font-size:.73rem}.cashflow-reminder{min-width:0;flex:1;font-size:.75rem;color:var(--muted)}.cashflow-reminder>summary{font-size:.75rem;color:var(--blue);padding:6px 0;cursor:pointer}.cashflow-reminder ol{margin:8px 0 12px;padding-left:20px;line-height:1.6}.cashflow-reminder li{padding:3px 0}.cashflow-reminder p{font-size:.75rem;line-height:1.6;margin:6px 0}.statement-content>.section-top{align-items:flex-start}.cashflow-reminder strong{color:var(--ink);font-weight:600}#forecast-table .memo-row th:before{content:none}#forecast-table .memo-row td,#forecast-table .memo-row th{border-top:10px solid white;background:#f1f3f5!important;color:#657481;box-shadow:inset 0 1px #bdc7d1;padding-top:13px;padding-bottom:13px;font-weight:400}#forecast-table .memo-row .inspected{background:#f1f3f5!important}@media(max-width:700px){.notation-grid dl{grid-template-columns:94px minmax(0,1fr)}}
+
+.ratio-equations{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;border-top:1px solid #e2e8f0;padding-top:12px;margin-top:6px}.ratio-equation{min-width:0;padding-bottom:8px}.ratio-equation .formula{font-size:.88rem}.ratio-equation .worked{font-size:.69rem}.formula sub [data-symbols],.formula sup [data-symbols]{display:inline-block;min-width:.4em}@media(max-width:700px){.ratio-equations{grid-template-columns:1fr;gap:10px}}
+
+/* Keep detailed-control columns independent of label and unit lengths. */
+.assumptions-stack{min-width:0}
+.assumptions-stack .settings{margin:12px 0 0}
+.assumptions-stack .settings>summary{padding:15px 18px}
+.assumptions-stack .settings-content{grid-template-columns:1fr;gap:12px;padding:0 18px 18px}
+.assumptions-stack .settings-grid .control{display:grid;grid-template-columns:minmax(0,1fr) 28px 104px 86px;gap:8px 10px;align-items:center}
+.assumptions-stack .settings-grid .control-name,.assumptions-stack .settings-grid .number-row{display:contents}
+.assumptions-stack .settings-grid .control-name label{grid-column:1;grid-row:1;min-width:0}
+.assumptions-stack .settings-grid .info{grid-column:2;grid-row:1;width:28px;min-width:28px;height:28px;justify-self:start}
+.assumptions-stack .settings-grid input,.assumptions-stack .settings-grid select{grid-column:3;grid-row:1;width:104px;min-width:0;justify-self:start}
+.assumptions-stack .settings-grid .number-row>span{grid-column:4;grid-row:1;text-align:left;white-space:normal;font-size:.68rem;line-height:1.4}
+@media(min-width:1101px){
+  .workspace:has(>.statement-panel:not([open])){grid-template-columns:1fr}
+  .workspace:has(>.statement-panel:not([open])) .controls #primary-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 20px}
+  .workspace:has(>.statement-panel:not([open])) .controls .control{border-bottom:0}
+  .workspace:has(>.statement-panel:not([open])) .settings-content{grid-template-columns:1fr 1fr;gap:28px}
+  .workspace:has(>.statement-panel[open]) .settings-grid .control{grid-template-columns:28px 104px minmax(0,1fr)}
+  .workspace:has(>.statement-panel[open]) .settings-grid .control-name label{grid-column:1/-1;grid-row:1}
+  .workspace:has(>.statement-panel[open]) .settings-grid .info{grid-column:1;grid-row:2}
+  .workspace:has(>.statement-panel[open]) .settings-grid input,.workspace:has(>.statement-panel[open]) .settings-grid select{grid-column:2;grid-row:2}
+  .workspace:has(>.statement-panel[open]) .settings-grid .number-row>span{grid-column:3;grid-row:2}
+}
+@media(max-width:700px){
+  .assumptions-stack .settings-grid .control{grid-template-columns:28px 104px minmax(0,1fr)}
+  .assumptions-stack .settings-grid .control-name label{grid-column:1/-1;grid-row:1}
+  .assumptions-stack .settings-grid .info{grid-column:1;grid-row:2}
+  .assumptions-stack .settings-grid input,.assumptions-stack .settings-grid select{grid-column:2;grid-row:2}
+  .assumptions-stack .settings-grid .number-row>span{grid-column:3;grid-row:2}
+}
+@media(max-width:700px){.controls .control-name{min-height:42px;align-items:center}.controls .control-name label{line-height:1.35}.controls .number-row{display:grid;grid-template-columns:minmax(0,1fr);gap:5px;min-height:58px;align-content:start}.controls .number-row input{max-width:100%}.controls .number-row>span{line-height:1.3}}
+</style>
+</head>
+<body class="dcf-app">
+  <a class="skip" href="#main">Skip to valuation</a>
+  <header class="lab-header"><div class="masthead"><span>MBA INTERACTIVE LAB</span><span>FINANCE / F5</span></div><div class="heading-row"><div><h1>Discounted Cash Flow</h1><p>From operating assumptions to the value of a share.</p></div><button class="action primary" id="download">Download HTML</button></div></header>
+  <main id="main">
+    <nav class="preset-row" aria-label="Illustrative scenarios"><div id="presets"></div><button class="reset" id="reset">Reset</button></nav>
+    <p class="input-error" id="input-error" role="alert" hidden></p>
+    <details class="equations" id="equation-details"><summary>Equations & notation key</summary><div class="equation-content">
+      <div class="equation-grid">
+<article class="eq" aria-label="Forecast cash flow"><button class="info equation-info" data-help="fcf" aria-label="Explain operating free cash flow">i</button><div class="formula"><span data-symbols="R">R<sub><span data-symbols="t">t</span></sub></span> = <span class="term" data-vars="revenue" data-symbols="R0">R<sub>0</sub></span>(1 + <span class="term" data-vars="salesGrowth" data-symbols="s">s</span>)<sup><span data-symbols="t">t</span></sup></div><div class="worked" id="revenue-worked"></div><div class="formula"><span data-symbols="NOPAT">NOPAT<sub><span data-symbols="t">t</span></sub></span> = <span data-symbols="EBIT">EBIT<sub><span data-symbols="t">t</span></sub></span>(1 − <span data-symbols="T">T</span>) = <span data-symbols="R">R<sub><span data-symbols="t">t</span></sub></span><span data-symbols="m">m</span>(1 − <span data-symbols="T">T</span>)</div><div class="worked" id="profit-worked"></div><div class="formula"><span data-symbols="FCF">FCF<sub><span data-symbols="t">t</span></sub></span> = <span data-symbols="NOPAT">NOPAT<sub><span data-symbols="t">t</span></sub></span> + <span class="term" data-vars="depreciation" data-symbols="DA">DA<sub><span data-symbols="t">t</span></sub></span> − <span class="term" data-vars="capex" data-symbols="CapEx">CapEx<sub><span data-symbols="t">t</span></sub></span> − <span class="term" data-vars="workingCapital" data-symbols="deltaNwc">ΔNWC<sub><span data-symbols="t">t</span></sub></span></div><div class="worked" id="fcf-worked"></div><div class="formula"><span data-symbols="deltaNwc">ΔNWC<sub><span data-symbols="t">t</span></sub></span> = <span data-symbols="NWC">NWC<sub><span data-symbols="t">t</span></sub></span> − <span data-symbols="NWC">NWC<sub><span data-symbols="t">t</span>−1</sub></span></div><div class="worked" id="nwc-worked"></div></article><article class="eq" aria-label="Continuing value"><button class="info equation-info" data-help="terminal" aria-label="Explain terminal cash flow and reinvestment">i</button><div class="formula"><span data-symbols="FCF">FCF<sub><span data-symbols="N">N</span>+1</sub></span> = <span data-symbols="NOPAT">NOPAT<sub><span data-symbols="N">N</span>+1</sub></span>(1 − <span class="term" data-vars="terminalGrowth" data-symbols="g">g</span>/<span class="term" data-vars="terminalReturn" data-symbols="q">q</span>)</div><div class="worked" id="next-worked"></div><div class="formula"><span data-symbols="TV">TV<sub><span data-symbols="N">N</span></sub></span> = <span data-symbols="FCF">FCF<sub><span data-symbols="N">N</span>+1</sub></span> / (<span class="term" data-vars="discountRate" data-symbols="r">r</span> − <span class="term" data-vars="terminalGrowth" data-symbols="g">g</span>)</div><div class="worked" id="terminal-worked"></div></article><article class="eq" aria-label="Present value of operations"><button class="info equation-info" data-help="operations" aria-label="Explain present value of operations">i</button><div class="formula"><span data-symbols="Vop">V<sub>op</sub></span> = <span data-symbols="sum">∑</span><sub><span data-symbols="t">t</span>=1</sub><sup><span data-symbols="N">N</span></sup> <span data-symbols="PV"><span data-symbols="FCF">FCF<sub><span data-symbols="t">t</span></sub></span>/(1 + <span class="term" data-vars="discountRate" data-symbols="r">r</span>)<sup><span data-symbols="t">t</span></sup></span> + <span data-symbols="PV"><span data-symbols="TV">TV<sub><span data-symbols="N">N</span></sub></span>/(1 + <span class="term" data-vars="discountRate" data-symbols="r">r</span>)<sup><span data-symbols="N">N</span></sup></span></div><div class="worked" id="discount-worked"></div><div class="worked" id="operations-worked"></div></article><article class="eq" aria-label="Equity and per-share value"><button class="info equation-info" data-help="equity" aria-label="Explain the equity and share-price bridge">i</button><div class="formula"><span data-symbols="E">E</span> = <span data-symbols="Vop">V<sub>op</sub></span> + <span class="term" data-vars="cash" data-symbols="C">C</span> − <span class="term" data-vars="debt" data-symbols="D">D</span></div><div class="worked" id="equity-worked"></div><div class="formula"><span data-symbols="P">P</span> = <span data-symbols="E">E</span> / <span class="term" data-vars="shares" data-symbols="S">S</span></div><div class="worked" id="price-worked"></div></article>
+<div class="ratio-equations"><div class="ratio-equation" aria-label="Depreciation"><div class="formula"><span data-symbols="DA">DA<sub><span data-symbols="t">t</span></sub></span> = <span class="term" data-vars="depreciation" data-symbols="d">d</span><span data-symbols="R">R<sub><span data-symbols="t">t</span></sub></span></div><div class="worked" id="depreciation-worked"></div></div><div class="ratio-equation" aria-label="Capital spending"><div class="formula"><span data-symbols="CapEx">CapEx<sub><span data-symbols="t">t</span></sub></span> = <span class="term" data-vars="capex" data-symbols="c">c</span><span data-symbols="R">R<sub><span data-symbols="t">t</span></sub></span></div><div class="worked" id="capex-worked"></div></div><div class="ratio-equation" aria-label="Working capital balance"><div class="formula"><span data-symbols="NWC">NWC<sub><span data-symbols="t">t</span></sub></span> = <span class="term" data-vars="workingCapital" data-symbols="w">w</span><span data-symbols="R">R<sub><span data-symbols="t">t</span></sub></span></div><div class="worked" id="working-capital-worked"></div></div></div>
+      </div>
+      <section class="notation-key" id="notation-key" aria-label="Notation key">
+        <p class="notation-intro">Hover to highlight; select a symbol to find it in the equations.</p><span id="symbol-status" class="sr-only" role="status"></span>
+        <div class="notation-grid">
+          <section aria-label="Forecast symbols"><dl>
+            <dt><button type="button" class="symbol-link" data-symbol="t" aria-label="Highlight forecast year in equations" aria-pressed="false">t</button></dt><dd>Forecast year index. t = 1 is the first forecast year.</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="N" aria-label="Highlight forecast horizon in equations" aria-pressed="false">N</button></dt><dd>Last explicit forecast year; the forecast length is N years. N+1 is the first terminal year.</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="R" aria-label="Highlight revenue in year t in equations" aria-pressed="false">R<sub>t</sub></button></dt><dd>Revenue (sales) in year t ($ million). R₁ is revenue in year 1.</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="R0" aria-label="Highlight base-year revenue in equations" aria-pressed="false">R<sub>0</sub></button></dt><dd>Revenue (sales) in the base year, year 0 ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="s" aria-label="Highlight sales growth in equations" aria-pressed="false">s</button></dt><dd>Annual sales growth during the forecast (%/year).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="m" aria-label="Highlight operating margin in equations" aria-pressed="false">m</button></dt><dd>Operating profit margin: EBIT / revenue (%).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="T" aria-label="Highlight tax rate in equations" aria-pressed="false">T</button></dt><dd>Tax rate on operating profit (%).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="EBIT" aria-label="Highlight operating profit in equations" aria-pressed="false">EBIT</button></dt><dd>Earnings before interest and tax: operating profit ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="NOPAT" aria-label="Highlight after-tax operating profit in equations" aria-pressed="false">NOPAT</button></dt><dd>Net operating profit after tax: EBIT × (1−T). Also called EBIAT ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="DA" aria-label="Highlight depreciation in equations" aria-pressed="false">DA<sub>t</sub></button></dt><dd>Depreciation expense in year t ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="CapEx" aria-label="Highlight capital spending in equations" aria-pressed="false">CapEx<sub>t</sub></button></dt><dd>Capital spending in year t ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="NWC" aria-label="Highlight working capital balance in equations" aria-pressed="false">NWC<sub>t</sub></button></dt><dd>Operating net working capital in year t ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="deltaNwc" aria-label="Highlight change in working capital in equations" aria-pressed="false">ΔNWC<sub>t</sub></button></dt><dd>Change in operating working capital from the prior year. Δ means “change in” ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="d" aria-label="Highlight depreciation ratio in equations" aria-pressed="false">d</button></dt><dd>Depreciation divided by revenue (%).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="c" aria-label="Highlight capital spending ratio in equations" aria-pressed="false">c</button></dt><dd>Capital spending divided by revenue (%).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="w" aria-label="Highlight working capital ratio in equations" aria-pressed="false">w</button></dt><dd>Operating NWC balance divided by revenue (%).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="FCF" aria-label="Highlight free cash flow in equations" aria-pressed="false">FCF<sub>t</sub></button></dt><dd>Operating free cash flow in year t, after tax and investment ($ million).</dd>
+          </dl></section>
+          <section aria-label="Valuation symbols"><dl>
+            <dt><button type="button" class="symbol-link" data-symbol="r" aria-label="Highlight WACC in equations" aria-pressed="false">r</button></dt><dd>WACC: the annual discount rate for operating cash flows (%/year).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="g" aria-label="Highlight terminal growth in equations" aria-pressed="false">g</button></dt><dd>Perpetual growth after year N (%/year).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="q" aria-label="Highlight terminal return on capital in equations" aria-pressed="false">q</button></dt><dd>Terminal after-tax return on invested capital (ROIC). An additional assumption used to estimate terminal reinvestment (%/year).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="TV" aria-label="Highlight terminal value in equations" aria-pressed="false">TV<sub>N</sub></button></dt><dd>Value at year N of cash flows from year N+1 onward ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="PV" aria-label="Highlight present value in equations" aria-pressed="false">PV</button></dt><dd>Present value: a future amount expressed in today's dollars, at year 0.</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="sum" aria-label="Highlight sum over years in equations" aria-pressed="false">∑</button></dt><dd>Sum: add the specified term for each year from 1 through N.</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="Vop" aria-label="Highlight operating value in equations" aria-pressed="false">V<sub>op</sub></button></dt><dd>PV of operations, before excess cash and separate financing claims ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="C" aria-label="Highlight excess cash in equations" aria-pressed="false">C</button></dt><dd>Excess cash not required for operations ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="D" aria-label="Highlight debt and claims in equations" aria-pressed="false">D</button></dt><dd>Market value of debt and other separate claims ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="E" aria-label="Highlight equity in equations" aria-pressed="false">E</button></dt><dd>Equity value after adding cash and subtracting claims ($ million).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="S" aria-label="Highlight shares in equations" aria-pressed="false">S</button></dt><dd>Diluted shares outstanding (million shares).</dd>
+            <dt><button type="button" class="symbol-link" data-symbol="P" aria-label="Highlight per-share value in equations" aria-pressed="false">P</button></dt><dd>Implied value per share: E / S ($/share).</dd>
+          </dl></section>
+        </div>
+      </section>
+    </div></details>
+    <p class="model-warning" id="model-warning" role="status" hidden></p>
+    <div class="workspace">
+      <details class="panel statement-panel" id="forecast-details" open><summary id="statement-title">Operating forecast</summary><div class="statement-content"><div class="section-top"><details class="cashflow-reminder" id="cashflow-reminder"><summary>From profit to cash flow</summary><ol><li><strong>Start with operating profit (EBIT).</strong> Leave out financing interest.</li><li><strong>Subtract tax on operating profit.</strong> This gives after-tax operating profit (NOPAT).</li><li><strong>Add back depreciation.</strong> It reduced accounting profit without using cash this year.</li><li><strong>Subtract capital spending and the increase in operating NWC.</strong> These investments use cash; a fall in NWC releases cash.</li></ol><p>The remainder is operating free cash flow (FCF), available to both debt and equity providers.</p></details><button class="info" data-help="statement" aria-label="Explain the modified income statement">i</button></div><div class="statement-toolbar"><span class="units">USD million · deductions in parentheses</span><label class="year-picker" for="inspect-year">Inspect year <span class="symbol">t</span><select id="inspect-year"></select></label></div><div class="table-scroll" tabindex="0" role="region" aria-label="Operating forecast statement, horizontally scrollable on small screens"><table id="forecast-table"></table></div></div></details>
+      <div class="assumptions-stack">
+      <section class="panel controls" aria-labelledby="controls-title"><div class="section-top"><h2 id="controls-title">Main assumptions</h2><button class="info" data-help="model" aria-label="Explain the DCF assumptions">i</button></div><div id="primary-controls"></div></section>
+      <details class="settings" id="settings"><summary>Forecast & ownership inputs</summary><div class="settings-content"><div class="settings-group"><h2>Operating forecast</h2><div id="forecast-controls" class="settings-grid"></div></div><div class="settings-group"><h2>Terminal model & ownership</h2><div id="ownership-controls" class="settings-grid"></div></div></div></details>
+      </div>
+    </div>
+    <div class="chart-row">
+      <section class="panel cashflow-panel" aria-labelledby="cashflow-title"><div class="section-top"><h2 id="cashflow-title">PV of operations <span class="symbol">V<sub>op</sub></span></h2><button class="info" data-help="cashflowChart" aria-label="Explain the cash-flow chart">i</button></div><div class="headline-result"><output id="operating-value">—</output><span>$ million today</span></div><svg id="cashflow-chart" role="group" aria-label="Forecast cash flows and present values; select a year to inspect"></svg><div class="chart-key"><span><i class="swatch raw"></i>Forecast FCF<sub>t</sub></span><span><i class="swatch present"></i>Present value PV<sub>t</sub></span></div><div id="composition" class="composition"><div class="composition-bar" aria-hidden="true"><span id="forecast-bar"></span><span id="terminal-bar"></span></div><div class="composition-key"><span>Forecast PV <strong id="forecast-pv"></strong></span><span>Terminal PV <strong id="terminal-pv"></strong></span><span>Terminal share <strong id="terminal-share"></strong><button class="info" data-help="terminalShare" aria-label="Explain the terminal-value share">i</button></span></div></div></section>
+    </div>
+    <div class="secondary-grid">
+      <section class="panel sensitivity" aria-labelledby="sensitivity-title"><div class="section-top"><h2 id="sensitivity-title">Sensitivity of operating value <span class="symbol">V<sub>op</sub></span></h2><button class="info" data-help="sensitivity" aria-label="Explain WACC and growth sensitivity">i</button></div><div class="matrix-heading">Terminal growth <span class="symbol">g</span> (%) →</div><div class="matrix-layout"><span class="matrix-y">WACC <span class="symbol">r</span> (%)</span><div class="matrix-wrap"><table id="heatmap" aria-label="Operating value in $ million for WACC rows and terminal-growth columns"></table></div></div><div class="matrix-key"><span><i class="swatch current"></i>Current inputs</span><span><i class="swatch invalid"></i>Unavailable</span><span>$ million</span></div></section>
+      <section class="panel equity-panel" aria-labelledby="equity-title"><div class="section-top"><h2 id="equity-title">From operations to equity</h2><button class="info" data-help="equity" aria-label="Explain the value bridge">i</button></div><svg id="bridge-chart" role="img" aria-label="Operating value plus excess cash less claims equals equity"></svg><div class="price-result"><span>Implied value per share <span class="symbol">P</span></span><output id="share-price">—</output><span>$/share</span></div></section>
+    </div>
+    <div class="comparison-row"><p id="comparison" role="status" aria-live="polite"></p><button id="save-baseline" class="action">Save comparison</button><button class="info" data-help="comparison" aria-label="Explain the saved comparison">i</button></div>
+    <noscript><p>Enable JavaScript to use the calculations and controls.</p></noscript>
+  </main>
+  <footer class="lab-footer"><span>F5 · v0.4.2 · November 3, 2026</span><button class="text-button" data-help="model">Model assumptions ⓘ</button><button class="text-button" data-help="sources">References ⓘ</button><span id="download-status" role="status"></span></footer>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button id="close-help" aria-label="Close explanation" autofocus>×</button></div><div id="help-body"></div></dialog>
+  <script>/* Deterministic unlevered DCF. Money: USD millions; rates: fractions/year. */
+(() => {
+  "use strict";
+  const DEFAULTS = Object.freeze({
+    revenue: 1000, salesGrowth: .06, margin: .18, tax: .25,
+    depreciation: .03, capex: .05, workingCapital: .15,
+    discountRate: .10, terminalGrowth: .02, terminalReturn: .12,
+    years: 5, cash: 50, debt: 300, shares: 100
+  });
+  const PRESETS = Object.freeze([
+    Object.freeze({ name: "Stable business", inputs: DEFAULTS }),
+    Object.freeze({ name: "Faster growth", inputs: Object.freeze({ ...DEFAULTS, salesGrowth: .12, margin: .22, capex: .08, workingCapital: .20, discountRate: .12, terminalGrowth: .03, terminalReturn: .15 }) }),
+    Object.freeze({ name: "Working-capital heavy", inputs: Object.freeze({ ...DEFAULTS, salesGrowth: .12, margin: .12, capex: .07, workingCapital: .40 }) }),
+    Object.freeze({ name: "Near r = g", inputs: Object.freeze({ ...DEFAULTS, discountRate: .06, terminalGrowth: .05 }) })
+  ]);
+  const RULES = Object.freeze({
+    revenue: [.01, 100000, "Base revenue R₀", "$ million"],
+    salesGrowth: [-.20, .30, "Sales growth s", "per year"],
+    margin: [-.20, .50, "Operating margin m", "of revenue"],
+    tax: [0, .60, "Tax rate T", "of operating profit"],
+    depreciation: [0, .20, "Depreciation d", "of revenue"],
+    capex: [0, .40, "Capital expenditures c", "of revenue"],
+    workingCapital: [0, .80, "Operating working capital w", "of revenue"],
+    discountRate: [.001, .30, "WACC r", "per year"],
+    terminalGrowth: [-.05, .10, "Terminal growth g", "per year"],
+    terminalReturn: [.01, .50, "Terminal ROIC q", "per year"],
+    years: [1, 10, "Forecast length N", "whole years"],
+    cash: [0, 100000, "Excess cash C", "$ million"],
+    debt: [0, 100000, "Debt and other claims D", "$ million"],
+    shares: [.01, 100000, "Diluted shares S", "million shares"]
+  });
+  const RATE_KEYS = Object.freeze(Object.keys(DEFAULTS).filter(k => !["revenue", "years", "cash", "debt", "shares"].includes(k)));
+  function validateInputs(raw) {
+    const inputs = {}, errors = {};
+    for (const [key, [lo, hi, label, units]] of Object.entries(RULES)) {
+      const v = raw && raw[key], rate = RATE_KEYS.includes(key);
+      if (typeof v !== "number" || !Number.isFinite(v) || v < lo || v > hi || (key === "years" && !Number.isInteger(v)))
+        errors[key] = `${label} must be ${rate ? (lo * 100).toFixed(2) + "%–" + (hi * 100).toFixed(2) + "%" : lo + "–" + hi} ${units}.`;
+      else inputs[key] = v;
+    }
+    return { ok: !Object.keys(errors).length, inputs, errors };
+  }
+  function project(inputs) {
+    const forecast = [];
+    let revenue = inputs.revenue, nwc = revenue * inputs.workingCapital;
+    for (let year = 1; year <= inputs.years; year++) {
+      revenue *= 1 + inputs.salesGrowth;
+      const ebit = revenue * inputs.margin;
+      // Illustrative immediate symmetric tax treatment; losses get the same
+      // modeled tax benefit. This is disclosed, not a tax-loss schedule.
+      const nopat = ebit * (1 - inputs.tax), depreciation = revenue * inputs.depreciation;
+      const capex = revenue * inputs.capex, nextNwc = revenue * inputs.workingCapital;
+      const deltaNwc = nextNwc - nwc, fcf = nopat + depreciation - capex - deltaNwc;
+      // Statement presentation: costs are implied by the forecast EBIT margin.
+      const operatingCosts = revenue - ebit - depreciation, taxes = ebit - nopat;
+      forecast.push({ year, revenue, operatingCosts, ebit, taxes, nopat, depreciation, capex, nwc: nextNwc, deltaNwc, fcf });
+      nwc = nextNwc;
+    }
+    return forecast;
+  }
+  function valueCashFlows(cashFlows, terminalNext, rate, growth) {
+    if (!Array.isArray(cashFlows) || !cashFlows.length || cashFlows.length > 50 || cashFlows.some(x => typeof x !== "number" || !Number.isFinite(x)) || !Number.isFinite(terminalNext) || !Number.isFinite(rate) || rate <= -1 || !Number.isFinite(growth) || growth <= -1)
+      throw new RangeError("Use finite annual cash flows, rate > −100%, and growth > −100%.");
+    const presentValues = cashFlows.map((cf, i) => cf / (1 + rate) ** (i + 1));
+    const forecastPv = presentValues.reduce((s, v) => s + v, 0);
+    const terminalValue = rate > growth ? terminalNext / (rate - growth) : null;
+    const terminalPv = terminalValue === null ? null : terminalValue / (1 + rate) ** cashFlows.length;
+    return { presentValues, forecastPv, terminalValue, terminalPv, operatingValue: terminalPv === null ? null : forecastPv + terminalPv };
+  }
+  function value(inputs, forecast) {
+    const last = forecast.at(-1), terminalRevenue = last.revenue * (1 + inputs.terminalGrowth);
+    const terminalNopat = terminalRevenue * inputs.margin * (1 - inputs.tax);
+    const reinvestmentRate = inputs.terminalGrowth / inputs.terminalReturn;
+    const terminalReinvestment = terminalNopat * reinvestmentRate;
+    const terminalNext = terminalNopat - terminalReinvestment;
+    const priced = valueCashFlows(forecast.map(f => f.fcf), terminalNext, inputs.discountRate, inputs.terminalGrowth);
+    let issue = inputs.discountRate <= inputs.terminalGrowth ? "Perpetual growth requires WACC r to be greater than terminal growth g." : null;
+    if (terminalNopat <= 0) issue = "This terminal ROIC model requires positive, stable after-tax operating profit. Forecast cash flows are still shown.";
+    if (issue) { priced.terminalValue = null; priced.terminalPv = null; priced.operatingValue = null; }
+    const equity = priced.operatingValue === null ? null : priced.operatingValue + inputs.cash - inputs.debt;
+    const price = equity === null || equity < 0 ? null : equity / inputs.shares;
+    const terminalShare = priced.operatingValue > 0 && priced.forecastPv >= 0 && priced.terminalPv >= 0 ? priced.terminalPv / priced.operatingValue : null;
+    const warnings = [];
+    if (forecast.some(f => f.fcf < 0)) warnings.push("Some forecast cash flows are negative: operations require funding in those years.");
+    if (terminalNext < 0 && terminalNopat > 0) warnings.push("Terminal reinvestment exceeds profit; the modeled perpetuity consumes cash.");
+    if (equity !== null && equity < 0) warnings.push("Claims exceed the modeled asset value. The negative equity bridge is a shortfall; this model cannot estimate a share price in this case.");
+    if (!issue && inputs.discountRate - inputs.terminalGrowth <= .01 + 1e-12) warnings.push("Small r − g gap: terminal value is especially sensitive to these assumptions.");
+    return { ...priced, terminalRevenue, terminalNopat, reinvestmentRate, terminalReinvestment, terminalNext, equity, price, terminalShare, issue, warnings };
+  }
+  function calculateModel(raw) {
+    const checked = validateInputs(raw);
+    if (!checked.ok) throw new RangeError(Object.values(checked.errors).join(" "));
+    const inputs = checked.inputs, forecast = project(inputs), result = value(inputs, forecast);
+    forecast.forEach((row, i) => { row.pv = result.presentValues[i]; row.discountFactor = 1 / (1 + inputs.discountRate) ** row.year; });
+    // Axes are centered on the current rates in 0.50 percentage-point steps.
+    // The same valuation function prices every cell; no alternative formulas.
+    const rates = Array.from({ length: 5 }, (_, i) => inputs.discountRate + (i - 2) * .005);
+    const growths = Array.from({ length: 5 }, (_, i) => inputs.terminalGrowth + (i - 2) * .005);
+    const sensitivity = rates.map(r => growths.map(g => {
+      if (r < RULES.discountRate[0] - 1e-12 || r > RULES.discountRate[1] + 1e-12 || g < RULES.terminalGrowth[0] - 1e-12 || g > RULES.terminalGrowth[1] + 1e-12)
+        return { rate: r, growth: g, operatingValue: null, issue: "Outside the model's input range." };
+      const v = value({ ...inputs, discountRate: r, terminalGrowth: g }, forecast);
+      return { rate: r, growth: g, operatingValue: v.operatingValue, issue: v.issue };
+    }));
+    const bridge = result.equity === null ? [] : [
+      { label: "Operations", symbol: "Vₒₚ", start: 0, end: result.operatingValue, amount: result.operatingValue, type: "total" },
+      { label: "Excess cash", symbol: "C", start: result.operatingValue, end: result.operatingValue + inputs.cash, amount: inputs.cash, type: "add" },
+      { label: "Claims", symbol: "D", start: result.operatingValue + inputs.cash, end: result.equity, amount: -inputs.debt, type: "subtract" },
+      { label: "Equity", symbol: "E", start: 0, end: result.equity, amount: result.equity, type: "total" }
+    ];
+    return { inputs, forecast, ...result, sensitivity, rates, growths, bridge };
+  }
+  globalThis.DemoModel = Object.freeze({ DEFAULTS, PRESETS, RULES, RATE_KEYS, validateInputs, calculateModel, valueCashFlows });
+})();
+</script><script>(() => {
+  "use strict";
+  const M = globalThis.DemoModel, $ = id => document.getElementById(id);
+  const fixed = n => n === null || !Number.isFinite(n) ? "—" : Math.abs(n) >= 100000 ? n.toExponential(2) : n.toFixed(2);
+  const percent = n => fixed(n * 100) + "%";
+  const META = {
+    revenue: ["Base-year revenue", "R<sub>0</sub>", "$ million"],
+    salesGrowth: ["Sales growth", "s", "%/year"], margin: ["Operating margin", "m", "% of revenue"],
+    tax: ["Operating tax rate", "T", "%"], depreciation: ["Depreciation / revenue", "d", "%"],
+    capex: ["CapEx / revenue", "c", "%"], workingCapital: ["Operating NWC / revenue", "w", "%"],
+    discountRate: ["WACC", "r", "%/year"], terminalGrowth: ["Terminal growth", "g", "%/year"],
+    terminalReturn: ["Terminal return on capital", "q", "%/year"],
+    years: ["Forecast length", "N", "years"], cash: ["Excess cash", "C", "$ million"],
+    debt: ["Debt & other claims", "D", "$ million"], shares: ["Diluted shares", "S", "million shares"]
+  };
+  const HELP = {
+    model: ["An illustrative unlevered DCF", "Forecast annual operating cash flows for debt and equity providers, then discount them at WACC. This simplified model uses constant forecast margins, tax and investment ratios, an end-of-year convention, and a distinct stable-growth terminal phase. All amounts are nominal USD millions, except dollars per share. Debt and cash do not automatically change WACC. Inputs are illustrative, not fitted to a company."],
+    statement: ["From income statement to free cash flow", "Read down each year: revenue less operating costs and depreciation gives operating profit (EBIT). The margin input determines EBIT; operating costs before depreciation are the implied remainder, not a separate forecast assumption. Subtract tax to get NOPAT, then add back depreciation and subtract CapEx and the change in operating working capital. Parentheses mean a deduction or negative amount; a fall in working capital releases cash. NWC is a balance shown separately below, not another cash-flow deduction. This is an operating forecast with a cash-flow extension, not a complete accounting income statement: financing interest, net income and dividends are omitted. Discount factors are unitless; all other table amounts are USD million. Select a year to highlight its column and see its worked equations in Equations & notation key."],
+    revenue: ["Base-year revenue R₀", "Revenue in the year immediately before the forecast. Year t revenue is R₀(1+s)^t. Initial operating working capital is wR₀, so the first forecast change in working capital includes the investment needed for first-year sales growth. Revenue is not itself cash flow."],
+    salesGrowth: ["Forecast sales growth s", "The annual revenue growth rate during the explicit forecast only. More sales can bring more operating profit, but also require capital spending and working capital. Growth can reduce cash flow if those investment needs are large. Terminal growth g takes over after the last explicit forecast year."],
+    margin: ["Operating margin m", "EBIT divided by revenue, after depreciation and operating costs but before financing interest and tax. The model applies the same margin to every forecast year and the stable terminal year. This is a scenario assumption, not an estimated accounting return on assets."],
+    tax: ["Operating cash tax rate T", "The model taxes operating profit at T before financing interest. For simplicity it applies the same tax rate symmetrically to profits and losses, assuming any modeled tax benefits can be used immediately. A real loss-making company may need a separate tax-loss schedule. This is not a jurisdiction-specific tax calculation."],
+    depreciation: ["Depreciation ratio d", "Depreciation DAₜ is d times that year's revenue. It is already included in the operating margin, so add it back after calculating after-tax operating profit: it is an accounting expense, not a current cash payment. Cash purchases of operating fixed assets are subtracted separately as CapEx."],
+    capex: ["Capital expenditures c", "CapExₜ is c times revenue: cash invested in operating fixed assets, including replacement and expansion. It reduces free cash flow now. Depreciation is added back separately. Forecast ratios do not carry unchanged into the terminal phase, which instead uses a growth/return-on-capital reinvestment model."],
+    workingCapital: ["Operating working capital w", "Operating NWC is w times revenue. Cash flow subtracts the CHANGE in NWC, not its entire balance each year. Use operating current assets less operating current liabilities: for example receivables plus inventory and required operating cash, less payables. Excess cash and financing debt are excluded and valued in the equity bridge."],
+    discountRate: ["WACC r", "The annual required return for these unlevered operating cash flows, with consistent currency, inflation and risk assumptions. Positive cash flows have lower present values at higher discount rates. The debt input in the equity bridge does not recompute WACC; this lab isolates the assumptions. Financing interest is not subtracted again from free cash flow."],
+    terminalGrowth: ["Terminal growth g", "The steady annual growth rate after the explicit forecast. A growing perpetuity requires r > g. Growth must also be supported by reinvestment: the terminal model retains g/q of after-tax operating profit, where q is terminal return on capital. Raising g changes both future profit and the investment needed to earn it; growth does not always increase value."],
+    terminalReturn: ["Terminal return on capital q", "q is the assumed after-tax operating return earned on capital in stable growth. Required net reinvestment is g/q of terminal operating profit. That reinvestment covers fixed assets and operating working capital together, so neither is deducted again in terminal cash flow. This is a simplified terminal-state assumption, separate from the explicit forecast ratios; the model does not track the full invested-capital balance."],
+    years: ["Forecast horizon N", "The number of explicit annual forecasts, starting at year 1. The terminal value sits at the END of year N and covers year N+1 onward. Discount it N periods to today. Extending N keeps the forecast-phase assumptions for more years before switching to the terminal phase."],
+    cash: ["Excess cash C", "Cash and separately valued liquid assets not required to generate the forecast operating cash flows. Add their current value once, after valuing operations. Required operating cash belongs in operating working capital instead. This simple bridge assumes cash is fully available to owners without further tax or transaction costs."],
+    debt: ["Debt and other claims D", "Current market value of interest-bearing debt and other separately valued non-common-equity claims, if applicable. Do not subtract operating payables again: they are already reflected in operating NWC. In this lab, changing D changes the residual equity value dollar for dollar while holding operating cash flow and WACC fixed."],
+    shares: ["Diluted shares S", "The assumed number of common-equity shares after dilution, in millions. Divide equity value in $ millions by shares in millions to get dollars per share. This simplified single-class bridge does not separately value complex options, preferred shares, pensions or minority interests; include relevant separately valued claims in D when appropriate."],
+    fcf: ["Forecast free cash flow FCFₜ", "Revenue times operating margin gives EBIT. EBIT(1−T) gives after-tax operating profit, NOPAT. Add back depreciation, subtract capital expenditures and the increase in operating NWC. No financing interest or debt repayment is deducted here. The year picker and cash-flow bars select which year's values appear in the worked equation."],
+    terminal: ["Terminal cash flow and continuing value", "First calculate year N+1 revenue as Rₙ(1+g), keeping the margin and tax rate. Its after-tax operating profit is NOPATₙ₊₁. Net reinvestment is NOPATₙ₊₁ × g/q, leaving FCFₙ₊₁. Terminal value TVₙ = FCFₙ₊₁/(r−g) is a value at year N, not today. This terminal model requires positive stable operating profit. Negative g assumes capital can be released as operations shrink."],
+    operations: ["Present value of operations Vop", "Discount each forecast year's free cash flow by its own year number. Separately discount terminal value from year N by exactly N periods. Add those present values to get operating enterprise value Vop. It excludes excess cash and separate financing claims. This is an operating asset valuation, not NPV after subtracting a purchase price. Displayed amounts are rounded; calculations retain full precision."],
+    equity: ["From operating value to equity", "Add excess cash C to operating value Vop, then subtract debt and other claims D. The remainder E belongs to common equity under these simplified assumptions. Divide by diluted shares S for the implied value per share P. If the bridge is negative, claims exceed this modeled asset value: show the shortfall, but do not present it as a meaningful share-price estimate."],
+    cashflowChart: ["Annual cash flow versus present value", "Light bars are forecast FCF at the end of each year; dark bars are the same cash flows discounted to today. Select a bar to inspect that year in the equations. The contribution from all years AFTER N is shown separately in the terminal-PV composition bar, not mixed into the annual bars. Signed cash flows retain their signs. Axes use $ millions."],
+    terminalShare: ["How much value comes from the terminal phase?", "Terminal share is the present value of continuing operations after year N divided by total operating value. A high share means much of this valuation rests on assumptions beyond the explicit forecast. The composition bar and percentage are shown only when both contributions are nonnegative and operating value is positive. Signed contributions still appear numerically otherwise."],
+    sensitivity: ["WACC and growth sensitivity", "Each cell is operating value in $ millions, using the same model at the displayed WACC and terminal growth. Axes center on your inputs in 0.50 percentage-point steps; the outlined center is the current case. Phones show the central 3×3 cells of the full 5×5 grid. One percentage point is the difference from 10% to 11%. Hatched cells are unavailable. This is scenario sensitivity, not a probability distribution or confidence interval."],
+    comparison: ["A saved comparison", "Save the current assumptions as a baseline, then change a control to see the difference in operating value and per-share value. Presets change assumptions; Reset restores both the original assumptions and original comparison. All rates and money inputs keep two decimal places. Very large values use scientific notation, for example 1.00e+5 means 100000.00."],
+    sources: ["References and model choices", "Original illustrative examples and graphics. Governing DCF formulas and the terminal growth/reinvestment link were checked against the primary references below. The terminal reinvestment model is an explicit modeling choice; it is not an exact reproduction of a class case."]
+  };
+  const MAIN = ["salesGrowth", "margin", "discountRate", "terminalGrowth"];
+  function makeControl(key, slider) {
+    const [label, symbol, units] = META[key], rate = M.RATE_KEYS.includes(key), [lo, hi] = M.RULES[key], scale = rate ? 100 : 1;
+    const wrap = document.createElement("div"); wrap.className = "control";
+    const input = key === "years" ? `<select id="${key}-number">${Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}</select>` : `<input id="${key}-number" type="number" min="${lo * scale}" max="${hi * scale}" step="0.01" inputmode="decimal">`;
+    wrap.innerHTML = `<div class="control-name"><label for="${key}-number">${label}&nbsp;<span class="symbol">${symbol}</span></label><button type="button" class="info" data-help="${key}" aria-label="Explain ${label.toLowerCase()}">i</button></div><div class="number-row">${input}<span>${units}</span></div>${slider ? `<input type="range" id="${key}-range" min="${lo * scale}" max="${hi * scale}" step="0.01" aria-label="${label} slider">` : ""}`;
+    $(slider ? "primary-controls" : ["revenue", "tax", "depreciation", "capex", "workingCapital", "years"].includes(key) ? "forecast-controls" : "ownership-controls").append(wrap);
+  }
+  // An in-page HTML export contains the rendered controls. Rebuild these
+  // containers once so reopening that copy never duplicates controls or IDs.
+  for (const id of ["primary-controls", "forecast-controls", "ownership-controls", "presets"]) $(id).replaceChildren();
+  $("equation-details").open = false;
+  $("forecast-details").open = true;
+  $("cashflow-reminder").open = false;
+  Object.keys(M.DEFAULTS).forEach(key => makeControl(key, MAIN.includes(key)));
+  let current = null, inspectYear = 1, baseline = { ...M.DEFAULTS }, held = null, pulseTimer = null, helpTrigger = null, pinnedSymbol = null, previewSymbol = null;
+  const token = (symbols, keys, value, cls = "") => `<span class="eq-token ${cls}" data-vars="${keys}" data-symbols="${symbols}">${value}</span>`;
+  const n = (symbols, key, value, cls = "") => token(symbols, key, fixed(value), cls);
+  const p = (symbols, key, value) => token(symbols, key, percent(value), "rate");
+  const read = () => Object.fromEntries(Object.keys(M.DEFAULTS).map(key => [key, $(key + "-number").value.trim() === "" ? NaN : Number($(key + "-number").value) / (M.RATE_KEYS.includes(key) ? 100 : 1)]));
+  function highlight(key) { document.querySelectorAll("[data-vars]").forEach(el => el.classList.toggle("is-editing", !!key && el.dataset.vars.split(" ").includes(key))); }
+  function highlightSymbol() {
+    const key = previewSymbol || pinnedSymbol;
+    document.querySelectorAll('.equation-grid [data-symbols]').forEach(el => el.classList.toggle('is-symbol-highlight', !!key && el.dataset.symbols.split(' ').includes(key)));
+    document.querySelectorAll('.symbol-link').forEach(button => {
+      button.classList.toggle('is-symbol-highlight', button.dataset.symbol === key);
+      button.setAttribute('aria-pressed', String(button.dataset.symbol === pinnedSymbol));
+    });
+    $('symbol-status').textContent = key ? `Highlighted ${document.querySelector(`.symbol-link[data-symbol="${key}"]`).textContent} in the equations.` : '';
+  }
+  document.querySelectorAll('.symbol-link').forEach(button => {
+    const preview = () => { previewSymbol = button.dataset.symbol; highlightSymbol(); };
+    const endPreview = () => { previewSymbol = null; highlightSymbol(); };
+    button.addEventListener('pointerenter', preview); button.addEventListener('pointerleave', endPreview);
+    button.addEventListener('focus', preview); button.addEventListener('blur', endPreview);
+    button.addEventListener('click', () => {
+      const key = button.dataset.symbol;
+      pinnedSymbol = pinnedSymbol === key ? null : key; previewSymbol = null; highlightSymbol();
+      if (pinnedSymbol) Array.from(document.querySelectorAll('.equation-grid [data-symbols]')).find(el => el.dataset.symbols.split(' ').includes(key))?.scrollIntoView({ block: 'center', behavior: 'instant' });
+    });
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { pinnedSymbol = null; previewSymbol = null; highlightSymbol(); } });
+  function pulse(key) { clearTimeout(pulseTimer); highlight(key); if (!held) pulseTimer = setTimeout(() => highlight(null), 650); }
+  function release() { held = null; clearTimeout(pulseTimer); highlight(null); }
+  function setInputs(inputs) {
+    for (const [key, value] of Object.entries(inputs)) $(key + "-number").value = key === "years" ? value : (value * (M.RATE_KEYS.includes(key) ? 100 : 1)).toFixed(2);
+    render();
+  }
+  function renderEquations(m) {
+    inspectYear = Math.min(inspectYear, m.inputs.years);
+    if ($("inspect-year").options.length !== m.inputs.years) $("inspect-year").innerHTML = m.forecast.map(f => `<option value="${f.year}">${f.year}</option>`).join("");
+    $("inspect-year").value = inspectYear;
+    const f = m.forecast[inspectYear - 1], i = m.inputs, all = "revenue salesGrowth margin tax depreciation capex workingCapital discountRate terminalGrowth terminalReturn years";
+    // Attach a quantity's symbol where its value is rendered, rather than
+    // assigning symbols afterward by token position in the worked equation.
+    $("revenue-worked").innerHTML = `<span class="group">${n("R0", "revenue", i.revenue)} × (1 + ${p("s", "salesGrowth", i.salesGrowth)})</span><sup data-symbols="t">${inspectYear}</sup> = ${n("R", "revenue salesGrowth", f.revenue, "result")}`;
+    $("profit-worked").innerHTML = `${n("EBIT", "revenue salesGrowth margin", f.ebit)} × <span class="group">(1 − ${p("T", "tax", i.tax)})</span> = ${n("NOPAT", "revenue salesGrowth margin tax", f.nopat, "result")}`;
+    $("fcf-worked").innerHTML = `${n("NOPAT", "revenue salesGrowth margin tax", f.nopat)} + ${n("DA", "revenue salesGrowth depreciation", f.depreciation)} − ${n("CapEx", "revenue salesGrowth capex", f.capex)} − ${n("deltaNwc", "revenue salesGrowth workingCapital", f.deltaNwc)} = ${n("FCF", all, f.fcf, "result")}`;
+    $("nwc-worked").innerHTML = `${n("NWC", "revenue salesGrowth workingCapital", f.nwc)} − ${n("NWC", "revenue salesGrowth workingCapital", f.nwc - f.deltaNwc)} = ${n("deltaNwc", "revenue salesGrowth workingCapital", f.deltaNwc, "result")}`;
+    $("next-worked").innerHTML = `${n("NOPAT", "revenue salesGrowth margin tax terminalGrowth years", m.terminalNopat)} × <span class="group">(1 − ${p("g", "terminalGrowth", i.terminalGrowth)} / ${p("q", "terminalReturn", i.terminalReturn)})</span> = ${n("FCF", all, m.terminalNext, "result")}`;
+    $("terminal-worked").innerHTML = m.issue ? "Terminal model unavailable" : `${n("FCF", all, m.terminalNext)} / <span class="group">(${p("r", "discountRate", i.discountRate)} − ${p("g", "terminalGrowth", i.terminalGrowth)})</span> = ${n("TV", all, m.terminalValue, "result")}`;
+    $("discount-worked").innerHTML = m.issue ? `Forecast PV = ${n("PV", all, m.forecastPv, "result")}` : `Terminal PV: ${n("TV", all, m.terminalValue)} / <span class="group">(1 + ${p("r", "discountRate", i.discountRate)})<sup data-symbols="N">${i.years}</sup></span> = ${n("PV", all, m.terminalPv, "result")}`;
+    $("operations-worked").innerHTML = m.issue ? "No operating valuation" : `${n("PV", all, m.forecastPv)} + ${n("PV", all, m.terminalPv)} = ${n("Vop", all, m.operatingValue, "result")}`;
+    $("equity-worked").innerHTML = m.issue ? "—" : `${n("Vop", all, m.operatingValue)} + ${n("C", "cash", i.cash)} − ${n("D", "debt", i.debt)} = ${n("E", all + " cash debt", m.equity, "result")}`;
+    $("price-worked").innerHTML = m.issue ? "—" : m.equity < 0 ? "Equity shortfall: no share-price estimate" : `${n("E", all + " cash debt", m.equity)} / ${n("S", "shares", i.shares)} = ${n("P", all + " cash debt shares", m.price, "result")} $/share`;
+    for (const [id, symbol, key, ratio, amount] of [
+      ["depreciation-worked", "DA", "depreciation", "d", f.depreciation],
+      ["capex-worked", "CapEx", "capex", "c", f.capex],
+      ["working-capital-worked", "NWC", "workingCapital", "w", f.nwc]
+    ]) $(id).innerHTML = `${p(ratio, key, i[key])} × ${n("R", "revenue salesGrowth", f.revenue)} = ${n(symbol, `revenue salesGrowth ${key}`, amount, "result")}`;
+    highlightSymbol();
+  }
+  const line = (x1, y1, x2, y2, color = "#dfe6ed", extra = "") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" ${extra}/>`;
+  const text = (x, y, value, anchor = "start", color = "#536574", extra = "", size = 11) => `<text x="${x}" y="${y}" text-anchor="${anchor}" fill="${color}" font-size="${size}" ${extra}>${value}</text>`;
+  function nice(v) { const scale = 10 ** Math.floor(Math.log10(v || 1)); return [1, 2, 5, 10].find(x => x * scale >= v) * scale; }
+  function frame(svg, height, values, bottomPadding = 42) {
+    const width = Math.max(250, svg.getBoundingClientRect().width), left = 70, right = width - 18, top = 24, bottom = height - bottomPadding;
+    const low = Math.min(0, ...values), high = Math.max(0, ...values);
+    const min = low < 0 ? -nice(-low * 1.12) : 0, max = high > 0 ? nice(high * 1.12) : low < 0 ? 0 : 1;
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    return { width, height, left, right, top, bottom, min, max, x: q => left + q * (right - left), y: v => bottom - (v - min) / (max - min) * (bottom - top) };
+  }
+  function yAxis(b, label) {
+    const center = (b.top + b.bottom) / 2;
+    let out = text(13, center, label, "middle", "#536574", `class="y-axis-label" transform="rotate(-90 13 ${center})"`);
+    for (let j = 0; j <= 4; j++) { const v = b.min + (b.max - b.min) * j / 4; out += line(b.left, b.y(v), b.right, b.y(v)) + text(b.left - 8, b.y(v) + 4, Math.abs(v) >= 10000 ? v.toExponential(1) : fixed(v), "end"); }
+    return out + line(b.left, b.y(0), b.right, b.y(0), "#8a9bab");
+  }
+  function drawCashflow(m) {
+    const svg = $("cashflow-chart"), b = frame(svg, 242, m.forecast.flatMap(f => [f.fcf, f.pv]));
+    let out = yAxis(b, "Cash flow ($ million)"), step = (b.right - b.left) / (m.inputs.years + 1), bar = Math.min(24, step * .32);
+    out += text(b.left, b.bottom + 18, "0", "middle");
+    for (const f of m.forecast) {
+      const x = b.left + step * f.year;
+      out += `<g data-year="${f.year}" role="button" tabindex="0" aria-label="Inspect year ${f.year}"><title>Year ${f.year}: FCF ${fixed(f.fcf)}, present value ${fixed(f.pv)} ($ million)</title>`;
+      for (const [value, bx, color] of [[f.fcf, x - bar - 1, "#a6bddd"], [f.pv, x + 1, "#2458a8"]])
+        out += `<rect x="${bx}" y="${b.y(Math.max(0, value))}" width="${bar}" height="${Math.max(.5, Math.abs(b.y(value) - b.y(0)))}" rx="1" fill="${color}" ${f.year === inspectYear ? 'stroke="#172838" stroke-width="1"' : ''}/>`;
+      out += `</g>` + text(x, b.bottom + 18, f.year, "middle");
+    }
+    out += text((b.left + b.right) / 2, b.height - 2, "Year t · end-of-year cash flows", "middle");
+    svg.innerHTML = out;
+  }
+  function drawSensitivity(m) {
+    const valid = m.sensitivity.flat().map(c => c.operatingValue).filter(v => v !== null), lo = Math.min(...valid), hi = Math.max(...valid);
+    const indices = document.documentElement.clientWidth <= 480 ? [1, 2, 3] : [0, 1, 2, 3, 4];
+    let html = `<thead><tr><th scope="col"><span class="sr-only">WACC</span></th>${indices.map(ci => `<th scope="col">${percent(m.growths[ci])}</th>`).join("")}</tr></thead><tbody>`;
+    indices.forEach(ri => {
+      html += `<tr><th scope="row">${percent(m.rates[ri])}</th>`;
+      indices.forEach(ci => {
+        const c = m.sensitivity[ri][ci];
+        const label = `WACC ${percent(c.rate)}, growth ${percent(c.growth)}: ${c.issue || fixed(c.operatingValue) + ' $ million'}`;
+        const shade = c.operatingValue === null ? "" : c.operatingValue < 0 ? "background:#f8e9db;color:#7a411c" : `background:hsl(213 47% ${hi === lo ? 89 : 97 - (c.operatingValue - lo) / (hi - lo) * 17}%)`;
+        const displayed = c.operatingValue === null ? "—" : Math.abs(c.operatingValue) >= 10000 ? c.operatingValue.toExponential(2) : fixed(c.operatingValue);
+        html += `<td class="${ri === 2 && ci === 2 ? 'current-cell ' : ''}${c.operatingValue === null ? 'invalid-cell' : ''}" style="${shade}" title="${label}" aria-label="${label}">${displayed}</td>`;
+      }); html += "</tr>";
+    }); $("heatmap").innerHTML = html + "</tbody>";
+  }
+  function drawBridge(m) {
+    const svg = $("bridge-chart");
+    if (m.issue) { const b = frame(svg, 250, [1], 60); svg.innerHTML = text(b.width / 2, 105, "No terminal valuation", "middle"); return; }
+    const b = frame(svg, 250, m.bridge.flatMap(s => [s.start, s.end]), 60), step = (b.right - b.left) / 4, bar = Math.min(58, step * .6);
+    let out = yAxis(b, "Value ($ million)");
+    m.bridge.forEach((s, index) => {
+      const x = b.left + step * (index + .5), high = Math.max(s.start, s.end), low = Math.min(s.start, s.end);
+      const color = s.type === "add" ? "#14786d" : s.type === "subtract" || s.end < 0 ? "#b66a30" : "#2458a8";
+      out += `<rect x="${x - bar / 2}" y="${b.y(high)}" width="${bar}" height="${Math.max(.5, b.y(low) - b.y(high))}" fill="${color}" rx="2"/>`;
+      // Signed totals retain their sign; additions/deductions show their direction.
+      const label = s.type === "add" ? "+" + fixed(s.amount) : s.type === "subtract" ? "−" + fixed(-s.amount) : fixed(s.amount);
+      out += text(x, Math.max(13, b.y(high) - 6), label, "middle", "#29455c");
+      const labels = [["Operating", "value"], ["Excess", "cash"], ["Debt /", "claims"], ["Equity", ""]][index];
+      out += text(x, b.bottom + 16, labels[0], "middle", "#536574", '', 10) + text(x, b.bottom + 28, labels[1], "middle", "#536574", '', 10) + text(x, b.height - 4, s.symbol, "middle");
+      if (index < 3) out += line(x + bar / 2, b.y(s.end), x + step - bar / 2, b.y(s.end), "#96a7b7", 'stroke-dasharray="3 3"');
+    }); svg.innerHTML = out;
+  }
+  function drawForecast(m) {
+    const accounting = v => v < -.0000001 ? `(${fixed(-v)})` : fixed(Math.abs(v) < .0000001 ? 0 : v);
+    const rows = [
+      ["Revenue", "R<sub>t</sub>", f => f.revenue, "revenue salesGrowth", "revenue-row"],
+      ["Operating costs, before depreciation", "", f => -f.operatingCosts, "revenue salesGrowth margin depreciation", "deduction"],
+      ["Depreciation expense", "DA<sub>t</sub>", f => -f.depreciation, "revenue salesGrowth depreciation", "deduction"],
+      ["Operating profit", "EBIT<sub>t</sub>", f => f.ebit, "revenue salesGrowth margin", "subtotal"],
+      ["Tax on operating profit", "", f => -f.taxes, "revenue salesGrowth margin tax", "deduction"],
+      ["After-tax operating profit", "NOPAT<sub>t</sub>", f => f.nopat, "revenue salesGrowth margin tax", "subtotal"],
+      ["Add back depreciation", "DA<sub>t</sub>", f => f.depreciation, "revenue salesGrowth depreciation", "adjustment"],
+      ["Capital spending", "CapEx<sub>t</sub>", f => -f.capex, "revenue salesGrowth capex", "deduction"],
+      ["Change in operating NWC", "ΔNWC<sub>t</sub>", f => -f.deltaNwc, "revenue salesGrowth workingCapital", "deduction"],
+      ["Free cash flow", "FCF<sub>t</sub>", f => f.fcf, "revenue salesGrowth margin tax depreciation capex workingCapital", "total-row"],
+      ["Discount factor", "1/(1+r)<sup>t</sup>", f => f.discountFactor, "discountRate", "factor-row"],
+      ["Present value of cash flow", "PV<sub>t</sub>", f => f.pv, "revenue salesGrowth margin tax depreciation capex workingCapital discountRate", "pv-row"],
+      ["NWC balance (reference only)", "NWC<sub>t</sub>", f => f.nwc, "revenue salesGrowth workingCapital", "memo-row"]
+    ];
+    $("forecast-table").innerHTML = `<caption class="sr-only">Annual operating forecast and free cash flow in USD million. Parentheses indicate deductions or negative amounts. Discount factors are unitless. Selected year: ${inspectYear}.</caption><thead><tr><th scope="col">Year <span class="symbol">t</span></th>${m.forecast.map(f => `<th scope="col" class="${f.year === inspectYear ? 'inspected' : ''}"><button type="button" data-year="${f.year}" aria-label="Select forecast year ${f.year}" aria-pressed="${f.year === inspectYear}">${f.year}</button></th>`).join("")}</tr></thead><tbody>${rows.map(([label, symbol, value, keys, cls]) => `<tr class="${cls}" data-vars="${keys}"><th scope="row"><span>${label}</span>${symbol ? `<span class="row-symbol">${symbol}</span>` : ''}</th>${m.forecast.map(f => `<td class="${f.year === inspectYear ? 'inspected' : ''}">${cls === 'factor-row' ? value(f).toFixed(4) : accounting(value(f))}</td>`).join("")}</tr>`).join("")}</tbody>`;
+  }
+
+  function render() {
+    const raw = read(), c = M.validateInputs(raw);
+    $("input-error").hidden = c.ok; $("input-error").textContent = Object.values(c.errors).join(" ");
+    for (const key of Object.keys(M.DEFAULTS)) {
+      const input = $(key + "-number"); input.setAttribute("aria-invalid", String(!!c.errors[key]));
+      if (c.errors[key]) input.setAttribute("aria-describedby", "input-error"); else input.removeAttribute("aria-describedby");
+      const slider = $(key + "-range"); if (slider && !c.errors[key]) slider.value = raw[key] * 100;
+    }
+    document.querySelectorAll('.preset').forEach((el, index) => { const active = c.ok && Object.keys(raw).every(k => raw[k] === M.PRESETS[index].inputs[k]); el.classList.toggle('active', active); el.setAttribute('aria-pressed', String(active)); });
+    $("download").disabled = !c.ok; $("save-baseline").disabled = !c.ok; $("inspect-year").disabled = !c.ok;
+    if (!c.ok) {
+      current = null;
+      for (const id of ["revenue-worked", "profit-worked", "depreciation-worked", "capex-worked", "working-capital-worked", "fcf-worked", "nwc-worked", "next-worked", "terminal-worked", "discount-worked", "operations-worked", "equity-worked", "price-worked", "operating-value", "share-price", "forecast-pv", "terminal-pv", "terminal-share"]) $(id).textContent = "—";
+      for (const id of ["cashflow-chart", "bridge-chart", "heatmap", "forecast-table"]) $(id).innerHTML = "";
+      $("composition").hidden = true; $("model-warning").hidden = true; $("comparison").textContent = "Enter valid inputs to compare."; return;
+    }
+    current = M.calculateModel(raw); const m = current;
+    $("model-warning").textContent = [m.issue, ...m.warnings].filter(Boolean).join(" "); $("model-warning").hidden = !m.issue && !m.warnings.length;
+    renderEquations(m); $("operating-value").textContent = fixed(m.operatingValue); $("share-price").textContent = fixed(m.price);
+    $("forecast-pv").textContent = fixed(m.forecastPv); $("terminal-pv").textContent = fixed(m.terminalPv); $("terminal-share").textContent = m.terminalShare === null ? "—" : percent(m.terminalShare);
+    $("composition").hidden = false; $("forecast-bar").parentElement.hidden = m.terminalShare === null;
+    $("forecast-bar").style.width = m.terminalShare === null ? "0%" : (1 - m.terminalShare) * 100 + "%"; $("terminal-bar").style.width = m.terminalShare === null ? "0%" : m.terminalShare * 100 + "%";
+    drawCashflow(m); drawSensitivity(m); drawBridge(m); drawForecast(m);
+    const b = M.calculateModel(baseline), same = Object.keys(raw).every(k => raw[k] === baseline[k]);
+    const delta = (x, y, units) => x === null || y === null ? "unavailable" : `${x - y >= 0 ? '+' : '−'}$${fixed(Math.abs(x - y))}${units}`;
+    $("comparison").textContent = same ? "" : `Compared with saved case: operations ${delta(m.operatingValue, b.operatingValue, ' million')}; per share ${delta(m.price, b.price, '')}.`;
+  }
+  M.PRESETS.forEach(preset => { const b = document.createElement('button'); b.type = 'button'; b.className = 'preset'; b.textContent = preset.name; b.addEventListener('click', () => { inspectYear = 1; setInputs(preset.inputs); release(); }); $('presets').append(b); });
+  $("reset").addEventListener("click", () => { inspectYear = 1; baseline = { ...M.DEFAULTS }; setInputs(M.DEFAULTS); release(); });
+  $("save-baseline").addEventListener("click", () => { baseline = { ...read() }; render(); });
+  for (const key of Object.keys(M.DEFAULTS)) {
+    const input = $(key + "-number"), slider = $(key + "-range");
+    input.addEventListener(key === 'years' ? 'change' : 'input', () => { render(); pulse(key); });
+    input.addEventListener('blur', () => { if (key !== 'years' && input.value.trim() !== '' && Number.isFinite(Number(input.value))) { input.value = Number(input.value).toFixed(2); render(); } release(); });
+    if (slider) {
+      slider.addEventListener('pointerdown', () => { held = key; highlight(key); });
+      slider.addEventListener('keydown', e => { if (e.key.startsWith('Arrow') || ['Home','End','PageUp','PageDown'].includes(e.key)) { held = key; highlight(key); } });
+      slider.addEventListener('keyup', release); slider.addEventListener('blur', release);
+      slider.addEventListener('input', () => { input.value = fixed(Number(slider.value)); render(); pulse(key); });
+    }
+  }
+  document.addEventListener('pointerup', release); document.addEventListener('pointercancel', release);
+  function inspect(year) { if (!current) return; inspectYear = year; renderEquations(current); drawCashflow(current); drawForecast(current); }
+  $("inspect-year").addEventListener('change', () => inspect(Number($("inspect-year").value)));
+  $("forecast-table").addEventListener('click', e => {
+    const el = e.target.closest('[data-year]');
+    if (el) { const year = Number(el.dataset.year); inspect(year); $("forecast-table").querySelector(`[data-year="${year}"]`).focus(); }
+  });
+  $("cashflow-chart").addEventListener('click', e => { const el = e.target.closest('[data-year]'); if (el) inspect(Number(el.dataset.year)); });
+  $("cashflow-chart").addEventListener('keydown', e => { const el = e.target.closest('[data-year]'); if (el && ['Enter',' '].includes(e.key)) { e.preventDefault(); const year = Number(el.dataset.year); inspect(year); $("cashflow-chart").querySelector(`[data-year="${year}"]`).focus(); } });
+  document.querySelectorAll('[data-help]').forEach(button => button.addEventListener('click', () => {
+    const [title, body] = HELP[button.dataset.help]; helpTrigger = button; $("help-title").textContent = title; $("help-body").replaceChildren(); const p = document.createElement('p'); p.textContent = body; $("help-body").append(p);
+    const links = button.dataset.help === 'sources' ? [
+      ['NYU Stern · DCF valuation framework', 'https://pages.stern.nyu.edu/~adamodar/New_Home_Page/lectures/val.html'],
+      ['NYU Stern · terminal growth and reinvestment', 'https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/termvalueexreturns.htm']
+    ] : button.dataset.help === 'discountRate' ? [['Explore return on assets and WACC', 'https://bpdiehl.github.io/finance_visualizations/downloads/wacc.html']] : [];
+    for (const [label, href] of links) { const p = document.createElement('p'), a = document.createElement('a'); a.textContent = label; a.href = href; a.target = '_blank'; a.rel = 'noopener'; p.append(a); $("help-body").append(p); }
+    $("help-dialog").showModal();
+  }));
+  $("close-help").addEventListener('click', () => $("help-dialog").close()); $("help-dialog").addEventListener('close', () => helpTrigger?.focus());
+  $("help-dialog").addEventListener('click', e => { if (e.target === $("help-dialog")) { const b = e.target.getBoundingClientRect(); if (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom) e.target.close(); } });
+  $("download").addEventListener('click', () => {
+    release(); const clone = document.documentElement.cloneNode(true); clone.querySelectorAll('.is-editing, .is-symbol-highlight').forEach(el => el.classList.remove('is-editing', 'is-symbol-highlight')); clone.querySelectorAll('.symbol-link').forEach(el => el.setAttribute('aria-pressed', 'false')); clone.querySelector('#symbol-status').textContent = ''; clone.querySelectorAll('dialog, #equation-details, #cashflow-reminder').forEach(el => el.removeAttribute('open')); clone.querySelector('#forecast-details').setAttribute('open', '');
+    const url = URL.createObjectURL(new Blob(['<!doctype html>\n' + clone.outerHTML], { type: 'text/html' })); const a = document.createElement('a'); a.href = url; a.download = 'dcf.html'; a.hidden = true; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+    $("download-status").textContent = 'Save dcf.html · opens at the starting case.';
+  });
+  let resizeFrame;
+  new ResizeObserver(() => { cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(() => { if (current) { drawCashflow(current); drawBridge(current); drawSensitivity(current); } }); }).observe($("cashflow-chart"));
+  setInputs(M.DEFAULTS);
+})();
+</script>
+</body>
+</html>

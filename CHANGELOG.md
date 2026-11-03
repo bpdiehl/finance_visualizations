@@ -1,5 +1,57 @@
 # Change log
 
+## 2026-11-03 — DCF v0.4.2 release
+
+- Owner accepted the DCF visualization and authorized commit/push after reviewing the statement, notation interactions and control alignment.
+- Added the standalone DCF HTML to the public catalog and downloads alongside WACC.
+- Retained source, independent model tests, notation regression checks and browser evidence. Offline/browser coverage limits remain explicit in verification/dcf.md.
+
+## 2026-11-03 — DCF input alignment v0.4.2
+
+- Aligned detailed labels, info buttons, fields and units in fixed grid columns. Numeric fields and the horizon selector share the same width.
+- Kept units beside their fields, including million shares. Narrow/sidebar layouts use consistent label and input rows.
+- Aligned the mobile main-assumption controls when their labels wrap. Verified desktop, sidebar, phone, keyboard help and all 50 checks.
+
+## 2026-11-03 — DCF notation corrections and input placement v0.4.1
+
+- Fixed every t/N subscript and superscript target, including N+1 and the numerical discount exponent.
+- Split all grouped key entries into one symbol per row. Replaced ratio-to-cash-amount aliases with explicit ratio equations and matching percentages.
+- Render worked-value symbol tags directly, avoiding positional reassignment. Added three regression checks for omitted indices, grouped entries and incorrect ratio targets.
+- Moved the entire Forecast & ownership inputs disclosure directly below Main assumptions. The inputs adapt to the sidebar or full width when the forecast is collapsed.
+- All 50 checks pass; model calculations remain unchanged. No commit/push.
+
+## 2026-11-03 — DCF linked notation and cash-flow reminder v0.4
+
+- Removed equation-card and notation subgroup subtitles. Key symbols now preview matching equation terms on hover/focus; selecting pins the highlight and brings the term into view. Escape clears it.
+- Added a compact, expandable profit-to-free-cash-flow reminder and a worked change-in-NWC relation.
+- Renamed the final statement row NWC balance (reference only), removed the Memo prefix and gave it a muted background and separate divider.
+- Kept model calculations and valuation results unchanged. Draft remains uncommitted and unpushed.
+
+## 2026-11-03 — DCF forecast disclosure v0.3.1
+
+- Made Operating forecast independently collapsible, expanded by default. Equations/key remains collapsed by default.
+- Both views retain live values while hidden; exported copies start with the forecast expanded. Verified keyboard toggling and all 47 checks.
+
+## 2026-11-02 — DCF statement layout v0.3
+
+- Made the annual forecast the main view, styled as an operating income statement extended to free cash flow, with parentheses for deductions and distinct subtotals.
+- Combined equations and notation into a single disclosure, collapsed on startup and export per the owner’s request.
+- Moved the plots below the statement; year buttons and the year picker link statement columns to worked equations. Editing highlights also identify affected statement rows.
+- Added implied operating costs and operating taxes to model output, with independent reference assertions; valuation results remain unchanged. Draft remains uncommitted and unpushed.
+
+## 2026-11-02 — DCF notation key v0.2
+
+- Added a collapsible notation key above the equations, defining year subscripts, symbols, units and acronyms.
+- Kept the existing notation and calculations following owner feedback; R₁ means revenue in year 1.
+- Verified keyboard toggling, narrow-screen layout and all 47 automated checks. Draft remains uncommitted and unpushed.
+
+## 2026-11-02 — DCF owner-review draft v0.1
+
+- Added driver-based annual DCF, visible worked equations above controls, and a terminal growth/reinvestment assumption.
+- Added selectable FCF/PV bars, responsive WACC/g sensitivity, signed operating-to-equity waterfall, and detailed forecast/ownership controls.
+- Carried forward consistent decimals, equation highlights, rotated vertical-axis titles, concise help, and explicit invalid/shortfall states.
+- Added independent numerical references and model tests; catalog remains draft with no new public download, commit or push.
+
 ## 2026-10-30 — Local scaffold
 
 - Added seven planned demo briefs, common standards and AI working agreement.
