@@ -4,3 +4,5 @@ header,main,footer{max-width:1240px;padding:20px 32px}header{padding-top:25px}.m
 #nopat-formula{margin-top:16px}.income-detail{border-top:1px solid var(--line);margin-top:14px}
 
 .bridge-panel{margin-bottom:18px}.bridge-panel .result{margin:12px 0 0}.bridge-panel output{font-size:2rem}.chart-scroll{overflow-x:auto}.chart-hint{display:none;font-size:.7rem;color:var(--muted)}.assumptions{grid-column:2;grid-row:1}.workspace>.statement{grid-column:1;grid-row:1;margin-top:0}.chart-scroll svg{min-width:850px}@media(max-width:900px){.assumptions,.workspace>.statement{grid-column:auto;grid-row:auto}.chart-hint{display:block}}
+
+.main-inputs>summary{font-size:1rem;padding-top:0;padding-bottom:10px}

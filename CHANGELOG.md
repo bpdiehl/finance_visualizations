@@ -1,5 +1,10 @@
 # Change log
 
+## 2026-11-06 — Free Cash Flow v0.2.1
+
+- Made the main operating assumptions independently collapsible; interest and working-capital details stay accessible below.
+
+
 ## 2026-11-06 — Accounting to Free Cash Flow v0.2 release
 
 - Extended the waterfall from NI through all adjustments and subtotals to FCF; expanded the plot width with internal scrolling on narrow screens.

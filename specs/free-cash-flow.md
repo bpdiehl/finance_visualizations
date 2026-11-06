@@ -1,6 +1,6 @@
 # F4 — Accounting to Free Cash Flow
 
-Status: owner-approved release v0.2. Catalog slug: free-cash-flow. Recommended build wave: 2.
+Status: owner-approved release v0.2.1. Catalog slug: free-cash-flow. Recommended build wave: 2.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 

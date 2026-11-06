@@ -1,4 +1,4 @@
-# F4 — Accounting to Free Cash Flow v0.2
+# F4 — Accounting to Free Cash Flow v0.2.1
 
 November 6, 2026. Owner-approved release; known testing limits are retained below.
 
@@ -35,3 +35,7 @@ Owner approved publication after asking for the complete NI-to-FCF plot. The ful
 Full desktop/mobile screenshots inspected. At360px the document width is360 and the chart alone has850px internal scroll content inside a298px region. A scroll affordance appears; chart-region keyboard ArrowRight was attempted but no positive scroll offset was observed, so keyboard horizontal scrolling is not claimed verified. Temporary viewport restored. The final demo Download button saved free-cash-flow.html successfully. User review inputs were restored after checks.
 
 59 Node checks (9 F4),9 Python checks, build/syntax/artifact sync and staged whitespace checks pass. Public catalog includes Open/Download links. Prior draft-only/download-unchecked notes describe earlier revisions. Isolated file execution/network-blocked offline testing remain unverified due browser protocol policy; this was disclosed at owner approval.
+
+Owner follow-up v0.2.1: main operating assumptions now have their own native disclosure (open by default). Income statement detail and operating working capital remain sibling disclosures so they are accessible when the main controls are collapsed.
+
+Browser confirmed revenue input hidden while interest and closing operating NWC remain visible; inspected screenshot with the complete plot above the expanded detail controls. Existing user inputs preserved. Build/check passed59 Node and9 Python checks after this UI revision.
