@@ -39,3 +39,27 @@ Full desktop/mobile screenshots inspected. At360px the document width is360 and 
 Owner follow-up v0.2.1: main operating assumptions now have their own native disclosure (open by default). Income statement detail and operating working capital remain sibling disclosures so they are accessible when the main controls are collapsed.
 
 Browser confirmed revenue input hidden while interest and closing operating NWC remain visible; inspected screenshot with the complete plot above the expanded detail controls. Existing user inputs preserved. Build/check passed59 Node and9 Python checks after this UI revision.
+
+## Local v0.3 plot toggle — owner review only
+
+Added two model-derived waterfalls, shared inputs, button pressed-state and dynamic chart/result labels. Independent income-path reference: revenue300, cash costs180, D&A20, EBIT100, interest20, EBT80, tax20, NI60. Added tests for full revenue-to-NI reconciliation and separate investment/financing effects.
+
+Browser: income view shows8 bars/NI60, cash view10 bars/FCF55. Revenue400 gives NI135 and FCF130; interest60 lowers NI to105 while FCF stays130. CapEx100 leaves NI105 and lowers FCF60. Keyboard Enter switches views. Tax101 shows validation and empties the chart; Reset recovers. Previous user inputs restored and income view retained for review. Desktop and360px screenshots inspected: page width360, toggle width214.53; chart retains internal scrolling. Viewport reset; captured warning/error logs empty.
+
+61 Node checks (11 F4),9 Python checks, build/packaging/syntax and whitespace checks pass. No new offline or saved-file claim. Source and locally generated ready artifact are modified but uncommitted; the deployed release remains v0.2.1 until approval.
+
+Owner follow-up: unified all eight controls in one Main assumptions disclosure, ordered revenue→costs→D&A→interest→tax rate→CapEx→opening/closing operating NWC. Removed nested income/working-capital sections; retained the ΔNWC calculation below the balances. Browser verified exact control order and one assumptions summary; collapsing it hides interest along with the other controls. Preserved all user values and selected chart view across refresh. Preview/build/check passed; no commit/push.
+
+Latest local default: To net income is selected on load and after Reset. Browser verified both paths and restored existing input values. Source syntax/whitespace checks passed; changes remain uncommitted. This supersedes the earlier cash-view default.
+
+Local equation presentation update: see [equation alignment and fraction review](equation-layout-review.md) for cross-demo browser measurements and limits. Uncommitted; published release evidence above remains historical.
+
+## Latest local FCF interaction refinements
+
+Controls are now grouped in Income assumptions (revenue, costs, D&A, interest, tax) and Investment & working capital (CapEx, opening/closing NWC), with the second group collapsed initially. The operating statement mirrors the chosen plot view, so income drivers have matching statement lines. Each edited input highlights the corresponding chart band/bar and statement row, including both tax adjustments in the cash-flow bridge where applicable. The highlight persists during pointer interaction and clears after release, with a fading transition and reduced-motion override.
+
+Browser confirmed costs slider highlights its income bar and expense row; closing NWC highlights ΔNWC in the cash plot and statement. Screenshot inspected with linked bar/row visible together. A later DOM check found0 remaining highlights after the timeout. Four paired equation grids (including the NWC change calculation) measured with no column mismatches. Input values and selected plot view restored. No commit/push.
+
+## November 6, 2026 — Accepted consistency release
+
+Owner authorized commit and push of the reviewed revisions. Final equation alignment, amber glow/notation/graph-legend checks and catalog evidence are in [the shared release review](equation-layout-review.md). Prior draft-only restrictions are historical. Saved-file/offline and browser-coverage limits remain explicit there and above.

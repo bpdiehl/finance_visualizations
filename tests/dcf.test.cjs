@@ -138,3 +138,8 @@ test('direct cash-flow helper validates inputs and preserves signed cash flows',
   for (const args of [[[],100,.1,.02],[[1,NaN],100,.1,.02],[[1],100,-1,.02],[[1],Infinity,.1,.02]])
     assert.throws(() => M.valueCashFlows(...args));
 });
+
+test('terminal-year presentation uses the stable-growth model without extending the discounted forecast',()=>{
+ const m=calc(),t=m.terminalYear;assert.equal(t.year,m.inputs.years+1);close(t.revenue,1364.990089152);close(t.ebit,245.69821604736);close(t.nopat,184.27366203552);close(t.netReinvestment,30.71227700592);close(t.fcf,153.5613850296);assert.equal(m.forecast.length,m.inputs.years);assert.equal(m.presentValues.length,m.inputs.years);close(m.operatingValue,m.forecastPv+m.terminalPv);
+ const grown=calc({terminalGrowth:.03});close(grown.forecastPv,m.forecastPv);assert.notEqual(grown.terminalYear.fcf,t.fcf);assert.notEqual(grown.terminalPv,m.terminalPv);assert.equal(calc({margin:0}).terminalYear.fcf,null);
+});

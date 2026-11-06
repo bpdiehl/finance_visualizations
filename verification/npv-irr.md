@@ -40,3 +40,9 @@ Owner then requested reverting the stepper. Restored the native1–8 year dropdo
 Owner requested commit/push and inclusion on the main Finance page. Catalog set ready; release v0.1.1 generates a standalone file with Open/Download actions. Existing isolated-file and offline testing limits remain disclosed above.
 
 Deployment verification: the public Finance catalog and `downloads/npv-irr.html` exactly matched the released local files after push952c343. The live catalog showed3 available demos and NPV Open/Download links; following Open rendered NPV13.00. A click on the live catalog Download link did not produce an observed browser download event before timeout, so that specific save flow is not claimed verified. The demo's own download was verified earlier.
+
+Local equation presentation update: see [equation alignment and fraction review](equation-layout-review.md) for cross-demo browser measurements and limits. Uncommitted; published release evidence above remains historical.
+
+## November 6, 2026 — Accepted consistency release
+
+Owner authorized commit and push of the reviewed revisions. Final equation alignment, amber glow/notation/graph-legend checks and catalog evidence are in [the shared release review](equation-layout-review.md). Prior draft-only restrictions are historical. Saved-file/offline and browser-coverage limits remain explicit there and above.

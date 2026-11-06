@@ -1,5 +1,14 @@
 # Change log
 
+## 2026-11-06 — Equation and interaction consistency release
+
+- WACC v0.3.2, DCF v0.5, NPV & IRR v0.1.2 and Free Cash Flow v0.3.
+- Aligned symbolic and numeric terms/results; rendered divisions as textbook fractions in both rows.
+- Standardized soft amber editing/symbol feedback and notation buttons; coordinated graph legend typography while preserving series colors and markers.
+- FCF defaults to To net income, with an NI to FCF toggle, shorter collapsible input groups and linked plot/statement highlights.
+- DCF adds a distinct terminal N+1 column and bar, terminal PV in the value composition and a collapsible PV of operations section; no terminal double counting.
+- Owner authorized commit/push. Evidence and coverage limits: verification/equation-layout-review.md and individual records.
+
 ## 2026-11-06 — Free Cash Flow v0.2.1
 
 - Made the main operating assumptions independently collapsible; interest and working-capital details stay accessible below.

@@ -15,7 +15,7 @@
   };
   const HELP = {
     model: ["An illustrative unlevered DCF", "Forecast annual operating cash flows for debt and equity providers, then discount them at WACC. This simplified model uses constant forecast margins, tax and investment ratios, an end-of-year convention, and a distinct stable-growth terminal phase. All amounts are nominal USD millions, except dollars per share. Debt and cash do not automatically change WACC. Inputs are illustrative, not fitted to a company."],
-    statement: ["From income statement to free cash flow", "Read down each year: revenue less operating costs and depreciation gives operating profit (EBIT). The margin input determines EBIT; operating costs before depreciation are the implied remainder, not a separate forecast assumption. Subtract tax to get NOPAT, then add back depreciation and subtract CapEx and the change in operating working capital. Parentheses mean a deduction or negative amount; a fall in working capital releases cash. NWC is a balance shown separately below, not another cash-flow deduction. This is an operating forecast with a cash-flow extension, not a complete accounting income statement: financing interest, net income and dividends are omitted. Discount factors are unitless; all other table amounts are USD million. Select a year to highlight its column and see its worked equations in Equations & notation key."],
+    statement: ["From income statement to free cash flow", "Read down each year: revenue less operating costs and depreciation gives operating profit (EBIT). The margin input determines EBIT; operating costs before depreciation are the implied remainder, not a separate forecast assumption. Subtract tax to get NOPAT, then add back depreciation and subtract CapEx and the change in operating working capital. Parentheses mean a deduction or negative amount; a fall in working capital releases cash. NWC is a balance shown separately below, not another cash-flow deduction. This is an operating forecast with a cash-flow extension, not a complete accounting income statement: financing interest, net income and dividends are omitted. Discount factors are unitless; all other table amounts are USD million. The separate N+1 column uses terminal growth g and net reinvestment NOPAT × g/q. Dashes mean those individual accounting ratios are not forecast in the stable phase. Its FCF is already included in terminal value; do not add it again to forecast PV. Select an explicit forecast year to inspect its equations."],
     revenue: ["Base-year revenue R₀", "Revenue in the year immediately before the forecast. Year t revenue is R₀(1+s)^t. Initial operating working capital is wR₀, so the first forecast change in working capital includes the investment needed for first-year sales growth. Revenue is not itself cash flow."],
     salesGrowth: ["Forecast sales growth s", "The annual revenue growth rate during the explicit forecast only. More sales can bring more operating profit, but also require capital spending and working capital. Growth can reduce cash flow if those investment needs are large. Terminal growth g takes over after the last explicit forecast year."],
     margin: ["Operating margin m", "EBIT divided by revenue, after depreciation and operating costs but before financing interest and tax. The model applies the same margin to every forecast year and the stable terminal year. This is a scenario assumption, not an estimated accounting return on assets."],
@@ -34,7 +34,7 @@
     terminal: ["Terminal cash flow and continuing value", "First calculate year N+1 revenue as Rₙ(1+g), keeping the margin and tax rate. Its after-tax operating profit is NOPATₙ₊₁. Net reinvestment is NOPATₙ₊₁ × g/q, leaving FCFₙ₊₁. Terminal value TVₙ = FCFₙ₊₁/(r−g) is a value at year N, not today. This terminal model requires positive stable operating profit. Negative g assumes capital can be released as operations shrink."],
     operations: ["Present value of operations Vop", "Discount each forecast year's free cash flow by its own year number. Separately discount terminal value from year N by exactly N periods. Add those present values to get operating enterprise value Vop. It excludes excess cash and separate financing claims. This is an operating asset valuation, not NPV after subtracting a purchase price. Displayed amounts are rounded; calculations retain full precision."],
     equity: ["From operating value to equity", "Add excess cash C to operating value Vop, then subtract debt and other claims D. The remainder E belongs to common equity under these simplified assumptions. Divide by diluted shares S for the implied value per share P. If the bridge is negative, claims exceed this modeled asset value: show the shortfall, but do not present it as a meaningful share-price estimate."],
-    cashflowChart: ["Annual cash flow versus present value", "Light bars are forecast FCF at the end of each year; dark bars are the same cash flows discounted to today. Select a bar to inspect that year in the equations. The contribution from all years AFTER N is shown separately in the terminal-PV composition bar, not mixed into the annual bars. Signed cash flows retain their signs. Axes use $ millions."],
+    cashflowChart: ["Annual cash flow versus present value", "Light bars are forecast FCF at the end of each year; dark bars are the same cash flows discounted to today. Select a bar to inspect that year in the equations. The gold N+1 bar shows the first terminal-year FCF at growth g. It has no separate PV bar: the entire future stream is priced through TV at year N and shown in the terminal-PV composition. Do not add the gold cash flow again. Signed cash flows retain their signs. Axes use $ millions."],
     terminalShare: ["How much value comes from the terminal phase?", "Terminal share is the present value of continuing operations after year N divided by total operating value. A high share means much of this valuation rests on assumptions beyond the explicit forecast. The composition bar and percentage are shown only when both contributions are nonnegative and operating value is positive. Signed contributions still appear numerically otherwise."],
     sensitivity: ["WACC and growth sensitivity", "Each cell is operating value in $ millions, using the same model at the displayed WACC and terminal growth. Axes center on your inputs in 0.50 percentage-point steps; the outlined center is the current case. Phones show the central 3×3 cells of the full 5×5 grid. One percentage point is the difference from 10% to 11%. Hatched cells are unavailable. This is scenario sensitivity, not a probability distribution or confidence interval."],
     comparison: ["A saved comparison", "Save the current assumptions as a baseline, then change a control to see the difference in operating value and per-share value. Presets change assumptions; Reset restores both the original assumptions and original comparison. All rates and money inputs keep two decimal places. Very large values use scientific notation, for example 1.00e+5 means 100000.00."],
@@ -93,23 +93,23 @@
     if ($("inspect-year").options.length !== m.inputs.years) $("inspect-year").innerHTML = m.forecast.map(f => `<option value="${f.year}">${f.year}</option>`).join("");
     $("inspect-year").value = inspectYear;
     const f = m.forecast[inspectYear - 1], i = m.inputs, all = "revenue salesGrowth margin tax depreciation capex workingCapital discountRate terminalGrowth terminalReturn years";
-    // Attach a quantity's symbol where its value is rendered, rather than
-    // assigning symbols afterward by token position in the worked equation.
-    $("revenue-worked").innerHTML = `<span class="group">${n("R0", "revenue", i.revenue)} × (1 + ${p("s", "salesGrowth", i.salesGrowth)})</span><sup data-symbols="t">${inspectYear}</sup> = ${n("R", "revenue salesGrowth", f.revenue, "result")}`;
-    $("profit-worked").innerHTML = `${n("EBIT", "revenue salesGrowth margin", f.ebit)} × <span class="group">(1 − ${p("T", "tax", i.tax)})</span> = ${n("NOPAT", "revenue salesGrowth margin tax", f.nopat, "result")}`;
-    $("fcf-worked").innerHTML = `${n("NOPAT", "revenue salesGrowth margin tax", f.nopat)} + ${n("DA", "revenue salesGrowth depreciation", f.depreciation)} − ${n("CapEx", "revenue salesGrowth capex", f.capex)} − ${n("deltaNwc", "revenue salesGrowth workingCapital", f.deltaNwc)} = ${n("FCF", all, f.fcf, "result")}`;
-    $("nwc-worked").innerHTML = `${n("NWC", "revenue salesGrowth workingCapital", f.nwc)} − ${n("NWC", "revenue salesGrowth workingCapital", f.nwc - f.deltaNwc)} = ${n("deltaNwc", "revenue salesGrowth workingCapital", f.deltaNwc, "result")}`;
-    $("next-worked").innerHTML = `${n("NOPAT", "revenue salesGrowth margin tax terminalGrowth years", m.terminalNopat)} × <span class="group">(1 − ${p("g", "terminalGrowth", i.terminalGrowth)} / ${p("q", "terminalReturn", i.terminalReturn)})</span> = ${n("FCF", all, m.terminalNext, "result")}`;
-    $("terminal-worked").innerHTML = m.issue ? "Terminal model unavailable" : `${n("FCF", all, m.terminalNext)} / <span class="group">(${p("r", "discountRate", i.discountRate)} − ${p("g", "terminalGrowth", i.terminalGrowth)})</span> = ${n("TV", all, m.terminalValue, "result")}`;
-    $("discount-worked").innerHTML = m.issue ? `Forecast PV = ${n("PV", all, m.forecastPv, "result")}` : `Terminal PV: ${n("TV", all, m.terminalValue)} / <span class="group">(1 + ${p("r", "discountRate", i.discountRate)})<sup data-symbols="N">${i.years}</sup></span> = ${n("PV", all, m.terminalPv, "result")}`;
-    $("operations-worked").innerHTML = m.issue ? "No operating valuation" : `${n("PV", all, m.forecastPv)} + ${n("PV", all, m.terminalPv)} = ${n("Vop", all, m.operatingValue, "result")}`;
-    $("equity-worked").innerHTML = m.issue ? "—" : `${n("Vop", all, m.operatingValue)} + ${n("C", "cash", i.cash)} − ${n("D", "debt", i.debt)} = ${n("E", all + " cash debt", m.equity, "result")}`;
-    $("price-worked").innerHTML = m.issue ? "—" : m.equity < 0 ? "Equity shortfall: no share-price estimate" : `${n("E", all + " cash debt", m.equity)} / ${n("S", "shares", i.shares)} = ${n("P", all + " cash debt shares", m.price, "result")} $/share`;
-    for (const [id, symbol, key, ratio, amount] of [
-      ["depreciation-worked", "DA", "depreciation", "d", f.depreciation],
-      ["capex-worked", "CapEx", "capex", "c", f.capex],
-      ["working-capital-worked", "NWC", "workingCapital", "w", f.nwc]
-    ]) $(id).innerHTML = `${p(ratio, key, i[key])} × ${n("R", "revenue salesGrowth", f.revenue)} = ${n(symbol, `revenue salesGrowth ${key}`, amount, "result")}`;
+
+    const sy=(key,body,edit='')=>`<span data-symbols="${key}"${edit?` data-vars="${edit}"`:''}>${body}</span>`,t=sy('t','t'),N=sy('N','N'),sub=(key,body,index=t,edit='')=>sy(key,`${body}<sub>${index}</sub>`,edit);
+    const R=sub('R','R'),R0=sy('R0','R<sub>0</sub>','revenue'),EBIT=sub('EBIT','EBIT'),NOPAT=sub('NOPAT','NOPAT'),FCF=sub('FCF','FCF'),DA=sub('DA','DA',t,'depreciation'),CapEx=sub('CapEx','CapEx',t,'capex'),delta=sub('deltaNwc','ΔNWC',t,'workingCapital'),next=sub('FCF','FCF',N+'+1'),nextProfit=sub('NOPAT','NOPAT',N+'+1'),TV=sub('TV','TV',N),r=sy('r','r','discountRate'),g=sy('g','g','terminalGrowth'),tax=sy('T','T','tax');
+    const pair=(id,symbols,values,ok=true)=>EquationLayout.render(id,symbols,ok?[values]:[]);
+    pair('revenue-worked',[R,'=',R0,'×','(1 +',sy('s','s','salesGrowth'),`)<sup>${t}</sup>`],[n('R','revenue salesGrowth',f.revenue,'result'),'=',n('R0','revenue',i.revenue),'×','(1 +',p('s','salesGrowth',i.salesGrowth),`)<sup data-symbols="t">${inspectYear}</sup>`]);
+    pair('margin-worked',[EBIT,'=',R,'×',sy('m','m','margin')],[n('EBIT','revenue salesGrowth margin',f.ebit,'result'),'=',n('R','revenue salesGrowth',f.revenue),'×',p('m','margin',i.margin)]);
+    pair('profit-worked',[NOPAT,'=',EBIT,'×','(1 −',tax,')'],[n('NOPAT',all,f.nopat,'result'),'=',n('EBIT','revenue salesGrowth margin',f.ebit),'×','(1 −',p('T','tax',i.tax),')']);
+    pair('fcf-worked',[FCF,'=',NOPAT,'+',DA,'−',CapEx,'−',delta],[n('FCF',all,f.fcf,'result'),'=',n('NOPAT',all,f.nopat),'+',n('DA','revenue salesGrowth depreciation',f.depreciation),'−',n('CapEx','revenue salesGrowth capex',f.capex),'−',n('deltaNwc','revenue salesGrowth workingCapital',f.deltaNwc)]);
+    pair('nwc-worked',[delta,'=',sub('NWC','NWC'),'−',sub('NWC','NWC',t+'−1')],[n('deltaNwc',all,f.deltaNwc,'result'),'=',n('NWC','revenue salesGrowth workingCapital',f.nwc),'−',n('NWC','revenue salesGrowth workingCapital',f.nwc-f.deltaNwc)]);
+    pair('next-worked',[next,'=',nextProfit,'×','(1 −',g,'/',sy('q','q','terminalReturn'),')'],[n('FCF',all,m.terminalNext,'result'),'=',n('NOPAT',all,m.terminalNopat),'×','(1 −',p('g','terminalGrowth',i.terminalGrowth),'/',p('q','terminalReturn',i.terminalReturn),')']);
+    pair('terminal-worked',[TV,'=',next,'/','(',r,'−',g,')'],[n('TV',all,m.terminalValue,'result'),'=',n('FCF',all,m.terminalNext),'/','(',p('r','discountRate',i.discountRate),'−',p('g','terminalGrowth',i.terminalGrowth),')'],!m.issue);
+    const forecastSymbol=`${sy('sum','∑')}<sub>${t}=1</sub><sup>${N}</sup> ${sy('PV',`<span class="eq-fraction"><span>${FCF}</span><span>(1 + ${r})<sup>${t}</sup></span></span>`)}`,terminalSymbol=sy('PV',`<span class="eq-fraction"><span>${TV}</span><span>(1 + ${r})<sup>${N}</sup></span></span>`);
+    pair('operations-worked',[sy('Vop','V<sub>op</sub>'),'=',forecastSymbol,'+',terminalSymbol],[n('Vop',all,m.operatingValue,'result'),'=',n('PV',all,m.forecastPv),'+',n('PV',all,m.terminalPv)],!m.issue);
+    pair('discount-worked',[sy('PV','PV(TV)'),'=',TV,'/','(1 +',r,`)<sup>${N}</sup>`],[n('PV',all,m.terminalPv,'result'),'=',n('TV',all,m.terminalValue),'/','(1 +',p('r','discountRate',i.discountRate),`)<sup data-symbols="N">${i.years}</sup>`],!m.issue);
+    pair('equity-worked',[sy('E','E'),'=',sy('Vop','V<sub>op</sub>'),'+',sy('C','C','cash'),'−',sy('D','D','debt')],[n('E',all+' cash debt',m.equity,'result'),'=',n('Vop',all,m.operatingValue),'+',n('C','cash',i.cash),'−',n('D','debt',i.debt)],!m.issue);
+    pair('price-worked',[sy('P','P'),'=',sy('E','E'),'/',sy('S','S','shares')],[n('P',all+' cash debt shares',m.price,'result'),'=',n('E',all+' cash debt',m.equity),'/',n('S','shares',i.shares)],!m.issue&&m.equity>=0);
+    for(const[id,key,ratio,amount,label]of[['depreciation-worked','depreciation','d',f.depreciation,'DA'],['capex-worked','capex','c',f.capex,'CapEx'],['working-capital-worked','workingCapital','w',f.nwc,'NWC']])pair(id,[sub(label,label),'=',sy(ratio,ratio,key),'×',R],[n(label,`revenue salesGrowth ${key}`,amount,'result'),'=',p(ratio,key,i[key]),'×',n('R','revenue salesGrowth',f.revenue)]);
     highlightSymbol();
   }
   const line = (x1, y1, x2, y2, color = "#dfe6ed", extra = "") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" ${extra}/>`;
@@ -129,18 +129,15 @@
     return out + line(b.left, b.y(0), b.right, b.y(0), "#8a9bab");
   }
   function drawCashflow(m) {
-    const svg = $("cashflow-chart"), b = frame(svg, 242, m.forecast.flatMap(f => [f.fcf, f.pv]));
-    let out = yAxis(b, "Cash flow ($ million)"), step = (b.right - b.left) / (m.inputs.years + 1), bar = Math.min(24, step * .32);
-    out += text(b.left, b.bottom + 18, "0", "middle");
-    for (const f of m.forecast) {
-      const x = b.left + step * f.year;
-      out += `<g data-year="${f.year}" role="button" tabindex="0" aria-label="Inspect year ${f.year}"><title>Year ${f.year}: FCF ${fixed(f.fcf)}, present value ${fixed(f.pv)} ($ million)</title>`;
-      for (const [value, bx, color] of [[f.fcf, x - bar - 1, "#a6bddd"], [f.pv, x + 1, "#2458a8"]])
-        out += `<rect x="${bx}" y="${b.y(Math.max(0, value))}" width="${bar}" height="${Math.max(.5, Math.abs(b.y(value) - b.y(0)))}" rx="1" fill="${color}" ${f.year === inspectYear ? 'stroke="#172838" stroke-width="1"' : ''}/>`;
-      out += `</g>` + text(x, b.bottom + 18, f.year, "middle");
-    }
-    out += text((b.left + b.right) / 2, b.height - 2, "Year t · end-of-year cash flows", "middle");
-    svg.innerHTML = out;
+    const svg=$("cashflow-chart"),terminal=m.terminalYear,b=frame(svg,264,[...m.forecast.flatMap(f=>[f.fcf,f.pv]),...(terminal.fcf===null?[]:[terminal.fcf])],52);
+    let out=yAxis(b,"Cash flow ($ million)"),step=(b.right-b.left)/(m.inputs.years+2),bar=Math.min(24,step*.32);
+    out+=text(b.left,b.bottom+18,"0","middle");
+    for(const f of m.forecast){const x=b.left+step*f.year;out+=`<g data-year="${f.year}" role="button" tabindex="0" aria-label="Inspect year ${f.year}"><title>Year ${f.year}: FCF ${fixed(f.fcf)}, present value ${fixed(f.pv)} ($ million)</title>`;for(const[value,bx,color]of[[f.fcf,x-bar-1,"#a6bddd"],[f.pv,x+1,"#2458a8"]])out+=`<rect x="${bx}" y="${b.y(Math.max(0,value))}" width="${bar}" height="${Math.max(.5,Math.abs(b.y(value)-b.y(0)))}" rx="1" fill="${color}" ${f.year===inspectYear?'stroke="#172838" stroke-width="1"':''}/>`;out+='</g>'+text(x,b.bottom+18,f.year,"middle");}
+    const tx=b.left+step*terminal.year,split=tx-step/2;
+    out+=line(split,b.top,split,b.bottom,'#ba945e','stroke-dasharray="4 4"');
+    if(terminal.fcf!==null){out+=`<rect class="terminal-chart-bar" data-terminal-year="${terminal.year}" data-vars="terminalGrowth terminalReturn revenue margin tax" x="${tx-bar}" y="${b.y(Math.max(0,terminal.fcf))}" width="${bar*2}" height="${Math.max(.5,Math.abs(b.y(terminal.fcf)-b.y(0)))}" fill="#b97820" rx="2"><title>Terminal year ${terminal.year}: growth ${percent(terminal.growth)}, FCF ${fixed(terminal.fcf)}; already included in terminal value.</title></rect>`;}
+    out+=text(tx,b.bottom+18,'N+1',"middle",'#88571c')+text(tx,b.bottom+34,'g '+percent(terminal.growth),"middle",'#88571c','',9);
+    out+=text((b.left+b.right)/2,b.height-2,'Year t',"middle",'#536574','',10);svg.innerHTML=out;
   }
   function drawSensitivity(m) {
     const valid = m.sensitivity.flat().map(c => c.operatingValue).filter(v => v !== null), lo = Math.min(...valid), hi = Math.max(...valid);
@@ -165,7 +162,9 @@
     m.bridge.forEach((s, index) => {
       const x = b.left + step * (index + .5), high = Math.max(s.start, s.end), low = Math.min(s.start, s.end);
       const color = s.type === "add" ? "#14786d" : s.type === "subtract" || s.end < 0 ? "#b66a30" : "#2458a8";
-      out += `<rect x="${x - bar / 2}" y="${b.y(high)}" width="${bar}" height="${Math.max(.5, b.y(low) - b.y(high))}" fill="${color}" rx="2"/>`;
+      if(index===0&&m.forecastPv>=0&&m.terminalPv>=0){
+        out+=`<rect x="${x-bar/2}" y="${b.y(m.forecastPv)}" width="${bar}" height="${Math.max(.5,b.y(0)-b.y(m.forecastPv))}" fill="#2458a8"/><rect data-terminal-component="true" x="${x-bar/2}" y="${b.y(m.operatingValue)}" width="${bar}" height="${Math.max(.5,b.y(m.forecastPv)-b.y(m.operatingValue))}" fill="#b97820"><title>Terminal PV ${fixed(m.terminalPv)} at growth ${percent(m.inputs.terminalGrowth)}; forecast PV ${fixed(m.forecastPv)}.</title></rect>`;
+      }else out += `<rect x="${x - bar / 2}" y="${b.y(high)}" width="${bar}" height="${Math.max(.5, b.y(low) - b.y(high))}" fill="${color}" rx="2"/>`;
       // Signed totals retain their sign; additions/deductions show their direction.
       const label = s.type === "add" ? "+" + fixed(s.amount) : s.type === "subtract" ? "−" + fixed(-s.amount) : fixed(s.amount);
       out += text(x, Math.max(13, b.y(high) - 6), label, "middle", "#29455c");
@@ -175,23 +174,26 @@
     }); svg.innerHTML = out;
   }
   function drawForecast(m) {
-    const accounting = v => v < -.0000001 ? `(${fixed(-v)})` : fixed(Math.abs(v) < .0000001 ? 0 : v);
-    const rows = [
-      ["Revenue", "R<sub>t</sub>", f => f.revenue, "revenue salesGrowth", "revenue-row"],
-      ["Operating costs, before depreciation", "", f => -f.operatingCosts, "revenue salesGrowth margin depreciation", "deduction"],
-      ["Depreciation expense", "DA<sub>t</sub>", f => -f.depreciation, "revenue salesGrowth depreciation", "deduction"],
-      ["Operating profit", "EBIT<sub>t</sub>", f => f.ebit, "revenue salesGrowth margin", "subtotal"],
-      ["Tax on operating profit", "", f => -f.taxes, "revenue salesGrowth margin tax", "deduction"],
-      ["After-tax operating profit", "NOPAT<sub>t</sub>", f => f.nopat, "revenue salesGrowth margin tax", "subtotal"],
-      ["Add back depreciation", "DA<sub>t</sub>", f => f.depreciation, "revenue salesGrowth depreciation", "adjustment"],
-      ["Capital spending", "CapEx<sub>t</sub>", f => -f.capex, "revenue salesGrowth capex", "deduction"],
-      ["Change in operating NWC", "ΔNWC<sub>t</sub>", f => -f.deltaNwc, "revenue salesGrowth workingCapital", "deduction"],
-      ["Free cash flow", "FCF<sub>t</sub>", f => f.fcf, "revenue salesGrowth margin tax depreciation capex workingCapital", "total-row"],
-      ["Discount factor", "1/(1+r)<sup>t</sup>", f => f.discountFactor, "discountRate", "factor-row"],
-      ["Present value of cash flow", "PV<sub>t</sub>", f => f.pv, "revenue salesGrowth margin tax depreciation capex workingCapital discountRate", "pv-row"],
-      ["NWC balance (reference only)", "NWC<sub>t</sub>", f => f.nwc, "revenue salesGrowth workingCapital", "memo-row"]
+    const accounting=v=>v<-.0000001?`(${fixed(-v)})`:fixed(Math.abs(v)<.0000001?0:v);
+    const rows=[
+      ['Revenue growth','s → g',()=>m.inputs.salesGrowth,'salesGrowth terminalGrowth','growth-row',f=>f.growth],
+      ['Revenue','R<sub>t</sub>',f=>f.revenue,'revenue salesGrowth','revenue-row',f=>f.revenue],
+      ['Operating costs, before depreciation','',f=>-f.operatingCosts,'revenue salesGrowth margin depreciation','deduction',()=>null],
+      ['Depreciation expense','DA<sub>t</sub>',f=>-f.depreciation,'revenue salesGrowth depreciation','deduction',()=>null],
+      ['Operating profit','EBIT<sub>t</sub>',f=>f.ebit,'revenue salesGrowth margin','subtotal',f=>f.ebit],
+      ['Tax on operating profit','',f=>-f.taxes,'revenue salesGrowth margin tax','deduction',f=>-f.taxes],
+      ['After-tax operating profit','NOPAT<sub>t</sub>',f=>f.nopat,'revenue salesGrowth margin tax','subtotal',f=>f.nopat],
+      ['Add back depreciation','DA<sub>t</sub>',f=>f.depreciation,'revenue salesGrowth depreciation','adjustment',()=>null],
+      ['Capital spending','CapEx<sub>t</sub>',f=>-f.capex,'revenue salesGrowth capex','deduction',()=>null],
+      ['Change in operating NWC','ΔNWC<sub>t</sub>',f=>-f.deltaNwc,'revenue salesGrowth workingCapital','deduction',()=>null],
+      ['Terminal net reinvestment','NOPAT × <span class="eq-fraction"><span>g</span><span>q</span></span>',()=>null,'terminalGrowth terminalReturn','terminal-reinvestment',f=>f.netReinvestment===null?null:-f.netReinvestment],
+      ['Free cash flow','FCF<sub>t</sub>',f=>f.fcf,'revenue salesGrowth margin tax depreciation capex workingCapital','total-row',f=>f.fcf],
+      ['Discount factor','',f=>f.discountFactor,'discountRate','factor-row',()=>null],
+      ['Present value of cash flow','PV<sub>t</sub>',f=>f.pv,'revenue salesGrowth margin tax depreciation capex workingCapital discountRate','pv-row',()=>null],
+      ['NWC balance (reference only)','NWC<sub>t</sub>',f=>f.nwc,'revenue salesGrowth workingCapital','memo-row',()=>null]
     ];
-    $("forecast-table").innerHTML = `<caption class="sr-only">Annual operating forecast and free cash flow in USD million. Parentheses indicate deductions or negative amounts. Discount factors are unitless. Selected year: ${inspectYear}.</caption><thead><tr><th scope="col">Year <span class="symbol">t</span></th>${m.forecast.map(f => `<th scope="col" class="${f.year === inspectYear ? 'inspected' : ''}"><button type="button" data-year="${f.year}" aria-label="Select forecast year ${f.year}" aria-pressed="${f.year === inspectYear}">${f.year}</button></th>`).join("")}</tr></thead><tbody>${rows.map(([label, symbol, value, keys, cls]) => `<tr class="${cls}" data-vars="${keys}"><th scope="row"><span>${label}</span>${symbol ? `<span class="row-symbol">${symbol}</span>` : ''}</th>${m.forecast.map(f => `<td class="${f.year === inspectYear ? 'inspected' : ''}">${cls === 'factor-row' ? value(f).toFixed(4) : accounting(value(f))}</td>`).join("")}</tr>`).join("")}</tbody>`;
+    const format=(v,cls)=>v===null?'—':cls==='growth-row'?percent(v):cls==='factor-row'?v.toFixed(4):accounting(v);
+    $("forecast-table").innerHTML=`<caption class="sr-only">Explicit forecast plus a distinct terminal year N+1. Terminal reinvestment uses growth and return on capital. Terminal cash flow is included in terminal value, not added again to forecast PV.</caption><thead><tr><th scope="col">Year <span class="symbol">t</span></th>${m.forecast.map(f=>`<th scope="col" class="${f.year===inspectYear?'inspected':''}"><button type="button" data-year="${f.year}" aria-label="Select forecast year ${f.year}" aria-pressed="${f.year===inspectYear}">${f.year}</button></th>`).join('')}<th scope="col" class="terminal-column" data-terminal-column="true">Terminal<br><span>N+1 · ${m.terminalYear.year}</span></th></tr></thead><tbody>${rows.map(([label,symbol,value,keys,cls,terminalValue])=>`<tr class="${cls}" data-vars="${keys}"><th scope="row"><span>${label}</span>${symbol?`<span class="row-symbol">${symbol}</span>`:''}</th>${m.forecast.map(f=>`<td class="${f.year===inspectYear?'inspected':''}">${format(value(f),cls)}</td>`).join('')}<td class="terminal-column" data-terminal-column="true" data-vars="${keys} terminalGrowth terminalReturn">${format(terminalValue(m.terminalYear),cls)}</td></tr>`).join('')}</tbody>`;
   }
 
   function render() {
@@ -206,7 +208,7 @@
     $("download").disabled = !c.ok; $("save-baseline").disabled = !c.ok; $("inspect-year").disabled = !c.ok;
     if (!c.ok) {
       current = null;
-      for (const id of ["revenue-worked", "profit-worked", "depreciation-worked", "capex-worked", "working-capital-worked", "fcf-worked", "nwc-worked", "next-worked", "terminal-worked", "discount-worked", "operations-worked", "equity-worked", "price-worked", "operating-value", "share-price", "forecast-pv", "terminal-pv", "terminal-share"]) $(id).textContent = "—";
+      for (const id of ["revenue-worked", "margin-worked", "profit-worked", "depreciation-worked", "capex-worked", "working-capital-worked", "fcf-worked", "nwc-worked", "next-worked", "terminal-worked", "discount-worked", "operations-worked", "equity-worked", "price-worked", "operating-value", "share-price", "forecast-pv", "terminal-pv", "terminal-share"]) $(id).textContent = "—";
       for (const id of ["cashflow-chart", "bridge-chart", "heatmap", "forecast-table"]) $(id).innerHTML = "";
       $("composition").hidden = true; $("model-warning").hidden = true; $("comparison").textContent = "Enter valid inputs to compare."; return;
     }
@@ -260,6 +262,7 @@
     const url = URL.createObjectURL(new Blob(['<!doctype html>\n' + clone.outerHTML], { type: 'text/html' })); const a = document.createElement('a'); a.href = url; a.download = 'dcf.html'; a.hidden = true; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
     $("download-status").textContent = 'Save dcf.html · opens at the starting case.';
   });
+  $("pv-operations").addEventListener("toggle",()=>{if(current&&$("pv-operations").open)drawCashflow(current);});
   let resizeFrame;
   new ResizeObserver(() => { cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(() => { if (current) { drawCashflow(current); drawBridge(current); drawSensitivity(current); } }); }).observe($("cashflow-chart"));
   setInputs(M.DEFAULTS);

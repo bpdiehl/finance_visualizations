@@ -223,7 +223,7 @@
     latest = result;
     const values = { ...result.inputs, ...result };
     document.querySelectorAll("[data-value]").forEach(el => {
-      el.textContent = percent(values[el.dataset.value], Number(el.dataset.precision || 2));
+      el.textContent = el.dataset.normalized ? (values[el.dataset.value]*100).toFixed(2) : percent(values[el.dataset.value], Number(el.dataset.precision || 2));
     });
     byId("debt-block").style.height = percent(inputs.debtWeight, 6);
     byId("equity-block").style.height = percent(result.equityWeight, 6);
@@ -314,5 +314,11 @@
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
     setText("download-status", "Downloaded wacc.html");
   });
+
+  const wSymbol=(body,key='')=>`<span class="eq-token" ${key?`data-vars="${key}"`:''}>${["E/V","D/V"].includes(body)?`<span class="eq-fraction"><span>${body.split("/")[0]}</span><span>${body.split("/")[1]}</span></span>`:body}</span>`;
+  const wValue=(value,key='',precision=2)=>["equityWeight","debtWeight"].includes(value)?`<span class="eq-fraction"><span class="eq-token" data-value="${value}" data-normalized="true" data-vars="${key}"></span><span>100.00</span></span>`:`<span class="eq-token" data-value="${value}" data-precision="${precision}" ${key?`data-vars="${key}"`:''}></span>`;
+  EquationLayout.render('asset-worked',[wSymbol('r<sub>a</sub>'),'=',wSymbol('E/V','debtWeight'),'×',wSymbol('r<sub>e</sub>','equityRate'),'+',wSymbol('D/V','debtWeight'),'×',wSymbol('r<sub>d</sub>','debtRate')],[[wValue('assetReturn','',3),'=',wValue('equityWeight','debtWeight'),'×',wValue('equityRate','equityRate'),'+',wValue('debtWeight','debtWeight'),'×',wValue('debtRate','debtRate')]]);
+  EquationLayout.render('shield-worked',['WACC','=',wSymbol('r<sub>a</sub>'),'−',wSymbol('D/V','debtWeight'),'×',wSymbol('r<sub>d</sub>','debtRate'),'×',wSymbol('T','taxRate')],[[wValue('wacc','',3),'=',wValue('assetReturn','',3),'−',wValue('debtWeight','debtWeight'),'×',wValue('debtRate','debtRate'),'×',wValue('taxRate','taxRate')]]);
+  EquationLayout.render('main-worked-equation',['WACC','=',wSymbol('E/V','debtWeight'),'×',wSymbol('r<sub>e</sub>','equityRate'),'+',wSymbol('D/V','debtWeight'),'×',wSymbol('r<sub>d</sub>','debtRate'),'×','(1 −',wSymbol('T','taxRate'),')'],[[wValue('wacc','',3),'=',wValue('equityWeight','debtWeight'),'×',wValue('equityRate','equityRate'),'+',wValue('debtWeight','debtWeight'),'×',wValue('debtRate','debtRate'),'×','(1 −',wValue('taxRate','taxRate'),')']]);
   syncControls(); render();
 })();

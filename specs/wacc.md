@@ -1,6 +1,6 @@
 # F3 — WACC & Capital Structure
 
-Status: ready for sharing; owner accepted v0.3 with the pp help addition. Catalog slug: wacc. Recommended build wave: 1.
+Status: owner-approved release v0.3.2, November 6, 2026. Catalog slug: wacc. Recommended build wave: 1.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. The WACC, financial-statements and Heinz personal course-note PDFs were visually reviewed for this pilot on 2026-10-30. They support the financing-weight, tax-shield and financing-risk framing. No source images, direct faculty quotes or company case data are distributed. All pilot inputs are illustrative. See verification/wacc.md (from the repository root) for actual test results and limits.
 
@@ -71,3 +71,7 @@ Removed narrative snippets, repeated financing identities, separate definition p
 ## v0.3.1 — owner acceptance
 
 The owner accepted the visualization and requested a percentage-points definition before commit/push. The tax-shield and saved-comparison info explain pp with the 10% to 9% example. The public catalog now includes the standalone HTML. Advanced modes remain deferred. Browser coverage and the local-file offline test exception are recorded explicitly in verification/wacc.md; do not infer unperformed cross-browser or offline tests from catalog availability.
+
+## November 6, 2026 — v0.3.2 release
+
+Owner authorized the reviewed changes for commit and publication. Includes aligned symbolic/numerical equations, textbook fractions, matching amber editing/selection feedback and consistent notation/graph legend styling. Prior draft restrictions above are historical. See verification/wacc.md and verification/equation-layout-review.md for evidence and limits.

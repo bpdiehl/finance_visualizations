@@ -1,6 +1,6 @@
 # F4 — Accounting to Free Cash Flow
 
-Status: owner-approved release v0.2.1. Catalog slug: free-cash-flow. Recommended build wave: 2.
+Status: owner-approved release v0.3, November 6, 2026. Catalog slug: free-cash-flow. Recommended build wave: 2.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -56,3 +56,15 @@ Deferred: component-level NWC, cash-event/multiyear timeline, salvage, increment
 Owner refinement: primary EBIT equation and statement start from NI + I + T, with reported tax expense T distinct from operating rate τ. NI/reported taxes are derived from the existing operating inputs and editable interest expense (Income statement detail). NOPAT uses pre-interest operating taxes; interest changes NI but not unlevered FCF. Each symbolic equation has its numerical substitution immediately below it.
 
 The final waterfall includes NI, interest, reported tax, EBIT, operating tax, NOPAT, D&A, CapEx, ΔNWC and FCF. Totals are visually distinct from adjustments; a full-width plot preserves readable labels and scrolls within its panel on narrow screens.
+
+## Local v0.3 refinement (not published)
+
+Owner requested a two-view main plot. To net income traces revenue−cash operating costs−D&A→EBIT−interest→EBT−reported taxes→NI. NI to FCF retains the full reconciliation. Both consume a shared model and preserve all assumptions when switching; the headline value/units and profit/cash labels track the chosen view. The operating statement remains the NI-to-FCF reconciliation. EBT is defined in chart help. Investment and NWC controls affect only FCF in this model. Reset restores the To net income view.
+
+Latest local layout refinement: a single Main assumptions disclosure contains revenue, cash operating costs, D&A, interest, tax rate, CapEx and opening/closing operating NWC, matching income effects first and investment/working-capital effects last. This supersedes the separate detail disclosures above.
+
+Latest local revision supersedes the one-group layout above: Income assumptions contains revenue, costs, D&A, interest and tax; Investment & working capital contains CapEx and opening/closing NWC and defaults collapsed. Edited sliders illuminate corresponding plot bands and statement rows, with fading feedback. The statement follows the selected plot mode. All equation substitutions/results share their symbolic term positions.
+
+## November 6, 2026 — v0.3 release
+
+Owner authorized the reviewed changes for commit and publication. Includes aligned symbolic/numerical equations, textbook fractions, matching amber editing/selection feedback and consistent notation/graph legend styling. Prior draft restrictions above are historical. See verification/free-cash-flow.md and verification/equation-layout-review.md for evidence and limits.

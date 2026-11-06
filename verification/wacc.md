@@ -100,3 +100,9 @@ Release exception: file:// execution with network blocked could not be automated
 Final release checks: the updated tax-shield dialog visibly defines pp as percentage points with the 10%-to-9% example. The catalog lists one available demo with Open and Download HTML links. The app-browser download event watcher timed out during the final catalog download check; this final event-based download check is therefore not claimed as passed. The generated standalone file is still validated by the deterministic packaging check and model/presentation tests. Earlier browser download checks and this limitation are distinguished here rather than conflated.
 
 Public v0.3.1 artifact: docs/downloads/wacc.html; 50932 bytes; SHA-256 fc45936e487b49d966d736086bccddeb672501ed71484e58d306efe395dff77e.
+
+Local equation presentation update: see [equation alignment and fraction review](equation-layout-review.md) for cross-demo browser measurements and limits. Uncommitted; published release evidence above remains historical.
+
+## November 6, 2026 — Accepted consistency release
+
+Owner authorized commit and push of the reviewed revisions. Final equation alignment, amber glow/notation/graph-legend checks and catalog evidence are in [the shared release review](equation-layout-review.md). Prior draft-only restrictions are historical. Saved-file/offline and browser-coverage limits remain explicit there and above.

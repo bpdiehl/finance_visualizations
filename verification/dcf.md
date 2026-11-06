@@ -115,3 +115,15 @@ Owner explicitly requested commit/push after accepting v0.4.2. Catalog status is
 Final release build/check passed all 50 checks. Generated local catalog on port 8773 reports 2 of 7 available and has DCF Open/Download links. Catalog Open loads the generated artifact, showing 14.19/share, forecast expanded and equations/key collapsed. Faster growth gives 17.29; Reset restores 14.19. N selects eight indices/values. Warning/error logs empty.
 
 A detached byte-identical copy was placed in a fresh temporary directory. The browser refused its file:// URL because the tool allows only HTTP(S); no alternate surface or restriction bypass was attempted. Catalog Download was clicked, but the browser download-event check timed out after three seconds, so successful browser saving remains unverified. These omissions do not imply an offline test passed. Static packaging checks confirm no external runtime dependencies. Classmate detached-file testing remains a follow-up.
+
+Local equation presentation update: see [equation alignment and fraction review](equation-layout-review.md) for cross-demo browser measurements and limits. Uncommitted; published release evidence above remains historical.
+
+## Local terminal-year refinement — not published
+
+Added a separately styled N+1 column with terminal growth, revenue, EBIT, taxes, NOPAT, net reinvestment and FCF. Individual terminal D&A/CapEx/NWC and standalone PV cells are dashes: the stable phase uses aggregate reinvestment g/q, and its cash flow is already priced in TV_N. The model exposes terminalYear for presentation while retaining exactly N forecast and discounted cash-flow entries. One independent model test verifies year6 revenue1364.990089152, NOPAT184.27366203552, reinvestment30.71227700592 and FCF153.5613850296, plus the no-double-count identity.
+
+A gold N+1 cash-flow bar and terminal-PV segment in the equity bridge show the terminal assumptions' effect. PV of operations is a native disclosure. Browser changed g2→3%: terminal-column FCF153.56→139.56; the gold bar tooltip and terminal-PV bridge component both updated, with forecast PV unchanged477.19. Collapsing PV of operations hid the result and reopening recovered it. Desktop terminal table and figures inspected;360px page measured360px with the forecast scrolling inside its region. Terminal unsupported-state handling checked at r=g. No extra terminal-year amount is added to forecast PV. No new offline execution claim.
+
+## November 6, 2026 — Accepted consistency release
+
+Owner authorized commit and push of the reviewed revisions. Final equation alignment, amber glow/notation/graph-legend checks and catalog evidence are in [the shared release review](equation-layout-review.md). Prior draft-only restrictions are historical. Saved-file/offline and browser-coverage limits remain explicit there and above.

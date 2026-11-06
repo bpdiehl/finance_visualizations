@@ -1,6 +1,6 @@
 # F6 — Investment Decisions: NPV & IRR
 
-Status: owner-approved release v0.1.1. Catalog slug: npv-irr. Recommended build wave: 2.
+Status: owner-approved release v0.1.2, November 6, 2026. Catalog slug: npv-irr. Recommended build wave: 2.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -49,3 +49,7 @@ For conventional outflow followed by positive inflows, the usual IRR decision ru
 One independent project, 1–8 future annual periods, year-zero cash flow, annual required return 0–50%. Signed cash flows bounded at ±10,000 dollars. Exact fields/sliders, per-year PVs, visible NPV/IRR equations, collapsed interactive key and curve over 0–50%. All finite real IRRs above −100% are isolated through positive roots of the discount-factor polynomial, including repeated roots; all-zero flows are a separate every-rate case. Roots outside the plotted range are listed in results. Original illustrative examples; no exact lecture replication claim.
 
 Deferred: A/B mutually exclusive comparison, payback, profitability index and alternate period units. Owner approved publication on November 6, 2026. See verification/npv-irr.md for numerical and browser evidence.
+
+## November 6, 2026 — v0.1.2 release
+
+Owner authorized the reviewed changes for commit and publication. Includes aligned symbolic/numerical equations, textbook fractions, matching amber editing/selection feedback and consistent notation/graph legend styling. Prior draft restrictions above are historical. See verification/npv-irr.md and verification/equation-layout-review.md for evidence and limits.

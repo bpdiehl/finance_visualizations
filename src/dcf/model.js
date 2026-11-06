@@ -108,7 +108,10 @@
       { label: "Claims", symbol: "D", start: result.operatingValue + inputs.cash, end: result.equity, amount: -inputs.debt, type: "subtract" },
       { label: "Equity", symbol: "E", start: 0, end: result.equity, amount: result.equity, type: "total" }
     ];
-    return { inputs, forecast, ...result, sensitivity, rates, growths, bridge };
+    // The first stable-growth year explains the continuing-value model; it is
+    // not appended to the explicitly discounted forecast cash-flow array.
+    const terminalYear={year:inputs.years+1,growth:inputs.terminalGrowth,revenue:result.terminalRevenue,ebit:result.terminalRevenue*inputs.margin,taxes:result.terminalRevenue*inputs.margin*inputs.tax,nopat:result.terminalNopat,netReinvestment:result.terminalNopat>0?result.terminalReinvestment:null,fcf:result.terminalNopat>0?result.terminalNext:null};
+    return { inputs, forecast, ...result, terminalYear, sensitivity, rates, growths, bridge };
   }
   globalThis.DemoModel = Object.freeze({ DEFAULTS, PRESETS, RULES, RATE_KEYS, validateInputs, calculateModel, valueCashFlows });
 })();

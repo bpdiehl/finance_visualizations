@@ -9,6 +9,47 @@
   <style>:root{color-scheme:light;--ink:#172838;--muted:#50616f;--blue:#1452a1;--line:#d7e0e6;--paper:#fff;--wash:#f2f5f7;--radius:12px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55;color:var(--ink);background:var(--wash)}
 *{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1080px;margin:auto;padding:32px 40px}header{padding-top:56px;padding-bottom:20px}h1{font-size:clamp(2.25rem,5vw,3.7rem);line-height:1.1;letter-spacing:-.045em;margin:10px 0 20px}h2{font-size:1.1rem;line-height:1.35;margin:0 0 6px}p{margin:8px 0;color:var(--muted)}a{color:var(--blue);text-underline-offset:3px}a:focus-visible,summary:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #a5480b;outline-offset:4px}.eyebrow{font-size:.75rem;font-weight:750;letter-spacing:.16em;color:var(--blue)}.intro{font-size:1.3rem;color:var(--ink)}.instructions{padding:24px 28px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:36px}.instructions ol{padding-left:22px}.instructions li{margin:8px 0}.instructions p{font-size:.92rem}summary{cursor:pointer;padding:8px 0;min-height:44px;font-weight:650}.section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.section-heading h2{font-size:1.45rem}.section-heading p{font-size:.85rem}.notice{padding:14px 18px;border-left:3px solid var(--blue);background:#e8eff8;font-size:.94rem}.notice strong{color:var(--ink)}.demo-list{list-style:none;padding:0;margin:24px 0 0}.demo{display:grid;grid-template-columns:36px 1fr auto;gap:16px;padding:24px 0;border-top:1px solid var(--line);align-items:center}.demo p{margin:0;font-size:.95rem}.code{align-self:start;margin-top:2px;font-size:.8rem;color:var(--blue);font-weight:750}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.status{font-size:.8rem;font-weight:650;color:var(--muted);border:1px solid var(--line);border-radius:30px;padding:5px 12px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border-radius:7px;border:1px solid var(--blue);background:var(--blue);color:white;text-decoration:none;font-size:.88rem;font-weight:650}.button.secondary{background:white;color:var(--blue)}.button:hover{filter:brightness(.93)}footer{font-size:.83rem;border-top:1px solid var(--line);padding-bottom:36px}.skip{position:absolute;left:-10000px;top:8px;background:white;padding:12px;z-index:10}.skip:focus{left:12px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}@media(max-width:680px){header,main,footer{padding-left:20px;padding-right:20px}header{padding-top:32px}.instructions{padding:20px}.demo{grid-template-columns:28px 1fr;gap:10px}.actions{grid-column:2;justify-content:flex-start}.section-heading{align-items:start;flex-direction:column;gap:0}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
+/* Paired equation rows: keep each value below its symbol, including the result. */
+.eq-aligned{display:grid;grid-template-columns:repeat(var(--eq-columns),max-content);column-gap:.38rem;row-gap:.2rem;align-items:baseline;justify-content:start;max-width:100%;min-width:0;overflow-x:auto;padding:5px 3px 9px;margin:4px 0 10px;font-variant-numeric:tabular-nums}
+.eq-aligned>.formula,.eq-aligned>.worked,.eq-aligned>.symbolic-equation,.eq-aligned>.live-values,.eq-aligned>.dist-formula,.eq-aligned>.dist-worked{display:contents!important}
+.eq-aligned .eq-cell{white-space:nowrap;text-align:center;line-height:1.9;min-width:0}
+.eq-aligned .eq-value-cell:not(.eq-operator){min-width:6.8ch}
+.eq-aligned .eq-cell .num,.eq-aligned .eq-cell .eq-token,.eq-aligned .eq-cell .term,.eq-aligned .eq-cell .result-value{min-width:0!important;width:auto!important;text-align:center;display:inline}
+.eq-aligned .eq-value-cell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.76rem;color:#385269}
+.eq-aligned .eq-cell.eq-operator{min-width:0}
+@media(max-width:560px){.eq-aligned{column-gap:.25rem}.eq-aligned .eq-value-cell{font-size:.7rem}}
+
+.eq-fraction{display:inline-grid;grid-template-rows:auto auto;line-height:1.4;text-align:center;vertical-align:middle}.eq-fraction>span:first-child{border-bottom:1px solid currentColor;padding:0 4px 2px}.eq-fraction>span:last-child{padding:2px 4px 0}.eq-message{font-size:.76rem;color:var(--muted)}
+
+.eq-inline-atom{display:inline-block;text-align:center;vertical-align:baseline}.eq-fraction{gap:0}.eq-fraction>span{white-space:nowrap}.eq-aligned .eq-cell .eq-fraction{display:inline-grid}
+
+.eq-aligned{width:100%}.equations>div,.equation-grid>div,.equation-grid>article{min-width:0}
+
+.eq-aligned{scrollbar-width:thin;scrollbar-color:#aabac8 #f1f4f6}.eq-aligned:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* Shared attention and legend language across the learning collection. */
+:root{--attention-wash:#fff1c7;--attention-edge:#c59b3b;--attention-ink:#513d17;--attention-shadow:0 0 0 2px #c59b3b30,0 0 12px #c59b3b20;--legend-paper:#f7f9fc;--legend-line:#d2dce5}
+body :is(.eq-token.is-editing,.term.is-editing,[data-edit].editing,[data-symbol].selected,[data-symbol].editing,[data-symbol].symbol-highlight,[data-symbol].is-symbol-highlight,[data-symbols].is-symbol-highlight){background:var(--attention-wash)!important;box-shadow:var(--attention-shadow)!important;color:var(--attention-ink)!important;border-radius:3px;transition-duration:90ms}
+body #forecast-table tr.is-editing td,body #forecast-table tr.is-editing th{background:var(--attention-wash)!important}
+body .column-wash{fill:var(--attention-wash)}body .bridge-column.input-highlight .column-wash{opacity:.9}body .bridge-column.input-highlight>rect:not(.column-wash){stroke:var(--attention-edge)}body .statement tr.input-highlight{background:var(--attention-wash)}
+body .key-row{grid-template-columns:72px minmax(0,1fr);gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:.79rem;line-height:1.5;align-items:center}
+body .key-row button,body .notation-grid .symbol-link{display:inline-block;text-align:center;vertical-align:middle;min-width:64px;min-height:44px;max-width:100%;padding:6px 8px;border:1px solid var(--legend-line);border-radius:6px;background:var(--legend-paper);font:1.02rem/1.4 Georgia,"Times New Roman",serif;color:var(--ink);text-decoration:none;cursor:pointer;transition:background-color .2s,border-color .2s,box-shadow .2s}
+body .key-row button:hover,body .notation-grid .symbol-link:hover{background:#edf2f7;border-color:#a9bdcf}
+body .key-row button[aria-pressed=true],body .notation-grid .symbol-link[aria-pressed=true]{background:var(--attention-wash);border-color:var(--attention-edge);color:var(--attention-ink);box-shadow:var(--attention-shadow)}
+body .key-row small{display:block;margin-top:3px;font-size:.7rem;line-height:1.45;color:var(--muted)}
+body .notation-grid dl{grid-template-columns:84px minmax(0,1fr);font-size:.79rem}body .notation-grid dt,body .notation-grid dd{padding:8px 0;border-top:1px solid var(--line);line-height:1.5}
+body :is(.key,.notation,.notation-key,.equations)>summary{color:var(--ink);font-size:.82rem;font-weight:650}
+body :is(.chart-key,.mix-key,.time-key,.matrix-key,.composition-key){font-size:.74rem;line-height:1.5;color:var(--muted);gap:8px 14px;flex-wrap:wrap}
+body :is(.chart-key,.mix-key,.time-key,.matrix-key)>span{display:inline-flex;align-items:center;gap:6px}
+body .swatch{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+body .swatch.legend-line{width:14px;height:0;border:0;border-top:2px solid #1452a1;border-radius:0;background:none}
+body .swatch.legend-dash{width:14px;height:0;border:0;border-top:2px dashed #6d7c89;border-radius:0;background:none}
+body .swatch.legend-dot{width:9px;height:9px;border:2px solid #a65d1c;border-radius:50%;background:white}
+.swatch.bridge-total{background:#24649d}.swatch.bridge-add{background:#2b8776}.swatch.bridge-deduct{background:#b36b47}
+@media(prefers-reduced-motion:reduce){body .key-row button,body .notation-grid .symbol-link{transition:none!important}}
+
+body .key-row button sub,body .key-row button sup,body .notation-grid .symbol-link sub,body .notation-grid .symbol-link sup{font-size:.7em}
+
 .wacc-app { --debt:#176d65; --equity:#2458a8; background:#f5f6f8; }
 .wacc-app header,.wacc-app main,.wacc-app footer { max-width:1220px; padding:0 32px; }
 .wacc-app button,.wacc-app input { font:inherit; }.wacc-app button { cursor:pointer; }.wacc-app button:disabled { opacity:.5; cursor:default; }.wacc-app [hidden] { display:none!important; }
@@ -42,7 +83,7 @@
   <a class="skip" href="#controls">Skip to controls</a>
   <header class="lab-header">
     <div class="masthead"><span>MBA INTERACTIVE LEARNING LAB</span><span>FINANCE / 03</span></div>
-    <div class="heading-row"><h1>Return on assets & WACC</h1><span class="version">Pilot · v0.3.1</span></div>
+    <div class="heading-row"><h1>Return on assets & WACC</h1><span class="version">Pilot · v0.3.2</span></div>
   </header>
   <main class="lab-main">
     <div class="preset-row" aria-label="Illustrative scenarios">
@@ -98,7 +139,7 @@
     <section class="comparison-panel" aria-label="Scenario comparison"><p id="explanation" role="status" aria-live="polite"></p><button type="button" class="secondary-action" id="save-baseline">Save comparison</button><button class="info" type="button" data-help="comparison" aria-label="Explain the saved comparison" aria-haspopup="dialog">i</button></section>
     <details class="curve-panel" id="curve-details"><summary>Explore debt share</summary><div class="curve-content"><svg id="curve" role="img" aria-labelledby="curve-title curve-description"><title id="curve-title">WACC versus debt share</title><desc id="curve-description">WACC at the current component rates.</desc></svg><p id="curve-summary" class="sr-only"></p><button class="info" type="button" data-help="curve" aria-label="Explain the debt-share chart" aria-haspopup="dialog">i</button></div></details>
   </main>
-  <footer class="lab-footer"><span>F3 · v0.3.1 · October 30, 2026</span><div><button class="text-info" type="button" data-help="model">Fixed-rate model ⓘ</button><button class="text-info" type="button" data-help="challenge">Try a question ⓘ</button></div><span id="download-status" role="status"></span></footer>
+  <footer class="lab-footer"><span>F3 · v0.3.2 · November 6, 2026</span><div><button class="text-info" type="button" data-help="model">Fixed-rate model ⓘ</button><button class="text-info" type="button" data-help="challenge">Try a question ⓘ</button></div><span id="download-status" role="status"></span></footer>
   <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button type="button" id="close-help" aria-label="Close explanation" autofocus>×</button></div><p id="help-body"></p><p class="help-formula" id="help-formula"></p></dialog>
   <script>/* Pure calculations. Inputs are decimal fractions; no DOM or display rounding. */
 (() => {
@@ -176,7 +217,43 @@
   });
 })();
 </script>
-  <script>(() => {
+  <script>/* A shared grid aligns symbolic and numerical rows; matched fractions share atom widths. */
+(() => {
+ 'use strict';
+ function render(target,symbols,rows,symbolicTarget){
+  const worked=typeof target==='string'?document.getElementById(target):target;
+  let formula=symbolicTarget?(typeof symbolicTarget==='string'?document.getElementById(symbolicTarget):symbolicTarget):worked.previousElementSibling;
+  if(!formula||!formula.matches('.formula,.symbolic-equation,.dist-formula')){formula=document.createElement('div');formula.className='formula';worked.before(formula);}
+  let grid=formula.parentElement;
+  if(!grid.classList.contains('eq-aligned')){grid=document.createElement('div');grid.className='eq-aligned';formula.before(grid);grid.append(formula,worked);}
+  const text=html=>{const el=document.createElement('span');el.innerHTML=String(html??'—');return el.textContent.trim();};
+  const op=s=>/^(?:[=+−×/(),≈\[\]]|min\(|\(1\s*[+−-]|\)[A-Za-z0-9]+)$/.test(s);
+  let nodes=symbols.map((s,i)=>({values:[s,...rows.map(r=>r[i]??'—')]}));
+  const raw=node=>node.values?text(node.values[0]):'';
+  const opening=node=>/^[([]/.test(raw(node)),closing=node=>/^[)\]]/.test(raw(node));
+  function leftOperand(end){let start=end;if(closing(nodes[end])){let depth=1;while(start>0&&depth){start--;if(closing(nodes[start]))depth++;if(opening(nodes[start]))depth--;}}return start;}
+  for(let slash=0;slash<nodes.length;slash++){
+   if(raw(nodes[slash])!=='/'||slash===0||slash===nodes.length-1)continue;
+   let start=leftOperand(slash-1);while(start>1&&raw(nodes[start-1])==='×')start=leftOperand(start-2);
+   let end=slash+1;
+   if(opening(nodes[end])){let depth=1;while(end<nodes.length-1&&depth){end++;if(opening(nodes[end]))depth++;if(closing(nodes[end]))depth--;}if(end<nodes.length-1&&/^<sup\b/.test(String(nodes[end+1].values?.[0])))end++;}
+   let bottom=nodes.slice(slash+1,end+1);if(bottom.length>2&&['(','['].includes(raw(bottom[0]))&&[')',']'].includes(raw(bottom.at(-1))))bottom=bottom.slice(1,-1);
+   const fraction={top:nodes.slice(start,slash),bottom};nodes.splice(start,end-start+1,fraction);slash=start;
+  }
+  function renderNode(node,row){
+   if(node.values)return String(node.values[row]??'—');
+   const line=parts=>parts.map(part=>{const strings=part.values?.map(text)||[],isOp=strings.length&&op(strings[0]);const width=isOp?Math.max(14,...strings.map(s=>s.length*7)):Math.max(46,...strings.map(s=>s.length*7.7));return `<span class="eq-inline-atom" style="min-width:${width}px">${renderNode(part,row)}</span>`;}).join('');
+   return `<span class="eq-fraction"><span>${line(node.top)}</span><span>${line(node.bottom)}</span></span>`;
+  }
+  grid.tabIndex=0;grid.setAttribute('role','group');grid.setAttribute('aria-label','Equation and current values; scroll horizontally if needed');
+  grid.style.setProperty('--eq-columns',nodes.length);
+  const cells=row=>nodes.map((node,col)=>`<span class="eq-cell${row?' eq-value-cell':''}${node.values&&op(raw(node))?' eq-operator':''}" style="grid-column:${col+1};grid-row:${row+1}">${renderNode(node,row)}</span>`).join('');
+  formula.innerHTML=cells(0);worked.innerHTML=rows.map((r,i)=>cells(i+1)).join('');
+ }
+ globalThis.EquationLayout=Object.freeze({render});
+})();
+
+(() => {
   "use strict";
   const percent = (value, precision = 2) => Number.isFinite(value) ? (value * 100).toFixed(precision) + "%" : "—";
   const points = value => Number.isFinite(value) ? (value * 100).toFixed(3) + " pp" : "—";
@@ -401,7 +478,7 @@
     latest = result;
     const values = { ...result.inputs, ...result };
     document.querySelectorAll("[data-value]").forEach(el => {
-      el.textContent = percent(values[el.dataset.value], Number(el.dataset.precision || 2));
+      el.textContent = el.dataset.normalized ? (values[el.dataset.value]*100).toFixed(2) : percent(values[el.dataset.value], Number(el.dataset.precision || 2));
     });
     byId("debt-block").style.height = percent(inputs.debtWeight, 6);
     byId("equity-block").style.height = percent(result.equityWeight, 6);
@@ -492,6 +569,12 @@
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
     setText("download-status", "Downloaded wacc.html");
   });
+
+  const wSymbol=(body,key='')=>`<span class="eq-token" ${key?`data-vars="${key}"`:''}>${["E/V","D/V"].includes(body)?`<span class="eq-fraction"><span>${body.split("/")[0]}</span><span>${body.split("/")[1]}</span></span>`:body}</span>`;
+  const wValue=(value,key='',precision=2)=>["equityWeight","debtWeight"].includes(value)?`<span class="eq-fraction"><span class="eq-token" data-value="${value}" data-normalized="true" data-vars="${key}"></span><span>100.00</span></span>`:`<span class="eq-token" data-value="${value}" data-precision="${precision}" ${key?`data-vars="${key}"`:''}></span>`;
+  EquationLayout.render('asset-worked',[wSymbol('r<sub>a</sub>'),'=',wSymbol('E/V','debtWeight'),'×',wSymbol('r<sub>e</sub>','equityRate'),'+',wSymbol('D/V','debtWeight'),'×',wSymbol('r<sub>d</sub>','debtRate')],[[wValue('assetReturn','',3),'=',wValue('equityWeight','debtWeight'),'×',wValue('equityRate','equityRate'),'+',wValue('debtWeight','debtWeight'),'×',wValue('debtRate','debtRate')]]);
+  EquationLayout.render('shield-worked',['WACC','=',wSymbol('r<sub>a</sub>'),'−',wSymbol('D/V','debtWeight'),'×',wSymbol('r<sub>d</sub>','debtRate'),'×',wSymbol('T','taxRate')],[[wValue('wacc','',3),'=',wValue('assetReturn','',3),'−',wValue('debtWeight','debtWeight'),'×',wValue('debtRate','debtRate'),'×',wValue('taxRate','taxRate')]]);
+  EquationLayout.render('main-worked-equation',['WACC','=',wSymbol('E/V','debtWeight'),'×',wSymbol('r<sub>e</sub>','equityRate'),'+',wSymbol('D/V','debtWeight'),'×',wSymbol('r<sub>d</sub>','debtRate'),'×','(1 −',wSymbol('T','taxRate'),')'],[[wValue('wacc','',3),'=',wValue('equityWeight','debtWeight'),'×',wValue('equityRate','equityRate'),'+',wValue('debtWeight','debtWeight'),'×',wValue('debtRate','debtRate'),'×','(1 −',wValue('taxRate','taxRate'),')']]);
   syncControls(); render();
 })();
 </script>

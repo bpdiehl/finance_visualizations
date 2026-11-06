@@ -1,6 +1,6 @@
 # F5 — Forecasting & DCF Valuation
 
-Status: ready, owner accepted 2026-11-03. Catalog slug: dcf. Recommended build wave: 1.
+Status: owner-approved release v0.5, November 6, 2026. Catalog slug: dcf. Recommended build wave: 1.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -123,3 +123,11 @@ Detailed controls use aligned label, 28-pixel info, 104-pixel field and reserved
 ### Owner acceptance — 2026-11-03
 
 Owner accepted v0.4.2 and explicitly authorized commit/push. The catalog now includes the standalone DCF download. Prior draft approval restrictions are historical; offline/browser coverage limits are retained in verification/dcf.md.
+
+## Local review refinements — November 6, 2026
+
+Textbook fractions and aligned numerical substitutions; EBIT-from-margin and NOPAT shown as separate aligned steps. Added a terminal N+1 column using the existing stable-growth/ROIC reinvestment model; unmodeled individual terminal accounting components are dashes. Added terminal-year CF to the annual figure as a separately labeled gold raw bar (no separate PV bar), terminal PV within the operations-to-equity figure, and a collapsible PV of operations section. The explicit forecast array remains N years; N+1 is already inside continuing value. See verification/dcf.md. These changes are included in the owner-authorized v0.5 release.
+
+## November 6, 2026 — v0.5 release
+
+Owner authorized the reviewed changes for commit and publication. Includes aligned symbolic/numerical equations, textbook fractions, matching amber editing/selection feedback and consistent notation/graph legend styling. Prior draft restrictions above are historical. See verification/dcf.md and verification/equation-layout-review.md for evidence and limits.
