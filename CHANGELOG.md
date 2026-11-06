@@ -1,5 +1,24 @@
 # Change log
 
+## 2026-11-06 — NPV & IRR v0.1.1 release
+
+- Owner approved publication; added catalog Open/Download actions and standalone HTML.
+- Added years repeat the last cash flow; retained the native project-length dropdown after review.
+- Offline execution limitations remain recorded in verification/npv-irr.md.
+
+
+## 2026-11-06 — Extend cash-flow assumptions
+
+- Added project years repeat the last existing year’s cash flow as an editable starting value. Timing help explains the behavior.
+
+
+## 2026-11-04 — NPV & IRR owner-review draft v0.1
+
+- Added editable annual cash-flow timeline, present-value contributions, NPV curve and linked equations/key.
+- Added conventional, break-even, multiple-IRR and no-IRR examples; isolate repeated roots and disclose every-rate/all-zero cases.
+- Preserved precise decimals, aligned controls, slider/exact entry, native disclosures and concise accessible help. Draft awaits owner review.
+
+
 ## 2026-11-03 — DCF v0.4.2 release
 
 - Owner accepted the DCF visualization and authorized commit/push after reviewing the statement, notation interactions and control alignment.

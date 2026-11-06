@@ -1,6 +1,6 @@
 # F6 — Investment Decisions: NPV & IRR
 
-Status: planned. Catalog slug: npv-irr. Recommended build wave: 2.
+Status: owner-approved release v0.1.1. Catalog slug: npv-irr. Recommended build wave: 2.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -42,3 +42,10 @@ For conventional outflow followed by positive inflows, the usual IRR decision ru
 **Tests:** CF=[−187,110,121], r=.10 gives NPV=13; IRR≈15%. CF=[−200,110,121], r=.10 → 0. Changing discount rate for conventional positive-inflow project decreases NPV monotonically. `CF=[−100,230,−132]` has two IRR roots at 10% and 20%; must flag ambiguity. Signed cash flows, including a negative initial investment, are allowed as data; the UI should label unusual patterns clearly. (Editorial correction; see EDITORIAL_NOTES.md.) For multiple/none, don't display a single unqualified IRR.
 
 **Out of scope:** Real options, full project-risk Monte Carlo, complex MIRR and optimizing investment portfolios.
+
+
+## Implemented pilot — November 4, 2026
+
+One independent project, 1–8 future annual periods, year-zero cash flow, annual required return 0–50%. Signed cash flows bounded at ±10,000 dollars. Exact fields/sliders, per-year PVs, visible NPV/IRR equations, collapsed interactive key and curve over 0–50%. All finite real IRRs above −100% are isolated through positive roots of the discount-factor polynomial, including repeated roots; all-zero flows are a separate every-rate case. Roots outside the plotted range are listed in results. Original illustrative examples; no exact lecture replication claim.
+
+Deferred: A/B mutually exclusive comparison, payback, profitability index and alternate period units. Owner approved publication on November 6, 2026. See verification/npv-irr.md for numerical and browser evidence.

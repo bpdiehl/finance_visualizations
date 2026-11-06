@@ -2,7 +2,7 @@
 
 Interactive browser visualizations for MBA classmates. The goal is intuition: change an assumption, see the effect, and understand why.
 
-**WACC & Capital Structure and Forecasting & DCF Valuation are available.** Other topics are planned. No GitHub account is needed to use the visualization.
+**WACC, DCF Valuation and NPV & IRR are available.** Other topics are planned. No GitHub account is needed to use the visualization.
 
 ## For classmates
 
@@ -19,7 +19,7 @@ Choose a topic in the [visualization catalog](https://bpdiehl.github.io/finance_
 | F3 | [WACC & Capital Structure](specs/wacc.md) | 1 | Available |
 | F4 | [Accounting to Free Cash Flow](specs/free-cash-flow.md) | 2 | Planned |
 | F5 | [Forecasting & DCF Valuation](specs/dcf.md) | 1 | Available |
-| F6 | [Investment Decisions: NPV & IRR](specs/npv-irr.md) | 2 | Planned |
+| F6 | [Investment Decisions: NPV & IRR](specs/npv-irr.md) | 2 | Available |
 | F7 | [Financial Performance & DuPont](specs/performance.md) | 3 | Planned |
 
 Build waves are priorities, not availability promises. See the [operations collection](https://github.com/bpdiehl/ops_visualizations) for the other seven topics.
@@ -54,3 +54,5 @@ For local WACC development, run python3 scripts/manage.py preview wacc, then ser
 
 
 DCF v0.4.2 includes a modified income statement extended to free cash flow, collapsible equations and linked notation, terminal reinvestment, sensitivity and an equity bridge. The approved standalone file is in `docs/downloads/dcf.html`. Run `python3 scripts/manage.py preview dcf` for local editing. See verification/dcf.md for evidence and remaining offline/download checks.
+
+[Open NPV & IRR](https://bpdiehl.github.io/finance_visualizations/downloads/npv-irr.html) or download it from the catalog. See verification/npv-irr.md for scope and evidence.
