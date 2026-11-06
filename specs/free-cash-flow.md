@@ -1,6 +1,6 @@
 # F4 — Accounting to Free Cash Flow
 
-Status: planned. Catalog slug: free-cash-flow. Recommended build wave: 2.
+Status: owner-approved release v0.2. Catalog slug: free-cash-flow. Recommended build wave: 2.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -45,3 +45,14 @@ Clarify the tax treatment when EBIT is negative: simple mode may use immediate u
 **Tests:** EBIT=100, T=.25, depreciation=20, CapEx=30, ΔNWC=10 → FCF=55. Sell for $400 with book value $200 and T=.20 → after-tax salvage $360; sell for $100 with same BV/T, under immediate loss-shield assumption → $120. A pure depreciation change, holding other assumptions constant, affects FCF through taxes rather than appearing as an out-of-pocket cash expense. Historical sunk expense that does not change across project alternatives produces zero incremental FCF.
 
 **Out of scope:** Full GAAP financial statement restatement, detailed deferred-tax schedules, tax-loss carryforwards and complex working-capital forecasts.
+
+
+## Implemented pilot — November 6, 2026
+
+Single-period modified operating statement and NI-to-FCF waterfall. Original defaults: revenue300, cash operating costs180, D&A20, τ25%, CapEx30, opening operating NWC100, closing110 → EBIT100, NOPAT75, FCF55. Immediate use of operating tax losses is an explicit simplification, shown when losses occur. Main assumptions have exact fields/sliders; NWC balances are in a disclosure below them and visually separated in the statement. Linked key and governing equations remain visible.
+
+Deferred: component-level NWC, cash-event/multiyear timeline, salvage, incremental/sunk/opportunity-cost cases. Owner approved publication on November 6, 2026. See verification/free-cash-flow.md.
+
+Owner refinement: primary EBIT equation and statement start from NI + I + T, with reported tax expense T distinct from operating rate τ. NI/reported taxes are derived from the existing operating inputs and editable interest expense (Income statement detail). NOPAT uses pre-interest operating taxes; interest changes NI but not unlevered FCF. Each symbolic equation has its numerical substitution immediately below it.
+
+The final waterfall includes NI, interest, reported tax, EBIT, operating tax, NOPAT, D&A, CapEx, ΔNWC and FCF. Totals are visually distinct from adjustments; a full-width plot preserves readable labels and scrolls within its panel on narrow screens.

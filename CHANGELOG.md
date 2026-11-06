@@ -1,5 +1,24 @@
 # Change log
 
+## 2026-11-06 — Accounting to Free Cash Flow v0.2 release
+
+- Extended the waterfall from NI through all adjustments and subtotals to FCF; expanded the plot width with internal scrolling on narrow screens.
+- Retained the NI + I + T EBIT reconciliation, individually paired equations/substitutions and explicit operating tax assumptions.
+- Owner approved publication; added Finance catalog Open/Download links and standalone HTML. Scope and offline test limits are in verification/free-cash-flow.md.
+
+
+## 2026-11-06 — EBIT from net income
+
+- Reconciled EBIT from NI, interest and reported taxes; distinguished tax expense T from rate τ.
+- Placed each EBIT/NOPAT worked calculation immediately below its symbolic equation.
+
+
+## 2026-11-06 — Accounting to Free Cash Flow draft v0.1
+
+- Added a modified operating statement, live NOPAT-to-FCF waterfall, linked equations/key and separate operating NWC balances.
+- Included working-capital, CapEx and depreciation examples with explicit tax-loss assumptions. Local draft awaiting owner review.
+
+
 ## 2026-11-06 — NPV & IRR v0.1.1 release
 
 - Owner approved publication; added catalog Open/Download actions and standalone HTML.

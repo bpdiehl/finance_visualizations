@@ -2,7 +2,7 @@
 
 ## Current status
 
-As checked on 2026-10-30, this repository is public and GitHub Pages is enabled. main already has the initial scaffold commit. The accepted WACC, DCF and NPV & IRR visualizations are included in docs/downloads/ and the generated catalog. See verification/wacc.md and verification/dcf.md for browser coverage and known limits.
+As checked on 2026-10-30, this repository is public and GitHub Pages is enabled. main already has the initial scaffold commit. The accepted WACC, DCF, NPV & IRR and Accounting to Free Cash Flow visualizations are included in docs/downloads/ and the generated catalog. See verification/wacc.md and verification/dcf.md for browser coverage and known limits.
 
 ## Recommended route: GitHub Pages
 
