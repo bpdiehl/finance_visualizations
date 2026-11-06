@@ -38,3 +38,5 @@ Owner then requested reverting the stepper. Restored the native1–8 year dropdo
 ## November 6 — owner-approved release
 
 Owner requested commit/push and inclusion on the main Finance page. Catalog set ready; release v0.1.1 generates a standalone file with Open/Download actions. Existing isolated-file and offline testing limits remain disclosed above.
+
+Deployment verification: the public Finance catalog and `downloads/npv-irr.html` exactly matched the released local files after push952c343. The live catalog showed3 available demos and NPV Open/Download links; following Open rendered NPV13.00. A click on the live catalog Download link did not produce an observed browser download event before timeout, so that specific save flow is not claimed verified. The demo's own download was verified earlier.
