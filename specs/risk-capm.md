@@ -1,6 +1,6 @@
 # F2 — Risk, Diversification & CAPM
 
-Status: planned. Catalog slug: risk-capm. Recommended build wave: 3.
+Status: owner-approved release v0.4. Catalog slug: risk-capm. Recommended build wave: 3.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -32,3 +32,26 @@ The full brief preserves future modes. For a pilot, deliver the simplest faithfu
 **Tests:** Two assets σ=10% each with w=.5 and correlation ρ=1 produce portfolio σ=10%; with ρ=0 portfolio σ≈7.071%; with ρ=−1 and equal σ/weights portfolio σ=0. CAPM rf=3%, market premium=6%, beta=1.5 → required 12%. Validate weights sum to 1 (unless leverage explicitly enabled).
 
 **Out of scope:** Estimating beta from real stock APIs or implied option volatilities; asserting CAPM is empirically perfect.
+
+
+## Implementation — November 9, 2026, v0.4
+
+The owner selected three supporting graph types after visual comparison with the supplied September 15/17 personal notes. Those two complete note pages were inspected in this revision; other inherited course anchors remain unverified. Source artwork, private annotations and class figures are not published.
+
+The implemented pilot has four tabs; CAPM is first and selected on initial load:
+
+- **CAPM:** standalone security market line, beta versus required return. Three relevant inputs: risk-free rate, expected market return and beta. Visible expanded CAPM equation with aligned decimal substitution and a market-premium definition. The market premium is derived from expected market return minus the risk-free rate; zero and negative premiums are supported. Labeled risk-free beta0 and market beta1 points; independent of company-specific risk, stock count and alpha.
+- **CAL:** excess expected return versus total portfolio volatility. Selected risky portfolio and market-reference capital allocation lines, cash/borrowing weight and Sharpe ratios. Same risk-free borrowing/lending rate assumed. Market CAL reference represents the fully diversified CAPM benchmark; it is not a security market line.
+- **Diversification:** portfolio standard deviation versus stock count. Equal weights, identical betas, independent company-specific residuals uncorrelated with the market. Variance is beta² times market variance plus individual residual variance divided by n. Adding holdings reduces company-specific risk; systematic risk stays at abs(beta) times market volatility.
+- **Beta:** annual asset returns versus annual market returns, with covariance/variance slope, fitted line and selectable residual observation. A square plotting area with identical x/y ranges and tick values gives the slope its correct geometric angle; the common range fits the current observations. Seeded illustrative observations are centered/scaled/orthogonalized to match requested moments exactly; they are not historical observations or a demonstration of sampling estimation error. An optional disclosure shows the same observations over time. CAPM alpha is optional; raw total-return intercept is r_f(1−beta)+alpha, distinct from alpha.
+
+Core equations and aligned decimal substitutions remain visible. Smaller Symbols & units key collapsed, one definition per row; shared amber highlights, fractions/radicals, exact fields/sliders, relevant examples and mode-specific Reset. Original annual-return illustrations; desktop focused. Zero-risk Sharpe is explicitly Undefined. Stock count is integer 1–200, with identical plot/slider bounds. Positive market volatility keeps covariance/variance beta and market Sharpe defined.
+
+Deferred: real data and beta estimation from uploaded observations, finite-sample moment deviations, unequal holdings/correlated residuals, the original two-asset correlation/allocation view, standalone distribution demonstrations. Owner accepted v0.4 and authorized commit/push on November 9, 2026. Catalog marked ready; generated standalone download included. See ../verification/risk-capm.md.
+
+
+## Owner-selected refinements — v0.4
+
+Implemented review suggestions1,3,4,5. View changes preserve local inputs, sample seed and selected observation within the current page session. Beta, risk-free rate and expected market return are shared across all four views; local stock counts/volatilities/allocation remain independent. Presets and Reset intentionally set the active view’s baseline including shared assumptions. Reload opens the default CAPM baseline.
+
+Expected market return is now the canonical input everywhere (−20% to40%); premium is derived. Risk-free changes hold expected market return fixed, pivoting SML around beta1. Negative-premium SML/CAL bounds include both endpoints/rays. Beta’s duplicate CAPM equation/headline are removed; headline now pairs fitted beta with company-specific volatility. CAL labels Saving and Borrowing on its risky-portfolio line around the100% point. Overall equation/header compaction was not requested in this selection and was not implemented.

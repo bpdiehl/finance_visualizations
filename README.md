@@ -2,7 +2,7 @@
 
 Interactive browser visualizations for MBA classmates. The goal is intuition: change an assumption, see the effect, and understand why.
 
-**WACC, DCF Valuation, NPV & IRR, Accounting to Free Cash Flow, Time Value of Money and Financial Performance & DuPont are available.** Risk, Diversification & CAPM is planned. No GitHub account is needed to use the visualizations.
+**WACC, DCF Valuation, NPV & IRR, Accounting to Free Cash Flow, Time Value of Money Financial Performance & DuPont, and Risk, Diversification & CAPM are available.** No GitHub account is needed to use the visualizations.
 
 ## For classmates
 
@@ -15,7 +15,7 @@ Choose a topic in the [visualization catalog](https://bpdiehl.github.io/finance_
 | Code | Topic / build brief | Build wave | Status |
 | --- | --- | --- | --- |
 | F1 | [Time Value of Money](specs/time-value.md) | 2 | Available |
-| F2 | [Risk, Diversification & CAPM](specs/risk-capm.md) | 3 | Planned |
+| F2 | [Risk, Diversification & CAPM](specs/risk-capm.md) | 3 | Available |
 | F3 | [WACC & Capital Structure](specs/wacc.md) | 1 | Available |
 | F4 | [Accounting to Free Cash Flow](specs/free-cash-flow.md) | 2 | Available |
 | F5 | [Forecasting & DCF Valuation](specs/dcf.md) | 1 | Available |
@@ -60,3 +60,5 @@ DCF v0.4.2 includes a modified income statement extended to free cash flow, coll
 [Open Accounting to Free Cash Flow](https://bpdiehl.github.io/finance_visualizations/downloads/free-cash-flow.html): follow net income through EBIT and NOPAT to unlevered FCF. See verification/free-cash-flow.md for scope and coverage.
 
 [Open Financial Performance & DuPont](https://bpdiehl.github.io/finance_visualizations/downloads/performance.html): explore margin, asset turnover, leverage, ROA and ROE using consistent accounting definitions. See verification/performance.md.
+
+[Open Risk, Diversification & CAPM](https://bpdiehl.github.io/finance_visualizations/downloads/risk-capm.html): start with CAPM, then explore CAL, diversification and beta. Related views share return assumptions and remember local settings. See verification/risk-capm.md.

@@ -1,5 +1,40 @@
 # Change log
 
+## 2026-11-09 — Risk, Diversification & CAPM v0.4 release
+
+- Owner accepted and authorized publication of the four-tab visualization, with CAPM as the default.
+- Added catalog Open/Download links and standalone HTML; all seven Finance topics are now available.
+- Completed all37 notation glow links, including controls, headline values and nested symbols.
+- Numerical/browser evidence and remaining offline/cross-browser coverage limits are recorded in verification/risk-capm.md.
+
+## Local draft — Risk, Diversification & CAPM v0.4, November 9, 2026
+
+- Preserved per-tab inputs, seeds and observations; shared beta and return assumptions across views.
+- Made expected market return a direct input and derived the premium, including flat/inverted lines.
+- Focused Beta on fitted slope and company-specific volatility; labeled Saving/Borrowing on CAL.
+- All97 checks pass; browser state-continuity and revised-return evidence recorded. No commit/push.
+
+## Local draft — Risk, Diversification & CAPM v0.3, November 9, 2026
+
+- Added a dedicated CAPM security market line tab and made it the initial view, ahead of CAL, Diversification and Beta.
+- Added three relevant controls, expanded decimal CAPM equation and risk-free/market reference points.
+- All96 checks pass, including standalone CAPM numerical/independence/default tests; browser evidence recorded. No commit or push.
+
+## Local draft — Risk, Diversification & CAPM v0.2, November 9, 2026
+
+- Replaced the initial views with owner-selected CAL, Diversification and Beta tabs after inspecting the supplied notes.
+- CAL uses excess return versus total risk; diversification uses stock count with a persistent systematic-risk floor; beta uses asset versus market returns.
+- Added a visible seed, selectable beta observations, optional time paths and matching square Beta axes.
+- Made CAL and Beta plotting areas square at owner request; Beta axes share identical ranges and tick values.
+- Replaced obsolete pilot tests with nine model tests. All 95 checks pass; browser evidence and remaining offline/release limits recorded. Not committed or pushed.
+
+## Local draft — Risk, Diversification & CAPM v0.1, November 9, 2026
+
+- Added two-asset allocation/correlation curves and a linked return/risk plot with minimum-risk allocation.
+- Added CAPM security market line, beta control and required-return components.
+- Included visible aligned decimal equations, textbook radical, nested symbol key, type-specific examples and shared amber interaction feedback.
+- Eight new model tests; 94 automated checks pass. Desktop browser and successful download evidence recorded; local file execution remains blocked by the testing browser policy. No commit, push or release.
+
 ## 2026-11-09 — Pages publishing recovery
 
 - Replaced the built-in branch publisher after repeated GitHub internal errors with an explicit static Pages workflow publishing the same committed docs folder and public URLs.
