@@ -4,4 +4,8 @@ DuPont release commit71e9159 pushed successfully, but GitHub's built-in Pages wo
 
 Recovery uses an explicit official static Pages workflow on ubuntu-24.04: checkout, configure Pages, upload the committed docs directory, deploy. No runtime compilation; no changes to generated site content. Contents read is global; Pages write and OIDC are scoped to the publishing job. Same github-pages environment and site URL. Trigger only main pushes affecting docs/workflow, plus manual dispatch. No cancellation of an active deployment. This replaces the failing branch-based publisher.
 
-Live deployment verification is recorded after the recovery run completes.
+Static publishing run42673230932 succeeded for recovery commit95fe572. Both live catalogs and all11 visualization downloads returnedHTTP200 and matched local committed docs bytes exactly, including DuPontperformance.html. The existing Finance content and new DuPont release are now available.
+
+The follow-up permissions-only commit9ddea63 and manual dispatch also encountered GitHub internal errors before any jobs, correlations e5172c54-b637-468e-a386-0b327595b631 and27632609-7e03-4e29-a97c-d7451446e2b3 (runs42673309898 and42673652479). Thus the underlying intermittent GitHub scheduler/service problem remains; the explicit workflow has one successful production deployment but cannot guarantee future service availability. These failures did not replace the successful live deployment. No visualization rollback or numerical fix was needed.
+
+Recovery check: all86 repository checks passed; diff whitespace passed. Publishing settings changed from legacy/main/docs to workflow; URL unchanged. Operations remains on branch-based publishing and its429a0ab run succeeded. Shared repo tools/standards unchanged; publishing-route difference is deliberate. Official workflow guidance: https://docs.github.com/en/get-started/start-your-journey/deploying-your-website-automatically .
