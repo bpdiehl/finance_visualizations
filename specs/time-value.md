@@ -1,6 +1,6 @@
 # F1 — Time Value of Money
 
-Status: planned. Catalog slug: time-value. Recommended build wave: 2.
+Status: ready v0.1; owner authorized commit/push November 9, 2026. Catalog slug: time-value. Recommended build wave: 2.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -35,3 +35,17 @@ The full brief preserves future modes. For a pilot, deliver the simplest faithfu
 **Tests:** $110 in one year at 10% → PV=$100. $100/year perpetuity at r=.05 → PV=$2,000. Growing perpetuity C1=$100, r=.08, g=.03 → PV=$2,000. Bond with coupon rate=yield and matching frequency priced at par (ignoring accrued interest and under conventional timing). Invalid r≤g gives warning and no numeric perpetuity PV.
 
 **Out of scope:** Complex floating-rate instruments, default-adjusted bond valuation, market yield curve bootstrapping.
+
+
+## Implemented pilot — November 9, 2026
+
+Desktop-focused single payment, ordinary annuity / annuity due, growing or level perpetuity, and fixed coupon bond. Same-date paired bars compare actual cash flows with their present-value contributions. Payment positions use actual years; long bond timelines scroll horizontally. Select a payment to inspect its discount calculation. Single mode displays inverse compounding alongside discounting; annuity has a zero-rate branch; perpetuity includes the entire infinite value and reports the unplotted tail beyond 12 years. Bonds separate annual nominal yield, periodic yield, frequency, coupon rate, principal and coupon value, with valuation on a coupon date. Y is bond maturity in years; N is the number of periods. Annual cash flows use effective annual r.
+
+Governing equations remain visible with live values in shared aligned columns and textbook fractions. Main assumptions collapse, symbols key defaults closed, controls use aligned information/input/unit columns, and symbol hover/pinning and editing use the shared amber attention style. No mobile-specific design work. Illustrative examples only; irregular streams are covered by NPV/IRR, and this pilot does not include a general irregular cash-flow editor or inflation/risk adjustments. No commit/push authorized for this draft.
+
+
+## Owner refinement — payment types and value notation
+
+Payment types now come first as the primary selection. Examples below are filtered to that type, with an active-example indicator. Choosing a type loads its own baseline; Reset restores the selected type's baseline instead of changing type. Manual assumption edits update the example indicator. V₀ denotes value today and Vₜ payment-date value; these replace PV/FV/CF in equations, input labels, results and the relevant-only symbol key. Single payment timing uses t. C remains the repeated payment, with C₁ for first perpetuity payment.
+
+Rebuilt/rechecked:80 automated checks pass. Browser confirmed single-payment V₀/Vₜ equations and labels; perpetuity shows only its two examples; selecting Growth near return and Reset preserves Perpetuity and restores2000; Coupon bond shows only its two examples and1000 baseline; Annuity shows Five payments and379.08. Expanded desktop screenshot inspected. No commit/push.

@@ -1,5 +1,17 @@
 # Change log
 
+## 2026-11-09 — Time Value of Money v0.1
+
+- Released the desktop Time Value of Money tool with single payment, annuity, perpetuity and coupon bond modes.
+- Added type-specific examples, selectable cash flow/value-today timeline, V₀/Vₜ equations with decimal rates and clear coupon-frequency conventions.
+- Added standalone download and Finance catalog listing. Offline and cross-browser verification limits remain documented.
+
+## Local draft — Time Value of Money v0.1, November 9, 2026
+
+- Added desktop cash-flow/PV timeline with single payment, annuity/due, perpetuity and coupon bond modes.
+- Added six illustrative presets, aligned live fraction equations, a collapsed interactive symbol key, sliders with exact inputs, and matching help and units.
+- Model tests cover independent reference values, zero-rate/timing boundaries, perpetuity convergence and bond coupon frequency. Draft stays out of public downloads pending owner review.
+
 ## 2026-11-06 — Equation and interaction consistency release
 
 - WACC v0.3.2, DCF v0.5, NPV & IRR v0.1.2 and Free Cash Flow v0.3.
