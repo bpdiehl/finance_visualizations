@@ -1,6 +1,6 @@
 # F7 — Financial Performance & DuPont
 
-Status: planned. Catalog slug: performance. Recommended build wave: 3.
+Status: ready v0.1; owner authorized commit/push November 9, 2026. Catalog slug: performance. Recommended build wave: 3.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -43,3 +43,14 @@ The three-factor identity is exact if numerators/denominators use the same defin
 **Tests:** Net income=10, sales=100, average assets=50, average equity=25 → net margin=.10, turnover=2, multiplier=2, ROE=.40, ROA=.20. The three factors multiplied must always equal direct ROE (within floating-point tolerance). Handle zero equity/assets denominator with “undefined” rather than divide-by-zero artifacts.
 
 **Out of scope:** Full IFRS/GAAP accounting engine, bank-specific regulatory ratios, causal claims about ROE without income/leverage risk modeling.
+
+
+## Implemented pilot
+
+Four-input static accounting identity. Uses annual common net income/sales and matching average book assets/common equity. DuPont tree and direct return equations use shared aligned numerical columns and fractions. Decimal ratio substitutions accompany percentage headlines, positive/negative return plot and proportional balance-sheet amounts. Other claims are the residual assets−common equity, not assumed interest-bearing debt. Explicit fixed-net-income leverage convention; no financing cost/risk simulation. Five presets, driver-linked input selection, collapsed symbol key and optional direct equations, collapsible assumptions. Independent model reference/boundary/invariant tests and limited desktop browser evidence in verification/performance.md. Saved-scenario comparison and causal leverage/interest extension deferred. No public download/commit/push yet.
+
+Owner refinement: ROA is now a prominent headline beside ROE, with ROA = PM × AT and aligned decimal substitution above the full DuPont identity. Direct NI/average-assets definition remains in optional equations/help. Default browser reload confirmed ROA20%, ROE40%, and0.2000=0.1000×2.0000. Build and86 checks pass.
+
+Owner layout refinement: Equations moved below presets, above the main DuPont/assumptions area. Symbols & units is a nested disclosure inside it. Both start collapsed. Browser reload and expansion verified placement and nesting; preview/build and whitespace checks passed.
+
+Owner approved final v0.1 release November9. Removed the persistent fixed-income banner; convention stays in info dialogs. Both ROA/ROE are prominent; top Equations disclosure contains nested symbols. Standalone HTML and catalog listing generated.

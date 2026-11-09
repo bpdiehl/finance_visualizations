@@ -1,5 +1,17 @@
 # Change log
 
+## 2026-11-09 — Financial Performance & DuPont v0.1
+
+- Released ROA/ROE driver diagram with aligned decimal equations, average book balance-sheet proportions and return comparison chart.
+- Added five examples, linked driver inputs, collapsed equations with nested symbols, and exact fields/sliders.
+- Moved the fixed-income financing assumption into help; removed its main-view banner. Added catalog Open/Download links and standalone HTML. Verification scope and remaining offline/browser limitations are documented.
+
+## Local draft — DuPont & Financial Performance v0.1, November 9, 2026
+
+- Added linked margin/turnover/equity-multiplier diagram, four accounting inputs, balance-sheet proportions and return comparison chart.
+- Added five illustrative presets, decimal worked equations/fractions, zero-denominator handling, loss support and explicit fixed-income leverage convention.
+- Six model tests and desktop browser evidence recorded. Catalog stays draft pending owner review.
+
 ## 2026-11-09 — Time Value of Money v0.1
 
 - Released the desktop Time Value of Money tool with single payment, annuity, perpetuity and coupon bond modes.

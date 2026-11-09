@@ -2,7 +2,7 @@
 
 Interactive browser visualizations for MBA classmates. The goal is intuition: change an assumption, see the effect, and understand why.
 
-**WACC, DCF Valuation, NPV & IRR and Accounting to Free Cash Flow are available.** Other topics are planned. No GitHub account is needed to use the visualization.
+**WACC, DCF Valuation, NPV & IRR, Accounting to Free Cash Flow, Time Value of Money and Financial Performance & DuPont are available.** Risk, Diversification & CAPM is planned. No GitHub account is needed to use the visualizations.
 
 ## For classmates
 
@@ -14,13 +14,13 @@ Choose a topic in the [visualization catalog](https://bpdiehl.github.io/finance_
 
 | Code | Topic / build brief | Build wave | Status |
 | --- | --- | --- | --- |
-| F1 | [Time Value of Money](specs/time-value.md) | 2 | Planned |
+| F1 | [Time Value of Money](specs/time-value.md) | 2 | Available |
 | F2 | [Risk, Diversification & CAPM](specs/risk-capm.md) | 3 | Planned |
 | F3 | [WACC & Capital Structure](specs/wacc.md) | 1 | Available |
 | F4 | [Accounting to Free Cash Flow](specs/free-cash-flow.md) | 2 | Available |
 | F5 | [Forecasting & DCF Valuation](specs/dcf.md) | 1 | Available |
 | F6 | [Investment Decisions: NPV & IRR](specs/npv-irr.md) | 2 | Available |
-| F7 | [Financial Performance & DuPont](specs/performance.md) | 3 | Planned |
+| F7 | [Financial Performance & DuPont](specs/performance.md) | 3 | Available |
 
 Build waves are priorities, not availability promises. See the [operations collection](https://github.com/bpdiehl/ops_visualizations) for the other seven topics.
 
@@ -58,3 +58,5 @@ DCF v0.4.2 includes a modified income statement extended to free cash flow, coll
 [Open NPV & IRR](https://bpdiehl.github.io/finance_visualizations/downloads/npv-irr.html) or download it from the catalog. See verification/npv-irr.md for scope and evidence.
 
 [Open Accounting to Free Cash Flow](https://bpdiehl.github.io/finance_visualizations/downloads/free-cash-flow.html): follow net income through EBIT and NOPAT to unlevered FCF. See verification/free-cash-flow.md for scope and coverage.
+
+[Open Financial Performance & DuPont](https://bpdiehl.github.io/finance_visualizations/downloads/performance.html): explore margin, asset turnover, leverage, ROA and ROE using consistent accounting definitions. See verification/performance.md.
