@@ -1,6 +1,6 @@
 # F2 — Risk, Diversification & CAPM
 
-Status: owner-approved release v0.4. Catalog slug: risk-capm. Recommended build wave: 3.
+Status: release v0.4.1, correcting the owner-approved v0.4. Catalog slug: risk-capm. Recommended build wave: 3.
 
 Derived from the owner's MBA Interactive Learning Lab planning specification v1.0, 2026-10-30. Read SHARED_REQUIREMENTS.md and ../DESIGN.md alongside this brief. The original documents remain in the private workspace. Class anchors below are inherited, unverified references; their source files were not supplied in this setup. Numerical tests are proposed targets to recompute independently, not evidence that an implementation exists.
 
@@ -55,3 +55,8 @@ Deferred: real data and beta estimation from uploaded observations, finite-sampl
 Implemented review suggestions1,3,4,5. View changes preserve local inputs, sample seed and selected observation within the current page session. Beta, risk-free rate and expected market return are shared across all four views; local stock counts/volatilities/allocation remain independent. Presets and Reset intentionally set the active view’s baseline including shared assumptions. Reload opens the default CAPM baseline.
 
 Expected market return is now the canonical input everywhere (−20% to40%); premium is derived. Risk-free changes hold expected market return fixed, pivoting SML around beta1. Negative-premium SML/CAL bounds include both endpoints/rays. Beta’s duplicate CAPM equation/headline are removed; headline now pairs fitted beta with company-specific volatility. CAL labels Saving and Borrowing on its risky-portfolio line around the100% point. Overall equation/header compaction was not requested in this selection and was not implemented.
+
+
+## Equation-key correction — v0.4.1
+
+Symbols & units is generated exclusively from the displayed symbolic equations. Control-only variables are excluded. CAL defines combined and risky expected returns separately, and its numeric rows explicitly show risk-free-rate subtraction rather than substituting already-calculated excess returns. This gives every key symbol an actual symbolic and numeric equation target. Inputs retain their own visible symbols, units and info controls.

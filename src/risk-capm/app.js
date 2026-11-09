@@ -16,6 +16,8 @@ const key={
  rf:['r<sub>f</sub>','Risk-free rate','Annual decimal return'],
  expectedMarket:['E[r<sub>m</sub>]','Expected market return','Annual decimal expected market return'],
  premium:['EMRP','Expected market risk premium','E[rₘ] − r_f; annual decimal return'],
+ riskyReturn:['E[r<sub>p</sub>]','Risky portfolio expected return','Annual decimal return before combining with risk-free saving or borrowing'],
+ combinedReturn:['E[r<sub>c</sub>]','Combined portfolio expected return','Annual decimal return after combining risky and risk-free positions'],
  riskyExcess:['E[r<sub>p</sub>] − r<sub>f</sub>','Risky portfolio excess return','Annual decimal expected return above the risk-free rate'],
  calExcess:['E[r<sub>c</sub>] − r<sub>f</sub>','Combined portfolio excess return','Annual decimal expected return above the risk-free rate'],
  sharpe:['S<sub>p</sub>','Sharpe ratio','Excess expected return per unit of total volatility'],
@@ -31,7 +33,8 @@ const nested=(k,html)=>`<span class="term" data-symbol="${k}">${html}</span>`;
 function symbolText(k){
  if(state.mode==='capm'&&k==='beta')return 'β<sub>i</sub>';
  if(state.mode==='capm'&&k==='required')return 'r<sub>i</sub>';
- if(k==='riskyExcess'||k==='calExcess')return key[k][0].replace('r<sub>f</sub>',nested('rf','r<sub>f</sub>'));
+ if(k==='riskyExcess')return `${nested('riskyReturn','E[r<sub>p</sub>]')} − ${nested('rf','r<sub>f</sub>')}`;
+ if(k==='calExcess')return `${nested('combinedReturn','E[r<sub>c</sub>]')} − ${nested('rf','r<sub>f</sub>')}`;
  if(k==='covariance')return `Cov(${nested('asset','r<sub>i</sub>')}, ${nested('market','r<sub>m</sub>')})`;
  if(k==='marketVariance')return `Var(${nested('market','r<sub>m</sub>')})`;
  return key[k][0];
@@ -71,19 +74,26 @@ function setup(){
  $('sample-controls').hidden=mode!=='beta';$('secondary-panel').hidden=mode!=='beta';
  const sections=mode==='capm'?[['required','CAPM required return'],['premium','Expected market premium']]:mode==='cal'?[['excess','Excess expected return'],['risk','Portfolio risk'],['risky','Risky portfolio excess return'],['sharpe','Sharpe ratio']]:mode==='diversification'?[['risk','Total portfolio risk'],['systematic','Systematic risk floor']]:[['beta','Beta from the observations','wide'],['observation','One illustrative observation','wide']];
  $('equation-sections').innerHTML=sections.map(([id,title,c])=>`<article class="${c||''}"><h2 id="${id}-heading">${title}</h2><div class="formula"></div><div class="worked" id="${id}-worked"></div></article>`).join('');
- const keys=mode==='capm'?['required','rf','beta','expectedMarket','premium']:mode==='cal'?['y','n','beta','sM','sE','sp','sc','rf','expectedMarket','premium','riskyExcess','calExcess','sharpe']:mode==='diversification'?['n','beta','sM','sE','sp','systematic','rf','expectedMarket']:['beta','covariance','marketVariance','rf','expectedMarket','alpha','asset','market','residual','sE','sM'];
+ $('key').replaceChildren();delete $('key').dataset.symbols;
+}
+function renderNotation(){
+ // The key is derived from symbolic equations, never from inputs or outputs.
+ const keys=[...new Set([...document.querySelectorAll('#equation-sections .formula [data-symbol]')].map(el=>el.dataset.symbol))];
+ const signature=keys.join('|');if($('key').dataset.symbols===signature)return;
+ $('key').dataset.symbols=signature;
  $('key').innerHTML=keys.map(k=>`<div class="key-row"><button data-key="${k}" aria-pressed="false">${symbolText(k)}</button><span>${key[k][1]}<small>${key[k][2]}</small></span></div>`).join('');
 }
+
 function equations(){
  const m=model,s=symbol;
  if(state.mode==='capm'){
   EquationLayout.render('required-worked',[s('required'),'=',s('rf'),'+',s('beta'),'×',`(${s('expectedMarket')} − ${s('rf')})`],[[num('required',m.required),'=',num('rf',m.rf),'+',num('beta',m.beta),'×',`(${num('expectedMarket',m.marketExpected)} − ${num('rf',m.rf)})`]]);
   EquationLayout.render('premium-worked',[s('premium'),'=',s('expectedMarket'),'−',s('rf')],[[num('premium',m.premium),'=',num('expectedMarket',m.marketExpected),'−',num('rf',m.rf)]]);
  }else if(state.mode==='cal'){
-  EquationLayout.render('excess-worked',[s('calExcess'),'=',s('y'),'×',`(${s('riskyExcess')})`],[[num('calExcess',m.calExcess),'=',num('y',m.y),'×',`(${num('riskyExcess',m.riskyExcess)})`]]);
+  EquationLayout.render('excess-worked',[s('combinedReturn'),'−',s('rf'),'=',s('y'),'×',`(${s('riskyReturn')} − ${s('rf')})`],[[num('combinedReturn',m.calReturn),'−',num('rf',m.rf),'=',num('y',m.y),'×',`(${num('riskyReturn',m.required)} − ${num('rf',m.rf)})`]]);
   EquationLayout.render('risk-worked',[s('sc'),'=',s('y'),'×',s('sp')],[[num('sc',m.calRisk),'=',num('y',m.y),'×',num('sp',m.volatility)]]);
-  EquationLayout.render('risky-worked',[s('riskyExcess'),'=',s('beta'),'×',s('premium')],[[num('riskyExcess',m.riskyExcess),'=',num('beta',m.beta),'×',num('premium',m.premium)]]);
-  EquationLayout.render('sharpe-worked',[s('sharpe'),'=',frac(s('riskyExcess'),s('sp'))],[[num('sharpe',m.sharpe),'=',frac(num('riskyExcess',m.riskyExcess),num('sp',m.volatility))]]);
+  EquationLayout.render('risky-worked',[s('riskyReturn'),'−',s('rf'),'=',s('beta'),'×',s('premium')],[[num('riskyReturn',m.required),'−',num('rf',m.rf),'=',num('beta',m.beta),'×',num('premium',m.premium)]]);
+  EquationLayout.render('sharpe-worked',[s('sharpe'),'=',frac(`${s('riskyReturn')} − ${s('rf')}`,s('sp'))],[[num('sharpe',m.sharpe),'=',frac(`${num('riskyReturn',m.required)} − ${num('rf',m.rf)}`,num('sp',m.volatility))]]);
  }else if(state.mode==='diversification'){
   const rad=`(${s('beta')} × ${s('sM')})<sup>2</sup> + ${frac(square('sE'),s('n'))}`;
   const radn=`(${num('beta',m.beta)} × ${num('sM',m.sM)})<sup>2</sup> + ${frac(symbol('sE',m.sE.toFixed(4)+'<sup>2</sup>'),num('n',m.n,0))}`;
@@ -94,7 +104,7 @@ function equations(){
   const o=m.samples[selectedSample];$('observation-heading').textContent=`Illustrative observation ${o.period}`;
   EquationLayout.render('observation-worked',[s('asset'),'=',s('rf'),'+',s('alpha'),'+',s('beta'),'×',`(${s('market')} − ${s('rf')})`,'+',s('residual')],[[num('asset',o.asset),'=',num('rf',m.rf),'+',num('alpha',m.alpha),'+',num('beta',m.estimatedBeta),'×',`(${num('market',o.market)} − ${num('rf',m.rf)})`,'+',num('residual',o.residual)]]);
  }
- attention();
+ renderNotation();attention();
 }
 const axisMath=s=>s.replace(/r_([imf])/g,(_,sub)=>`r<tspan baseline-shift="sub" font-size="9">${sub}</tspan>`);
 function axes({xMin=0,xMax,yMin=0,yMax,xLabel,yLabel,integerX=false,h=390,ticks=null,yTicks=null}){
@@ -186,17 +196,7 @@ document.addEventListener('input',e=>{const el=e.target,k=el.dataset.field;if(!k
 document.addEventListener('focusout',e=>{if(model&&e.target.type==='number'&&e.target.value!=='')e.target.value=Number(e.target.value).toFixed(e.target.id==='n'?0:2);});
 $('resample').addEventListener('click',()=>{state.seed=state.seed===999999?1:state.seed+1;render();renderExamples();});
 $('primary-chart').addEventListener('click',e=>{const observation=e.target.dataset.observation;if(state.mode==='beta'&&model&&observation!==undefined){selectedSample=Number(observation);render();}});
-$('key').addEventListener('click',e=>{const b=e.target.closest('[data-key]');if(b){
- pinned=pinned===b.dataset.key?null:b.dataset.key;
- if(pinned){
-  const targets=[...document.querySelectorAll('[data-symbol]')].filter(el=>el.dataset.symbol===pinned&&!el.closest('#key'));
-  if(!targets.some(el=>el.getClientRects().length)){
-   let detail=document.getElementById(pinned)?.closest('details');
-   while(detail){detail.open=true;detail=detail.parentElement?.closest('details');}
-  }
- }
- attention();
-}});
+$('key').addEventListener('click',e=>{const b=e.target.closest('[data-key]');if(b){pinned=pinned===b.dataset.key?null:b.dataset.key;attention();}});
 $('key').addEventListener('mouseover',e=>{const b=e.target.closest('[data-key]');if(b){hovered=b.dataset.key;attention();}});$('key').addEventListener('mouseleave',()=>{hovered=null;attention();});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-help]');if(b){trigger=b;const h=help[b.dataset.help]();$('help-title').textContent=h[0];$('help-body').textContent=h[1];$('help').showModal();}});
 $('close').addEventListener('click',()=>$('help').close());$('help').addEventListener('close',()=>trigger?.focus());

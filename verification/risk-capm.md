@@ -1,6 +1,6 @@
-# F2 Risk, Diversification & CAPM v0.4
+# F2 Risk, Diversification & CAPM v0.4.1
 
-Owner-approved v0.4 release, November 9, 2026. Owner accepted the draft and authorized commit/push; the catalog and standalone download are prepared for publication. Earlier draft entries below are historical. Source: src/risk-capm/. Standalone download risk-capm.html SHA-256 `e05fc3dc8c467074931482843360456d9bc0fd8797cac345a5dcff0f0b59b6bf`. Release source based on Finance main9793dbe; committed with this record. Desktop macOS in-app browser; engine/version not exposed. No mobile testing requested.
+Owner-approved v0.4 release, November 9, 2026. Owner accepted the draft and authorized commit/push; the catalog and standalone download are prepared for publication. Earlier draft entries below are historical. Source: src/risk-capm/. Standalone download risk-capm.html SHA-256 `5d3009ff22f626e5be70959a51ace4e8496ef55371569464882856c3c1d56aad`. Release source based on Finance main9793dbe; committed with this record. Desktop macOS in-app browser; engine/version not exposed. No mobile testing requested.
 
 ## Scope and source alignment
 
@@ -79,3 +79,11 @@ Owner accepted v0.4 and requested commit/push on November9. Catalog marked ready
 Owner flagged notation glows during release preparation. Browser audit of all37 notation buttons found10 with no counterpart. Added exact symbol/value links on controls and headlines, nested r_f links within excess-return expressions, r_i/r_m links inside covariance/variance, and the numeric residual-volatility exponent. Selecting a symbol whose only control is collapsed reveals that control’s disclosure. It does not add or change equations.
 
 Fresh browser audit:37 buttons checked across all4modes; every button had a visible non-key target and all exact matching targets glowed. No missing links. CAL nested r_f inspected in screenshot; browser warn/error log empty. Input/highlight styling retains inline subscript placement. Final97 automated checks and build/diff/private-pattern review pass. Existing offline/cross-browser limits remain.
+
+## v0.4.1 strict equation-only audit
+
+Owner clarified that some CAL glows still did not work and some key variables were absent from equations. The previous37-button audit counted control-only targets and was insufficient for that requirement. Replaced manually maintained key lists with keys generated from symbolic equation markup. Removed control-only notation entries; input labels/units/help remain. Expanded CAL’s numeric substitution from a collapsed excess-return value into explicit combined/risky expected return minus risk-free rate. Keys now define those expected-return symbols individually.
+
+Strict browser retest across all4tabs:28 entries (CAPM5, CAL9, Diversification6, Beta8). Every key exactly matches the unique symbols in that tab’s displayed formula. Every entry has at least one symbolic target and one numeric target inside the equation panel; all exact matching symbolic/numeric targets highlight. Zero missing/orphaned entries. This test explicitly excludes inputs, outputs and key buttons.
+
+CAL borrowed allocation150% inspected:0.1200−0.0300=1.5000×(0.0900−0.0300). Selecting r_f lights all four actual0.0300 numerical occurrences and their symbolic counterparts. Subscripts/fractions and desktop layout inspected in screenshot. Warning/error log empty. Build/check97, syntax and diff whitespace pass. Formula/model values are unchanged. No new claim of offline or cross-browser coverage.

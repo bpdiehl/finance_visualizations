@@ -1,5 +1,11 @@
 # Change log
 
+## 2026-11-09 — Risk/CAPM v0.4.1 notation correction
+
+- Generated each notation key from its displayed equations, removing entries used only by controls.
+- Expanded CAL numerical substitutions to expose the actual risk-free-rate subtraction and separate combined/risky expected returns.
+- Verified all28 key entries have matching symbolic and numerical glows; supersedes the earlier audit that counted input-only links.
+
 ## 2026-11-09 — Risk, Diversification & CAPM v0.4 release
 
 - Owner accepted and authorized publication of the four-tab visualization, with CAPM as the default.
