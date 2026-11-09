@@ -1,5 +1,14 @@
 # Publication and sharing
 
+## Current publishing route — November 9, 2026
+
+Finance uses `.github/workflows/pages.yml` to publish the committed `docs/` directory through GitHub Actions. Repository Settings → Pages → Source is GitHub Actions. Pushes to main that change docs or the workflow publish automatically; use Actions → Publish static Pages → Run workflow for a manual retry. There is no site compilation during deployment. Continue generating standalone HTML locally with `python3 scripts/manage.py build` and checking it before pushing.
+
+The original branch-based publisher failed with a GitHub internal-server error twice during DuPont release. The explicit workflow uploads exactly the same public files with the official Pages actions. See verification/pages-deployment.md. The site address remains https://bpdiehl.github.io/finance_visualizations/ . Verify live catalog/download bytes after a successful deployment before claiming a release is available.
+
+## Previous setup instructions (historical)
+
+
 ## Current status
 
 As checked on 2026-10-30, this repository is public and GitHub Pages is enabled. main already has the initial scaffold commit. The accepted WACC, DCF, NPV & IRR and Accounting to Free Cash Flow visualizations are included in docs/downloads/ and the generated catalog. See verification/wacc.md and verification/dcf.md for browser coverage and known limits.

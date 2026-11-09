@@ -1,5 +1,10 @@
 # Change log
 
+## 2026-11-09 — Pages publishing recovery
+
+- Replaced the built-in branch publisher after repeated GitHub internal errors with an explicit static Pages workflow publishing the same committed docs folder and public URLs.
+- Added a manual retry trigger and documented deployment evidence. Visualization code and download contents are unchanged.
+
 ## 2026-11-09 — Financial Performance & DuPont v0.1
 
 - Released ROA/ROE driver diagram with aligned decimal equations, average book balance-sheet proportions and return comparison chart.
