@@ -49,3 +49,8 @@ Governing equations remain visible with live values in shared aligned columns an
 Payment types now come first as the primary selection. Examples below are filtered to that type, with an active-example indicator. Choosing a type loads its own baseline; Reset restores the selected type's baseline instead of changing type. Manual assumption edits update the example indicator. V₀ denotes value today and Vₜ payment-date value; these replace PV/FV/CF in equations, input labels, results and the relevant-only symbol key. Single payment timing uses t. C remains the repeated payment, with C₁ for first perpetuity payment.
 
 Rebuilt/rechecked:80 automated checks pass. Browser confirmed single-payment V₀/Vₜ equations and labels; perpetuity shows only its two examples; selecting Growth near return and Reset preserves Perpetuity and restores2000; Coupon bond shows only its two examples and1000 baseline; Annuity shows Five payments and379.08. Expanded desktop screenshot inspected. No commit/push.
+
+
+## Owner-requested presentation refinement
+
+Core equations now use an initially closed disclosure, per the current owner request. Time Value equations precede the workspace; chart frames persist across edits and examples, with highlighted expansion, explicit Fit view and Reset. See ../verification/finance-review-refinements.md. Local review only.

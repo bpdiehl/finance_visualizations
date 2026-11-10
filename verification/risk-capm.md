@@ -87,3 +87,8 @@ Owner clarified that some CAL glows still did not work and some key variables we
 Strict browser retest across all4tabs:28 entries (CAPM5, CAL9, Diversification6, Beta8). Every key exactly matches the unique symbols in that tab’s displayed formula. Every entry has at least one symbolic target and one numeric target inside the equation panel; all exact matching symbolic/numeric targets highlight. Zero missing/orphaned entries. This test explicitly excludes inputs, outputs and key buttons.
 
 CAL borrowed allocation150% inspected:0.1200−0.0300=1.5000×(0.0900−0.0300). Selecting r_f lights all four actual0.0300 numerical occurrences and their symbolic counterparts. Subscripts/fractions and desktop layout inspected in screenshot. Warning/error log empty. Build/check97, syntax and diff whitespace pass. Formula/model values are unchanged. No new claim of offline or cross-browser coverage.
+
+
+## Local presentation review
+
+See [Finance refinement evidence](finance-review-refinements.md) for the current uncommitted equation/layout/scale changes and browser coverage.

@@ -46,7 +46,7 @@ const frac=(a,b)=>`<span class="fraction"><span>${a}</span><span>${b}</span></sp
 const root=c=>`<span class="eq-radical"><span class="sr-only">Square root of </span><svg viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true"><path d="M1 55 L5 50 L10 95 L20 0" fill="none" stroke="currentColor" stroke-width="1.2" vector-effect="non-scaling-stroke"/></svg><span class="radicand">${c}</span></span>`;
 const help={
  primary:()=>state.mode==='capm'?['CAPM and the security market line','CAPM estimates the required annual return for a given beta. The horizontal axis is beta, not total volatility or a realized market return. At beta 0 the line crosses the risk-free rate; at beta 1 it gives expected market return. Expected market return is a direct input. With it held fixed, changing the risk-free rate pivots the line around the market point at beta 1. A higher expected market return steepens the line. A market return below the risk-free rate gives a negative premium and a downward line. This is a model estimate, not a guaranteed return.']:state.mode==='cal'?['Capital allocation lines','The vertical axis is expected return ABOVE the risk-free rate; horizontal is total volatility. Each ray combines a risky portfolio with risk-free saving or borrowing. Its slope is the Sharpe ratio. Company-specific risk flattens the selected portfolio’s line without increasing its expected return under CAPM. With positive beta and fully diversified company-specific risk, it reaches the market reference line.'] : state.mode==='diversification'?['What diversification removes','The horizontal axis counts equally weighted stocks. Independent company-specific shocks average out as the portfolio grows. Shared market exposure remains, so total volatility approaches the dashed systematic-risk floor. Systematic risk does not decrease merely by adding stocks with the same beta. This is an explicit stylized factor model, not a universal promise about a particular stock count.']:['Beta is the slope','Each dot pairs an illustrative annual market return with an asset return in the same period. The fitted line’s slope is beta: how much the asset’s return changes for a change in the market. Vertical deviations are company-specific returns. Both axes use identical return ranges and ticks on a square plot: beta 1 has a 45° slope. The shared range fits the observations as inputs change. These axes show returns, not beta versus required return. Click a dot to inspect its equation.'],
- secondary:()=>['Illustrative return paths','The same 48 annual observations are shown in period order. This is synthetic data, not stock-price history. The visible seed reproduces the cloud and path. The sample is centered, scaled and orthogonalized so its market volatility, company-specific volatility and fitted beta exactly match the controls. Real samples do not match population assumptions this neatly.'],
+ secondary:()=>['Illustrative return paths','The same 50 annual observations are shown in period order. This is synthetic data, not stock-price history. The visible seed reproduces the cloud and path. The sample is centered, scaled and orthogonalized so its market volatility, company-specific volatility and fitted beta exactly match the controls. Real samples do not match population assumptions this neatly.'],
  y:()=>['Saving and borrowing','At 100%, all capital is invested in the risky portfolio. Below 100%, the remainder earns the risk-free rate. Above 100%, the extra investment is financed by borrowing at the same risk-free rate. This idealized CAL ignores borrowing limits, spreads, taxes and transaction costs.'],
  n:()=>['Number of stocks','All stocks have equal weights, the same beta and the same company-specific volatility. Their company-specific returns are mutually independent and uncorrelated with the market. Only the company-specific variance is divided by n. Adding correlated or concentrated holdings may diversify much less.'],
  beta:()=>['Market beta β','A beta of 1 means a one percentage point market move is associated with a one percentage point asset move along the fitted line. Beta 0 has no linear market exposure; negative beta reverses the direction. Beta measures systematic exposure, not total risk. In the Beta tab, the illustrative sample is engineered to recover the specified beta exactly.'],
@@ -106,21 +106,27 @@ function equations(){
  }
  renderNotation();attention();
 }
-const axisMath=s=>s.replace(/r_([imf])/g,(_,sub)=>`r<tspan baseline-shift="sub" font-size="9">${sub}</tspan>`);
+const axisMath=s=>s.replace(/r_([imf])/g,(_,sub)=>`r<tspan baseline-shift="sub" font-size="14">${sub}</tspan>`);
 function axes({xMin=0,xMax,yMin=0,yMax,xLabel,yLabel,integerX=false,h=390,ticks=null,yTicks=null}){
- const w=800,L=75,R=775,T=32,B=h-52,x=v=>L+(v-xMin)/(xMax-xMin)*(R-L),y=v=>B-(v-yMin)/(yMax-yMin)*(B-T);let html='';
- for(const v of yTicks||ticks||Array.from({length:5},(_,i)=>yMin+(yMax-yMin)*i/4)){html+=`<line x1="${L}" x2="${R}" y1="${y(v)}" y2="${y(v)}" stroke="#e1e7ec"/><text x="${L-10}" y="${y(v)+4}" text-anchor="end" class="axis-y-tick" font-size="12" fill="#50616f">${v.toFixed(1)}</text>`;}
- for(const v of ticks||Array.from({length:6},(_,i)=>integerX?Math.round(xMin+(xMax-xMin)*i/5):xMin+(xMax-xMin)*i/5)){html+=`<text x="${x(v)}" y="${B+22}" text-anchor="middle" class="axis-x-tick" font-size="12" fill="#50616f">${integerX?Math.round(v):v.toFixed(1)}</text>`;}
+ const w=800,L=112,R=776,T=32,B=h-88,x=v=>L+(v-xMin)/(xMax-xMin)*(R-L),y=v=>B-(v-yMin)/(yMax-yMin)*(B-T);let html='';
+ for(const v of yTicks||ticks||Array.from({length:5},(_,i)=>yMin+(yMax-yMin)*i/4)){html+=`<line x1="${L}" x2="${R}" y1="${y(v)}" y2="${y(v)}" stroke="#e1e7ec"/><text x="${L-12}" y="${y(v)+4}" text-anchor="end" class="axis-y-tick" font-size="22" fill="#50616f">${v.toFixed(1)}</text>`;}
+ for(const v of ticks||Array.from({length:6},(_,i)=>integerX?Math.round(xMin+(xMax-xMin)*i/5):xMin+(xMax-xMin)*i/5)){html+=`<text x="${x(v)}" y="${B+30}" text-anchor="middle" class="axis-x-tick" font-size="22" fill="#50616f">${integerX?Math.round(v):v.toFixed(1)}</text>`;}
  if(xMin<0&&xMax>0)html+=`<line x1="${x(0)}" x2="${x(0)}" y1="${T}" y2="${B}" stroke="#a9b7c2"/>`;
  if(yMin<0&&yMax>0)html+=`<line x1="${L}" x2="${R}" y1="${y(0)}" y2="${y(0)}" stroke="#a9b7c2"/>`;
- html+=`<text transform="translate(18 ${(T+B)/2}) rotate(-90)" text-anchor="middle" font-size="13" fill="#50616f">${axisMath(yLabel)}</text><text x="${(L+R)/2}" y="${h-7}" text-anchor="middle" font-size="13" fill="#50616f">${axisMath(xLabel)}</text>`;
+ html+=`<text transform="translate(24 ${(T+B)/2}) rotate(-90)" text-anchor="middle" font-size="24" fill="#50616f">${axisMath(yLabel)}</text><text x="${(L+R)/2}" y="${h-15}" text-anchor="middle" font-size="24" fill="#50616f">${axisMath(xLabel)}</text>`;
  return{html,x,y,w,h,L,R,T,B,xMin,xMax,yMin,yMax};
 }
-function plot(id,a,body){$(id).setAttribute('viewBox',`0 0 ${a.w} ${a.h}`);$(id).innerHTML=a.html+body;}
+function matchPrimaryText(){
+ const chart=$('primary-chart');if(!chart.classList.contains('full-width'))return;
+ const width=chart.getBoundingClientRect().width,factor=width>0?Math.min(1,500/width):1;
+ chart.querySelectorAll('text,tspan').forEach(el=>{const size=Number(el.getAttribute('font-size'));if(size)el.style.fontSize=(size*factor)+'px';});
+}
+function plot(id,a,body){$(id).setAttribute('viewBox',`0 0 ${a.w} ${a.h}`);$(id).innerHTML=a.html+body;if(id==='primary-chart')matchPrimaryText();}
 function legend(items){return items.map(([color,label,dashed])=>`<span><i class="swatch" style="${dashed?'background:transparent;border-top:2px dashed '+color+';height:0':'background:'+color}"></i>${label}</span>`).join('');}
 function dot(a,x,y,color='#c59b3b',r=6){return`<circle cx="${a.x(x)}" cy="${a.y(y)}" r="${r}" fill="${color}"/>`;}
 function path(a,values,x,y){return values.map((v,i)=>`${i?'L':'M'}${a.x(x(v))},${a.y(y(v))}`).join(' ');}
 function draw(){
+ $('primary-chart').classList.toggle('full-width',state.mode==='diversification');
  const m=model;
  if(state.mode==='capm'){
   const low=Math.min(0,m.requiredAt(-2)*100,m.requiredAt(3)*100),high=Math.max(0,m.requiredAt(-2)*100,m.requiredAt(3)*100),span=Math.max(1,high-low),magnitude=10**Math.floor(Math.log10(span/5));
@@ -130,7 +136,7 @@ function draw(){
   const a=axes({h:784,xMin:-2,xMax:3,yMin:bottom,yMax:top,yTicks,xLabel:'Market beta β',yLabel:'CAPM required return r_i (%)'});
   let body=`<path d="${path(a,m.line,v=>v.beta,v=>v.required*100)}" fill="none" stroke="#3679ab" stroke-width="3"/><line x1="${a.x(m.beta)}" x2="${a.x(m.beta)}" y1="${a.T}" y2="${a.B}" stroke="#c59b3b" stroke-dasharray="4 3"/><line x1="${a.L}" x2="${a.x(m.beta)}" y1="${a.y(m.required*100)}" y2="${a.y(m.required*100)}" stroke="#c59b3b" stroke-dasharray="4 3"/>`;
   body+=dot(a,0,m.rf*100,'#8497a8',5)+dot(a,1,m.marketExpected*100,'#3679ab',5)+dot(a,m.beta,m.required*100);
-  body+=`<text x="${a.x(0)+9}" y="${a.y(m.rf*100)+18}" font-size="12" fill="#50616f">Risk-free rate</text><text x="${a.x(1)+9}" y="${a.y(m.marketExpected*100)-10}" font-size="12" fill="#3679ab">Market · β = 1</text>`;
+  body+=`<text x="${a.x(0)+9}" y="${a.y(m.rf*100)+18}" font-size="20" fill="#50616f">Risk-free rate</text><text x="${a.x(1)+9}" y="${a.y(m.marketExpected*100)-10}" font-size="20" fill="#3679ab">Market · β = 1</text>`;
   plot('primary-chart',a,body);$('primary-key').innerHTML=legend([['#3679ab','Security market line'],['#8497a8','Risk-free rate · β = 0'],['#c59b3b','Selected required return']]);
  }else if(state.mode==='cal'){
   const xmax=Math.max(m.sM*2,m.volatility*2,.1)*100,marketTop=xmax*m.marketSharpe,riskyTop=m.sharpe===null?0:xmax*m.sharpe;
@@ -138,8 +144,8 @@ function draw(){
   let body=`<path d="M${a.x(0)},${a.y(0)} L${a.x(xmax)},${a.y(marketTop)}" fill="none" stroke="#3679ab" stroke-width="2.5" stroke-dasharray="6 4"/>`;
   if(m.sharpe!==null)body+=`<path d="M${a.x(0)},${a.y(0)} L${a.x(xmax)},${a.y(riskyTop)}" fill="none" stroke="#2b8776" stroke-width="3"/>`;
   body+=dot(a,m.sM*100,m.premium*100,'#3679ab',5)+dot(a,m.volatility*100,m.riskyExcess*100,'#2b8776',5)+`<line x1="${a.x(m.calRisk*100)}" x2="${a.x(m.calRisk*100)}" y1="${a.y(m.calExcess*100)}" y2="${a.B}" stroke="#c59b3b" stroke-dasharray="4 3"/>`+dot(a,m.calRisk*100,m.calExcess*100);
-  body+=`<text x="${a.x(m.sM*100)+9}" y="${a.y(m.premium*100)-9}" font-size="12" fill="#3679ab">Market</text>`;if(m.volatility>0)body+=`<text x="${a.x(m.volatility*100)+9}" y="${a.y(m.riskyExcess*100)+18}" font-size="12" fill="#2b8776">100% risky portfolio</text>`;
-  if(m.volatility>0)body+=`<text class="cal-region" x="${a.x(m.volatility*50)}" y="${Math.min(a.B-12,Math.max(a.T+16,a.y(m.riskyExcess*50)+24))}" text-anchor="middle" font-size="14" fill="#276d61">Saving</text><text class="cal-region" x="${a.x(m.volatility*150)}" y="${Math.min(a.B-12,Math.max(a.T+16,a.y(m.riskyExcess*150)+24))}" text-anchor="middle" font-size="14" fill="#276d61">Borrowing</text>`;
+  body+=`<text x="${a.x(m.sM*100)+9}" y="${a.y(m.premium*100)-9}" font-size="20" fill="#3679ab">Market</text>`;if(m.volatility>0)body+=`<text x="${a.x(m.volatility*100)+9}" y="${a.y(m.riskyExcess*100)+18}" font-size="20" fill="#2b8776">100% risky portfolio</text>`;
+  if(m.volatility>0)body+=`<text class="cal-region" x="${a.x(m.volatility*50)}" y="${Math.min(a.B-12,Math.max(a.T+16,a.y(m.riskyExcess*50)+24))}" text-anchor="middle" font-size="22" fill="#276d61">Saving</text><text class="cal-region" x="${a.x(m.volatility*150)}" y="${Math.min(a.B-12,Math.max(a.T+16,a.y(m.riskyExcess*150)+24))}" text-anchor="middle" font-size="22" fill="#276d61">Borrowing</text>`;
   plot('primary-chart',a,body);$('primary-key').innerHTML=legend([['#3679ab','Market CAL reference',true],['#2b8776','Risky portfolio CAL'],['#c59b3b','Chosen cash / risky mix']]);
  }else if(state.mode==='diversification'){
   const a=axes({xMin:1,xMax:200,yMax:Math.max(.01,m.curve[0].volatility)*115,xLabel:'Number of stocks in portfolio n',yLabel:'Portfolio risk σ (%)',integerX:true});
@@ -164,8 +170,8 @@ function draw(){
   }
   let body=m.samples.map((v,i)=>`<circle data-observation="${i}" cx="${a.x(v.market*100)}" cy="${a.y(v.asset*100)}" r="4" fill="#8497a8" opacity=".8"/>`).join('');
   body+=`<path d="M${a.x(lineLeft)},${a.y(m.fit(lineLeft/100)*100)} L${a.x(lineRight)},${a.y(m.fit(lineRight/100)*100)}" fill="none" stroke="#3679ab" stroke-width="2.5"/><line x1="${a.x(o.market*100)}" x2="${a.x(o.market*100)}" y1="${a.y(o.asset*100)}" y2="${a.y(m.fit(o.market)*100)}" stroke="#c59b3b" stroke-width="2" stroke-dasharray="3 3"/>`+dot(a,o.market*100,o.asset*100);
-  plot('primary-chart',a,body);$('primary-key').innerHTML=legend([['#8497a8','48 illustrative annual observations'],['#3679ab','Fitted line · slope β'],['#c59b3b','Selected observation / residual']]);
-  const b=axes({xMin:1,xMax:48,yMin:Math.min(...xs,...ys)-yPad,yMax:Math.max(...xs,...ys)+yPad,xLabel:'Illustrative annual period',yLabel:'Annual return (%)',integerX:true,h:280});
+  plot('primary-chart',a,body);$('primary-key').innerHTML=legend([['#8497a8','50 simulated annual return pairs'],['#3679ab','Fitted line · slope β'],['#c59b3b','Selected observation / residual']]);
+  const b=axes({xMin:1,xMax:50,yMin:Math.min(...xs,...ys)-yPad,yMax:Math.max(...xs,...ys)+yPad,xLabel:'Illustrative annual period',yLabel:'Annual return (%)',integerX:true,h:280});
   plot('secondary-chart',b,`<path d="${path(b,m.samples,v=>v.period,v=>v.market*100)}" fill="none" stroke="#3679ab" stroke-width="2"/><path d="${path(b,m.samples,v=>v.period,v=>v.asset*100)}" fill="none" stroke="#2b8776" stroke-width="2"/>`);$('secondary-key').innerHTML=legend([['#3679ab','Market'],['#2b8776','Asset']]);$('seed-value').textContent=m.seed;
  }
 }
@@ -201,5 +207,5 @@ $('key').addEventListener('mouseover',e=>{const b=e.target.closest('[data-key]')
 document.addEventListener('click',e=>{const b=e.target.closest('[data-help]');if(b){trigger=b;const h=help[b.dataset.help]();$('help-title').textContent=h[0];$('help-body').textContent=h[1];$('help').showModal();}});
 $('close').addEventListener('click',()=>$('help').close());$('help').addEventListener('close',()=>trigger?.focus());
 $('download').addEventListener('click',()=>{const blob=new Blob(['<!doctype html>\n'+document.documentElement.outerHTML],{type:'text/html'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='risk-capm.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
-rebuild();
+rebuild();new ResizeObserver(matchPrimaryText).observe($('primary-chart'));
 })();

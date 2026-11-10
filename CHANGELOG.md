@@ -1,5 +1,33 @@
 # Change log
 
+## November 9, 2026 — Finance presentation release
+
+- Released owner-approved collapsible equations, Time Value scales/year labels/switch, and revised Risk/CAPM graph sizing and typography.
+- Diversification fills its section with matching text sizing; Beta uses50 simulated annual return pairs.
+- All97automated checks pass; prior local-review entries describe the refinement history.
+
+## Local review — Diversification width and sample count
+
+- Full-width Diversification graph with text matching the other risk graphs on screen.
+- Beta uses50 simulated annual return pairs with matching legend, help and period range.
+
+## Local review follow-up — Graph labels
+
+- Time Value labels every whole year in the displayed range, including years1–5.
+- Enlarged Risk/CAPM graph ticks, annotations and axis titles while keeping the smaller graph size.
+
+## Local review follow-up — Finance sizing and toggle
+
+- Time Value Fit view has a five-year minimum; Show value today uses an accessible switch.
+- Risk/CAPM plots capped at500px with a560px assumptions column.
+
+## Local review — Finance presentation refinements
+
+- Collapsible equations in Time Value, Risk/CAPM, WACC, Free Cash Flow and NPV/IRR.
+- Time Value equations moved above the workspace; persistent comparison scales with highlighted expansion and Fit view.
+- Wider Risk/CAPM assumptions column and smaller chart.
+- Owner review pending; no Finance commit/push.
+
 ## November 9, 2026 — Catalog navigation
 
 - Made the upper-right Finance label link to the public Finance catalog in every visualization, including downloaded HTML files.

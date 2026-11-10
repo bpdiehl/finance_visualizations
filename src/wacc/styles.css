@@ -25,3 +25,6 @@
 @media(prefers-reduced-motion:reduce) { .eq-token,.eq-token.is-editing { transition:none!important; } }
 .control-group { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:3px 10px; }
 .control-group .number-row { margin:0; white-space:nowrap; }.control-group input[type=range] { grid-column:1/-1; }.control-group .number-row input { width:88px; }
+
+.equation-panel>summary{font-size:1rem;font-weight:650;min-height:24px;padding:0;cursor:pointer}.equation-panel[open]>summary{margin-bottom:14px}
+details.equation-panel{padding:16px 26px}

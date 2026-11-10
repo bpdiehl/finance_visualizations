@@ -60,3 +60,13 @@ Expected market return is now the canonical input everywhere (−20% to40%); pre
 ## Equation-key correction — v0.4.1
 
 Symbols & units is generated exclusively from the displayed symbolic equations. Control-only variables are excluded. CAL defines combined and risky expected returns separately, and its numeric rows explicitly show risk-free-rate subtraction rather than substituting already-calculated excess returns. This gives every key symbol an actual symbolic and numeric equation target. Inputs retain their own visible symbols, units and info controls.
+
+
+## Owner-requested presentation refinement
+
+Core equations now use an initially closed disclosure, per the current owner request. CAPM assumptions column is wider to reduce graph size. See ../verification/finance-review-refinements.md. Local review only.
+
+
+### Latest owner refinements
+
+Diversification uses full panel width with text compensated to match the other graphs' rendered size. The other risk views remain capped at500px. Beta uses50 synthetic annual return pairs (not weekly or historical data); period range and labels match the generator.

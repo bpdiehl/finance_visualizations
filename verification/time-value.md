@@ -31,3 +31,8 @@ Payment types now come first as the primary selection. Examples below are filter
 Rebuilt/rechecked:80 automated checks pass. Browser confirmed single-payment V₀/Vₜ equations and labels; perpetuity shows only its two examples; selecting Growth near return and Reset preserves Perpetuity and restores2000; Coupon bond shows only its two examples and1000 baseline; Annuity shows Five payments and379.08. Expanded desktop screenshot inspected. Owner then requested release.
 
 Owner follow-up: discount rate is labeled directly; equation substitutions show the decimal (10% input appears as0.10, bond periodic yield is likewise decimal), while controls remain %/year.
+
+
+## Local presentation review
+
+See [Finance refinement evidence](finance-review-refinements.md) for the current uncommitted equation/layout/scale changes and browser coverage.

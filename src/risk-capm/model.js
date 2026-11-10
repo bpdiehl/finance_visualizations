@@ -26,7 +26,7 @@ function observations({seed,sM,sE,beta,rf,premium,alpha}) {
  const uniform=()=>{rngState=(Math.imul(1664525,rngState)+1013904223)>>>0;return(rngState+.5)/4294967296;};
  const normal=()=>Math.sqrt(-2*Math.log(uniform()))*Math.cos(2*Math.PI*uniform());
  const standardize=xs=>{const mean=xs.reduce((a,b)=>a+b,0)/xs.length;const centered=xs.map(x=>x-mean),sd=Math.sqrt(centered.reduce((a,b)=>a+b*b,0)/xs.length);return centered.map(x=>x/sd);};
- const x=standardize(Array.from({length:48},normal));let z=standardize(Array.from({length:48},normal));
+ const x=standardize(Array.from({length:50},normal));let z=standardize(Array.from({length:50},normal));
  const projection=x.reduce((a,b,i)=>a+b*z[i],0)/x.length;
  z=standardize(z.map((v,i)=>v-projection*x[i]));
  return x.map((v,i)=>{const market=rf+premium+sM*v,residual=sE*z[i];return{period:i+1,market,asset:rf+alpha+beta*(market-rf)+residual,residual};});

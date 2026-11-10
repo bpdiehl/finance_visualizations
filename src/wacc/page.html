@@ -24,7 +24,7 @@
       <button type="button" class="download-action" id="download-file">Download offline copy</button>
     </div>
     <p id="input-error" class="input-error" role="alert" hidden></p>
-    <section class="equation-panel" aria-label="Solve return on assets, then WACC">
+    <details class="equation-panel" aria-label="Solve return on assets, then WACC"><summary>Equations</summary>
       <div class="equation-row">
         <div class="equation-heading"><h2><span class="step-number">1</span> Return on assets <span class="notation">r<sub>a</sub></span></h2><button class="info" type="button" data-help="assetReturn" aria-label="Explain return on assets" aria-haspopup="dialog">i</button></div>
         <div class="symbolic-equation" role="math" aria-label="r a equals E over V times r e plus D over V times r d"><strong>r<sub>a</sub></strong><span>=</span><span class="eq-part equity-term"><span class="eq-token" data-vars="debtWeight">E/V</span><span>×</span><span class="eq-token" data-vars="equityRate">r<sub>e</sub></span></span><span>+</span><span class="eq-part debt-term"><span class="eq-token" data-vars="debtWeight">D/V</span><span>×</span><span class="eq-token" data-vars="debtRate">r<sub>d</sub></span></span></div>
@@ -40,7 +40,7 @@
         <div class="symbolic-equation" role="math" aria-label="WACC equals E over V times r e plus D over V times r d times one minus T"><strong>WACC</strong><span>=</span><span class="eq-part equity-term"><span class="eq-token" data-vars="debtWeight">E/V</span><span>×</span><span class="eq-token" data-vars="equityRate">r<sub>e</sub></span></span><span>+</span><span class="eq-part debt-term"><span class="eq-token" data-vars="debtWeight">D/V</span><span>×</span><span class="eq-token" data-vars="debtRate">r<sub>d</sub></span><span>× (1 −</span><span class="eq-token" data-vars="taxRate">T</span><span>)</span></span></div>
         <div class="live-values" id="main-worked-equation" aria-label="Expanded WACC with current values"><span class="num-part"><span class="eq-token" data-value="equityWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="equityRate" data-vars="equityRate"></span></span><span>+</span><span class="num-part"><span class="eq-token" data-value="debtWeight" data-vars="debtWeight"></span><span>×</span><span class="eq-token" data-value="debtRate" data-vars="debtRate"></span><span>× (1 −</span><span class="eq-token" data-value="taxRate" data-vars="taxRate"></span><span>)</span></span><span>=</span><strong class="eq-token result-value" data-value="wacc" data-precision="3"></strong></div>
       </div>
-    </section>
+    </details>
     <div class="workspace">
       <section class="visual-panel" aria-labelledby="visual-title">
         <div class="panel-heading"><h2 id="visual-title">Assets & financing</h2><button class="info" type="button" data-help="balance" aria-label="Explain the assets and financing diagram" aria-haspopup="dialog">i</button></div>

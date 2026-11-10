@@ -68,3 +68,8 @@ Latest local revision supersedes the one-group layout above: Income assumptions 
 ## November 6, 2026 — v0.3 release
 
 Owner authorized the reviewed changes for commit and publication. Includes aligned symbolic/numerical equations, textbook fractions, matching amber editing/selection feedback and consistent notation/graph legend styling. Prior draft restrictions above are historical. See verification/free-cash-flow.md and verification/equation-layout-review.md for evidence and limits.
+
+
+## Owner-requested presentation refinement
+
+Core equations now use an initially closed disclosure, per the current owner request. Preserve the current equations, numerical substitutions and symbol interaction inside the disclosure. See ../verification/finance-review-refinements.md. Local review only.
