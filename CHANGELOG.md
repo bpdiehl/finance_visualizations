@@ -1,5 +1,9 @@
 # Change log
 
+## November 9, 2026 — Catalog navigation
+
+- Made the upper-right Finance label link to the public Finance catalog in every visualization, including downloaded HTML files.
+
 ## 2026-11-09 — Risk/CAPM v0.4.1 notation correction
 
 - Generated each notation key from its displayed equations, removing entries used only by controls.
