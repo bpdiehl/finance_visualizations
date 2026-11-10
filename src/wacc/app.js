@@ -322,3 +322,116 @@
   EquationLayout.render('main-worked-equation',['WACC','=',wSymbol('E/V','debtWeight'),'×',wSymbol('r<sub>e</sub>','equityRate'),'+',wSymbol('D/V','debtWeight'),'×',wSymbol('r<sub>d</sub>','debtRate'),'×','(1 −',wSymbol('T','taxRate'),')'],[[wValue('wacc','',3),'=',wValue('equityWeight','debtWeight'),'×',wValue('equityRate','equityRate'),'+',wValue('debtWeight','debtWeight'),'×',wValue('debtRate','debtRate'),'×','(1 −',wValue('taxRate','taxRate'),')']]);
   syncControls(); render();
 })();
+
+// Fixed-asset-return teaching view. All rates and chart points come from the pure model.
+(() => {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  const M = DemoModel, $ = id => document.getElementById(id);
+  const pct = x => (x * 100).toFixed(3) + '%';
+  const fields = {
+    debtWeight: ['Debt share', 'D/V', 90, 100, '%'],
+    assetRate: ['Fixed asset return', 'r<sub>a</sub>', 30, 100, '%/yr'],
+    riskFreeRate: ['Risk-free rate', 'r<sub>f</sub>', 30, 100, '%/yr'],
+    taxRate: ['Corporate tax rate', 'T', 100, 100, '%'],
+    sensitivity: ['Debt risk sensitivity', 'λ', 1, 1, '']
+  };
+  let state = { ...M.LEVERAGE_DEFAULTS };
+  const control = key => {
+    const [label, symbol, max, scale, unit] = fields[key];
+    return `<div class="control-group"><div class="control-label"><label for="lev-${key}-number">${label} <span class="notation">${symbol}</span></label></div><div class="number-row"><input id="lev-${key}-number" type="number" min="0" max="${max}" step="0.01" value="${(state[key]*scale).toFixed(2)}"><span>${unit}</span></div><input id="lev-${key}-range" type="range" min="0" max="${max}" step="0.01" aria-label="${label} slider${unit ? ', '+unit : ''}"></div>`;
+  };
+  $('leverage-controls').innerHTML = Object.keys(fields).filter(k => k !== 'sensitivity').map(control).join('');
+  $('leverage-advanced-control').innerHTML = control('sensitivity');
+  const series = [['equityRate','Equity r<sub>e</sub>','#2458a8',''],['debtRate','Debt r<sub>d</sub>','#176d65',''],['assetReturn','Assets r<sub>a</sub>','#586777','7 5'],['wacc','WACC','#ad5b00','3 3']];
+  $('leverage-legend').innerHTML = series.map(([,label,color,dash]) => `<span><svg width="26" height="12" aria-hidden="true"><line x1="0" x2="26" y1="6" y2="6" stroke="${color}" stroke-width="3" stroke-dasharray="${dash}"></line></svg>${label}</span>`).join('');
+  function draw(r) {
+    const svg = $('leverage-chart'), width = Math.max(280, svg.getBoundingClientRect().width), height = 330;
+    const left = 58, right = width-16, top = 18, bottom = height-50;
+    const max = Math.max(.05, Math.ceil(Math.max(...r.curve.map(p => p.equityRate))/.05)*.05);
+    const x = d => left+d/.9*(right-left), y = v => bottom-v/max*(bottom-top);
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    const parts = [`<title id="leverage-chart-title">Investor returns and WACC versus debt share</title><desc id="leverage-chart-desc">${$('leverage-summary').textContent} Debt share varies from 0 to 90 percent.</desc>`];
+    for (let i=0;i<=4;i++) {
+      const v=max*i/4;
+      parts.push(`<line x1="${left}" x2="${right}" y1="${y(v)}" y2="${y(v)}" stroke="#e0e6ec"/><text x="${left-8}" y="${y(v)+4}" text-anchor="end">${(v*100).toFixed(1)}</text>`);
+    }
+    for (const d of [0,.3,.6,.9]) parts.push(`<text x="${x(d)}" y="${bottom+22}" text-anchor="middle">${(d*100).toFixed(0)}</text>`);
+    parts.push(`<text x="${(left+right)/2}" y="${height-5}" text-anchor="middle">Debt share D/V (%)</text><text transform="translate(15 ${(top+bottom)/2}) rotate(-90)" text-anchor="middle">Required return (%/year)</text>`);
+    parts.push(`<line x1="${x(state.debtWeight)}" x2="${x(state.debtWeight)}" y1="${top}" y2="${bottom}" stroke="#8293a1" stroke-dasharray="3 4"/>`);
+    for (const [key,,color,dash] of series) parts.push(`<polyline points="${r.curve.map(p => `${x(p.debtWeight)},${y(p[key])}`).join(' ')}" fill="none" stroke="${color}" stroke-width="2.5" stroke-dasharray="${dash}"/><circle cx="${x(state.debtWeight)}" cy="${y(r[key])}" r="4" fill="white" stroke="${color}" stroke-width="2"/>`);
+    svg.innerHTML=parts.join('');
+  }
+  const token = (html,key) => `<span class="eq-token" data-lev-vars="${key}">${html}</span>`;
+  function equations(r) {
+    const symbols = {d:'d',a:'r<sub>a</sub>',f:'r<sub>f</sub>',l:'λ',rd:'r<sub>d</sub>',re:'r<sub>e</sub>',t:'T',w:'WACC',e:'(1 − d)'};
+    const values = {d:(state.debtWeight).toFixed(4),a:pct(state.assetRate),f:pct(state.riskFreeRate),l:state.sensitivity.toFixed(2),rd:pct(r.debtRate),re:pct(r.equityRate),t:state.taxRate.toFixed(4),w:pct(r.wacc),e:r.equityWeight.toFixed(4)};
+    const bindings = {d:'debtWeight',a:'assetRate',f:'riskFreeRate',l:'sensitivity',rd:'debtWeight assetRate riskFreeRate sensitivity',re:'debtWeight assetRate riskFreeRate sensitivity',t:'taxRate',w:'debtWeight assetRate riskFreeRate sensitivity taxRate',e:'debtWeight'};
+    function pair(id,parts) {
+      EquationLayout.render(id, parts.map(p => p in symbols ? token(symbols[p],bindings[p]) : p), [parts.map(p => p in values ? token(values[p],bindings[p]) : p)]);
+    }
+    pair('leverage-debt-worked',['rd','=','f','+','l','×','d','×','(','a','−','f',')']);
+    pair('leverage-equity-worked',['re','=','(','a','−','d','×','rd',')','/','e']);
+    pair('leverage-asset-worked',['a','=','e','×','re','+','d','×','rd']);
+    pair('leverage-wacc-worked',['w','=','a','−','d','×','rd','×','t']);
+  }
+  function render(edited) {
+    const checked = M.validateLeverage(state);
+    $('leverage-error').hidden = checked.ok;
+    $('leverage-error').textContent = Object.values(checked.errors).join(' ');
+    for (const key of Object.keys(fields)) $(`lev-${key}-number`).setAttribute('aria-invalid',String(!!checked.errors[key]));
+    for (const el of document.querySelectorAll('#leverage-panel .live-values')) el.hidden = !checked.ok;
+    if (!checked.ok) {
+      $('leverage-results').replaceChildren(); $('leverage-chart').replaceChildren();
+      $('leverage-summary').textContent = 'Enter valid assumptions to show returns.';
+      return;
+    }
+    const r = M.calculateLeverage(state);
+    $('leverage-results').innerHTML = series.map(([key,label])=>`<div><span>${label}</span><output>${pct(r[key])}</output></div>`).join('');
+    $('leverage-summary').textContent = `At ${(state.debtWeight*100).toFixed(2)}% debt, asset return stays ${pct(r.assetReturn)}; the tax adjustment is ${(r.taxBenefit*100).toFixed(3)} percentage points. ${(state.taxRate===0 || (state.riskFreeRate===0 && state.sensitivity*(state.assetRate-state.riskFreeRate)===0))?'With no interest tax benefit, WACC stays equal to the asset return.':'With a usable tax shield, WACC falls as debt share rises in this model.'}`;
+    equations(r); draw(r);
+    if (edited) document.querySelectorAll('[data-lev-vars]').forEach(el=>el.classList.toggle('is-editing',el.dataset.levVars.split(' ').includes(edited)));
+    document.querySelectorAll('[data-leverage-preset]').forEach(b=>b.setAttribute('aria-pressed',String(Object.keys(state).every(k=>state[k]===preset(b.dataset.leveragePreset)[k]))));
+  }
+  function sync() {
+    for (const [key,[,,,scale]] of Object.entries(fields)) {
+      $(`lev-${key}-number`).value=(state[key]*scale).toFixed(2);
+      $(`lev-${key}-range`).value=state[key]*scale;
+    }
+  }
+  let timer;
+  for (const [key,[,,,scale]] of Object.entries(fields)) {
+    for (const kind of ['number','range']) {
+      const el=$(`lev-${key}-${kind}`);
+      el.addEventListener('input',()=>{
+        state[key]=el.valueAsNumber/scale;
+        const other=$(`lev-${key}-${kind==='number'?'range':'number'}`);
+        if (kind==='range') other.value=(state[key]*scale).toFixed(2);
+        else if(Number.isFinite(state[key])) other.value=el.value;
+        render(key); clearTimeout(timer);
+        timer=setTimeout(()=>document.querySelectorAll('#leverage-panel .is-editing').forEach(n=>n.classList.remove('is-editing')),900);
+      });
+      el.addEventListener('blur',()=>{
+        if(Number.isFinite(state[key])) {state[key]=Number((state[key]*scale).toFixed(2))/scale;el.value=(state[key]*scale).toFixed(2);render();}
+      });
+    }
+  }
+  function preset(id) {return {...M.LEVERAGE_DEFAULTS,...({'all-equity':{debtWeight:0},'more-debt':{debtWeight:.6},'no-tax':{taxRate:0}}[id]||{})};}
+  document.querySelectorAll('[data-leverage-preset]').forEach(b=>b.addEventListener('click',()=>{state=preset(b.dataset.leveragePreset);sync();render();}));
+  $('leverage-reset').addEventListener('click',()=>{state={...M.LEVERAGE_DEFAULTS};sync();render();});
+  const tabs = [$('fixed-tab'),$('leverage-tab')];
+  function selectTab(index, focus=false) {
+    tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;$(tab.getAttribute('aria-controls')).hidden=i!==index;});
+    document.querySelector('.skip').setAttribute('href',index===1?'#leverage-controls':'#controls');
+    document.querySelector('.lab-footer > div').hidden=index===1;
+    if(focus) tabs[index].focus();
+    if(index===1)render();
+    else window.dispatchEvent(new Event('resize'));
+  }
+  tabs.forEach((tab,index)=>{
+    tab.addEventListener('click',()=>selectTab(index));
+    tab.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();selectTab(e.key==='Home'?0:e.key==='End'?1:1-index,true);}});
+  });
+  window.addEventListener('resize',()=>{if(!$('leverage-panel').hidden)render();});
+  sync();render();selectTab(0);
+})();

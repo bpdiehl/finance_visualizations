@@ -14,7 +14,7 @@ const examples=[
  {name:'More market exposure',...defaults,mode:'diversification',beta:1.5,n:10},
  {name:'More company-specific risk',...defaults,mode:'diversification',sE:60,n:10},
  {name:'No market exposure',...defaults,mode:'diversification',beta:0,n:10},
- {name:'Market beta',...defaults,mode:'beta',sE:12},
+ {name:'Equity beta',...defaults,mode:'beta',sE:12},
  {name:'High beta',...defaults,mode:'beta',sE:12,beta:1.5},
  {name:'Low beta',...defaults,mode:'beta',sE:12,beta:.5},
  {name:'Negative beta',...defaults,mode:'beta',sE:12,beta:-.5}

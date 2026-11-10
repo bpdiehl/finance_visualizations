@@ -12,16 +12,20 @@
   <a class="skip" href="#controls">Skip to controls</a>
   <header class="lab-header">
     <div class="masthead"><span>MBA INTERACTIVE LEARNING LAB</span><a class="subject-home" href="https://bpdiehl.github.io/finance_visualizations/" aria-label="Finance home">FINANCE / 03</a></div>
-    <div class="heading-row"><h1>Return on assets & WACC</h1><span class="version">Pilot · v0.3.2</span></div>
+    <div class="heading-row"><h1>Return on assets & WACC</h1><span class="version">v0.4</span></div>
   </header>
   <main class="lab-main">
+    <div class="mode-bar"><div role="tablist" aria-label="WACC model">
+      <button id="fixed-tab" role="tab" aria-selected="true" aria-controls="fixed-panel">Fixed component rates</button>
+      <button id="leverage-tab" role="tab" aria-selected="false" aria-controls="leverage-panel" tabindex="-1">Fixed asset return</button>
+    </div><button type="button" class="download-action" id="download-file">Download offline copy</button></div>
+    <section id="fixed-panel" role="tabpanel" aria-labelledby="fixed-tab">
     <div class="preset-row" aria-label="Illustrative scenarios">
       <button type="button" class="preset active" data-preset="baseline" aria-pressed="true">Starting example</button>
       <button type="button" class="preset" data-preset="all-equity" aria-pressed="false">All equity</button>
       <button type="button" class="preset" data-preset="no-tax" aria-pressed="false">No tax shield</button>
       <button type="button" class="preset" data-preset="more-debt" aria-pressed="false">More debt, same rates</button>
       <button type="button" class="reset" id="reset">Reset</button>
-      <button type="button" class="download-action" id="download-file">Download offline copy</button>
     </div>
     <p id="input-error" class="input-error" role="alert" hidden></p>
     <details class="equation-panel" aria-label="Solve return on assets, then WACC"><summary>Equations</summary>
@@ -67,8 +71,42 @@
     </div>
     <section class="comparison-panel" aria-label="Scenario comparison"><p id="explanation" role="status" aria-live="polite"></p><button type="button" class="secondary-action" id="save-baseline">Save comparison</button><button class="info" type="button" data-help="comparison" aria-label="Explain the saved comparison" aria-haspopup="dialog">i</button></section>
     <details class="curve-panel" id="curve-details"><summary>Explore debt share</summary><div class="curve-content"><svg id="curve" role="img" aria-labelledby="curve-title curve-description"><title id="curve-title">WACC versus debt share</title><desc id="curve-description">WACC at the current component rates.</desc></svg><p id="curve-summary" class="sr-only"></p><button class="info" type="button" data-help="curve" aria-label="Explain the debt-share chart" aria-haspopup="dialog">i</button></div></details>
+    </section>
+    <section id="leverage-panel" role="tabpanel" aria-labelledby="leverage-tab" hidden>
+      <div class="preset-row" aria-label="Fixed asset return scenarios">
+        <button class="preset" data-leverage-preset="baseline">Starting example</button>
+        <button class="preset" data-leverage-preset="all-equity">All equity</button>
+        <button class="preset" data-leverage-preset="more-debt">More debt</button>
+        <button class="preset" data-leverage-preset="no-tax">No tax shield</button>
+        <button class="reset" id="leverage-reset">Reset</button>
+      </div>
+      <details class="equation-panel leverage-equations" aria-label="Fixed asset return equations"><summary>Equations</summary>
+        <div class="equation-row"><h2>1 · Debt return schedule</h2><div class="formula"></div><div id="leverage-debt-worked" class="live-values"></div></div>
+        <div class="equation-row"><h2>2 · Equity absorbs the remaining required return</h2><div class="formula"></div><div id="leverage-equity-worked" class="live-values"></div></div>
+        <div class="equation-row"><h2>3 · Asset return stays fixed</h2><div class="formula"></div><div id="leverage-asset-worked" class="live-values"></div></div>
+        <div class="equation-row"><h2>4 · Usable interest tax adjustment</h2><div class="formula"></div><div id="leverage-wacc-worked" class="live-values"></div></div>
+      </details>
+      <p class="model-context">Hold business risk and required asset return fixed. Debt and equity returns adjust with the financing mix.</p>
+      <p id="leverage-error" class="input-error" role="alert" hidden></p>
+      <div class="workspace leverage-workspace">
+        <section class="visual-panel" aria-labelledby="leverage-chart-heading">
+          <div class="panel-heading"><h2 id="leverage-chart-heading">Returns as debt share changes</h2><span class="units">Annual required returns</span></div>
+          <div id="leverage-results" class="leverage-results" aria-live="polite"></div>
+          <svg id="leverage-chart" role="img" aria-labelledby="leverage-chart-title leverage-chart-desc"></svg>
+          <div class="leverage-legend" id="leverage-legend"></div>
+          <p id="leverage-summary" class="model-context" role="status"></p>
+        </section>
+        <section class="controls-panel" aria-label="Fixed asset return assumptions">
+          <div class="panel-heading"><h2>Assumptions</h2></div>
+          <div id="leverage-controls"></div>
+          <details class="leverage-advanced"><summary>Debt risk assumption</summary><div id="leverage-advanced-control"></div><p>λ sets how strongly debt’s required return rises with debt share. λ = 0 holds debt return at r<sub>f</sub>; λ = 1 assigns more asset risk to debt. This is an illustrative schedule.</p></details>
+        </section>
+      </div>
+      <p class="model-context">d = D/V and E/V = 1 − d are market-value weights; λ is dimensionless. All r values and WACC are annual required returns, not accounting ROA or promised payments. r<sub>f</sub> is the risk-free rate; T is the corporate tax rate.</p>
+      <details class="leverage-assumptions"><summary>Model scope and tax assumptions</summary><p>The fixed pretax blend r<sub>a</sub> is an imposed teaching assumption. The debt schedule supplies the extra relationship needed to determine both investor returns. WACC falls here when d × r<sub>d</sub> increases and T &gt; 0; with T = 0 it equals r<sub>a</sub>. This does not estimate a universal capital structure optimum or a leverage-invariant unlevered discount rate in a full corporate-tax valuation model. Distress costs, personal taxes, tax-loss limits and feedback from financing to market value are omitted. Debt return means expected required return, rather than a defaultable bond’s promised yield. At d = 0, r<sub>d</sub> is a hypothetical borrowing rate. The 90% debt limit preserves positive equity.</p></details>
+    </section>
   </main>
-  <footer class="lab-footer"><span>F3 · v0.3.2 · November 6, 2026</span><div><button class="text-info" type="button" data-help="model">Fixed-rate model ⓘ</button><button class="text-info" type="button" data-help="challenge">Try a question ⓘ</button></div><span id="download-status" role="status"></span></footer>
+  <footer class="lab-footer"><span>F3 · v0.4 · November 10, 2026</span><div><button class="text-info" type="button" data-help="model">Fixed-rate model ⓘ</button><button class="text-info" type="button" data-help="challenge">Try a question ⓘ</button></div><span id="download-status" role="status"></span></footer>
   <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button type="button" id="close-help" aria-label="Close explanation" autofocus>×</button></div><p id="help-body"></p><p class="help-formula" id="help-formula"></p></dialog>
   <script>{{MODEL}}</script>
   <script>{{APP}}</script>

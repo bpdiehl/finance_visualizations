@@ -80,3 +80,13 @@ Owner authorized the reviewed changes for commit and publication. Includes align
 ## Owner-requested presentation refinement
 
 Core equations now use an initially closed disclosure, per the current owner request. Preserve the current equations, numerical substitutions and symbol interaction inside the disclosure. See ../verification/finance-review-refinements.md. Local review only.
+
+
+## November 10, 2026 — v0.4 local review
+
+Adds Fixed asset return alongside the existing fixed-component calculator. The extra illustrative schedule is r_d = r_f + λ(D/V)(r_a − r_f); equity return solves r_e = [r_a − (D/V)r_d]/(1 − D/V). Asset return is held fixed by assumption, and WACC subtracts the fully usable interest-tax adjustment. This is a conditional risk-allocation teaching model, not a complete corporate-tax equilibrium or an optimum-capital-structure estimator. Debt share is limited to 90%; λ ranges 0–1 and r_f ≤ r_a. Main-view equations and numerical substitutions remain visible in both tabs, superseding the earlier collapsed-equation refinement for this revision. See verification/finance-feedback.md for examples, sources, tests and browser limits. No commit/push yet.
+
+
+## Owner correction — November 10, 2026
+
+Equations use a native, initially collapsed Equations disclosure. This supersedes the visible-equation presentation described above. WACC places equations above the workspace in both modes, and its mode selector follows the rounded segmented style used in Time Value and Risk/CAPM. Live substitutions, aligned notation and mathematical models are preserved.

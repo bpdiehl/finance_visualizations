@@ -69,7 +69,37 @@
     };
   }
 
+  // An explicit illustrative risk-allocation schedule, not an empirical estimate
+  // or a corporate-tax capital-structure equilibrium model.
+  const LEVERAGE_DEFAULTS = Object.freeze({ debtWeight: .4, assetRate: .10,
+    riskFreeRate: .04, taxRate: .25, sensitivity: .5 });
+  function validateLeverage(raw) {
+    const limits = { debtWeight: .9, assetRate: .3, riskFreeRate: .3, taxRate: 1, sensitivity: 1 };
+    const errors = {};
+    for (const [key, max] of Object.entries(limits)) {
+      if (!raw || typeof raw[key] !== 'number' || !Number.isFinite(raw[key]) || raw[key] < 0 || raw[key] > max)
+        errors[key] = ({ debtWeight: 'Debt share must be between 0% and 90%.', assetRate: 'Fixed asset return must be between 0% and 30% per year.', riskFreeRate: 'Risk-free rate must be between 0% and 30% per year.', taxRate: 'Corporate tax rate must be between 0% and 100%.', sensitivity: 'Debt risk sensitivity λ must be between 0 and 1.' })[key];
+    }
+    if (raw && raw.riskFreeRate > raw.assetRate) errors.riskFreeRate = 'Risk-free rate must not exceed the fixed asset return.';
+    return { ok: !Object.keys(errors).length, errors };
+  }
+  function leveragePoint(raw, debtWeight) {
+    const { assetRate, riskFreeRate, sensitivity, taxRate } = raw;
+    const debtRate = riskFreeRate + sensitivity * debtWeight * (assetRate - riskFreeRate);
+    const equityRate = (assetRate - debtWeight * debtRate) / (1 - debtWeight);
+    return { debtWeight, equityWeight: 1-debtWeight, debtRate, equityRate,
+      assetReturn: assetRate, taxBenefit: debtWeight * debtRate * taxRate,
+      wacc: assetRate - debtWeight * debtRate * taxRate };
+  }
+  function calculateLeverage(raw) {
+    const checked = validateLeverage(raw);
+    if (!checked.ok) throw new RangeError(Object.values(checked.errors).join(' '));
+    return { inputs: { ...raw }, ...leveragePoint(raw, raw.debtWeight),
+      curve: Array.from({ length: 91 }, (_, i) => leveragePoint(raw, i / 100)) };
+  }
+
   globalThis.DemoModel = Object.freeze({
-    DEFAULTS, LABELS, PRESETS, validateInputs, calculateModel, compareScenarios
+    DEFAULTS, LABELS, PRESETS, validateInputs, calculateModel, compareScenarios,
+    LEVERAGE_DEFAULTS, validateLeverage, calculateLeverage
   });
 })();

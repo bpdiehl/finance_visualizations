@@ -70,3 +70,13 @@ Core equations now use an initially closed disclosure, per the current owner req
 ### Latest owner refinements
 
 Diversification uses full panel width with text compensated to match the other graphs' rendered size. The other risk views remain capped at500px. Beta uses50 synthetic annual return pairs (not weekly or historical data); period range and labels match the generator.
+
+
+## November 10, 2026 — v0.4.2 local review
+
+Use Equity beta for the company/security’s systematic market exposure in controls, results, chart labels, presets and notation help. Keep existing β_i / β notation to match the model. Explain that the market portfolio itself has beta 1. Main equations and live substitutions remain visible, superseding the earlier collapsed-equation refinement for this revision. Responsive rules constrain equations and stack the workspace at phone widths. Model calculations unchanged; see verification/finance-feedback.md. No commit/push yet.
+
+
+## Owner correction — November 10, 2026
+
+Equations use a native, initially collapsed Equations disclosure. This supersedes the visible-equation presentation described above. WACC places equations above the workspace in both modes, and its mode selector follows the rounded segmented style used in Time Value and Risk/CAPM. Live substitutions, aligned notation and mathematical models are preserved.

@@ -126,3 +126,38 @@ test("pretax asset blend follows the weights in this fixed-component-rate lab", 
   near(M.calculateModel({ ...M.DEFAULTS, debtWeight: 0.6 }).assetReturn, 0.078);
   near(M.calculateModel({ ...M.DEFAULTS, debtWeight: 1 }).assetReturn, 0.05);
 });
+
+test('fixed asset return: independent 40% and 60% debt examples', () => {
+  const a = M.calculateLeverage(M.LEVERAGE_DEFAULTS);
+  near(a.debtRate, .052); near(a.equityRate, .132); near(a.wacc, .0948);
+  const b = M.calculateLeverage({...M.LEVERAGE_DEFAULTS, debtWeight: .6});
+  near(b.debtRate, .058); near(b.equityRate, .163); near(b.wacc, .0913);
+  near(a.assetReturn, .10); near(b.assetReturn, .10);
+});
+test('risk allocation conserves asset return and ordered curves across boundary assumptions', () => {
+  for (const sensitivity of [0,.5,1]) for (const taxRate of [0,.25,1]) {
+    const r=M.calculateLeverage({...M.LEVERAGE_DEFAULTS,sensitivity,taxRate});
+    let previous=null;
+    for(const p of r.curve) {
+      near(p.equityWeight*p.equityRate+p.debtWeight*p.debtRate,.1);
+      near(p.equityWeight*p.equityRate+p.debtWeight*p.debtRate*(1-taxRate),p.wacc);
+      assert.ok(Number.isFinite(p.equityRate));
+      assert.ok(p.equityRate>=p.assetReturn-1e-12 && p.debtRate<=p.assetReturn+1e-12);
+      if(previous){assert.ok(p.equityRate>=previous.equityRate);assert.ok(p.debtRate>=previous.debtRate);assert.ok(p.wacc<=previous.wacc+1e-12);}
+      if(taxRate===0)near(p.wacc,.1);
+      previous=p;
+    }
+    near(r.curve[0].equityRate,.1); near(r.curve[0].wacc,.1);
+  }
+  const zero=M.calculateLeverage({...M.LEVERAGE_DEFAULTS,assetRate:0,riskFreeRate:0});
+  near(zero.wacc,0);
+  const equal=M.calculateLeverage({...M.LEVERAGE_DEFAULTS,assetRate:.04,riskFreeRate:.04});
+  equal.curve.forEach(p=>{near(p.debtRate,.04);near(p.equityRate,.04);});
+});
+test('leverage validation excludes singular and unsupported schedules without mutation', () => {
+  for (const [key,invalid] of Object.entries({debtWeight:1,assetRate:.31,riskFreeRate:.11,taxRate:-.1,sensitivity:1.01})) {
+    assert.throws(()=>M.calculateLeverage({...M.LEVERAGE_DEFAULTS,[key]:invalid}),{name:'RangeError'});
+  }
+  for(const key of Object.keys(M.LEVERAGE_DEFAULTS))for(const invalid of [NaN,Infinity,undefined,null,'0.4'])assert.equal(M.validateLeverage({...M.LEVERAGE_DEFAULTS,[key]:invalid}).ok,false);
+  const raw={...M.LEVERAGE_DEFAULTS},before=JSON.stringify(raw);M.calculateLeverage(raw);assert.equal(JSON.stringify(raw),before);
+});

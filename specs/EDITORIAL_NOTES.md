@@ -16,3 +16,8 @@ No completed demos are included in this setup. All catalog statuses start planne
 The draft uses a declared steady-state terminal reinvestment model, FCF_(N+1)=NOPAT_(N+1)(1−g/q), with terminal NOPAT derived from R_N(1+g), current margin and tax. q is the assumed stable return on capital. This prevents terminal growth from being introduced without an investment assumption, but does not claim a full capital-balance reconciliation. The inherited FCF_1=100, r=10%, g=2% example is tested with a direct-cash-flow helper (value 1250), independently of this driver model's default case.
 
 The course deck has two numbered slides per physical PDF page: slides 27–28 are on physical page 14, slides 31–32 on page 16, and slide 33 on page 17. Its firm-value terminology includes excess assets; the public tool instead labels PV of operations separately before adding excess cash and subtracting claims. Private source annotations/figures remain outside Git.
+
+
+## November 10, 2026 — Feedback interpretation
+
+Equity beta describes the equity’s systematic exposure to market returns; the market portfolio’s own beta is 1. WACC feedback supplies one weighted-return identity but requires an additional relationship to determine both investor returns. v0.4 explicitly supplies an illustrative bounded debt-risk schedule and solves equity return from the identity. Fixed pretax r_a with the tax bridge is imposed as a teaching assumption, not presented as a full corporate-tax equilibrium. WACC falls conditionally with a usable shield and increasing d r_d; flat cases are supported. References and validation: verification/finance-feedback.md. No course quotation or exact case reproduction is asserted.

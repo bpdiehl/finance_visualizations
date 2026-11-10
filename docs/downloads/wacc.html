@@ -82,22 +82,42 @@ body .key-row button sub,body .key-row button sup,body .notation-grid .symbol-li
 
 .equation-panel>summary{font-size:1rem;font-weight:650;min-height:24px;padding:0;cursor:pointer}.equation-panel[open]>summary{margin-bottom:14px}
 details.equation-panel{padding:16px 26px}
+
+.mode-bar{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
+.mode-bar [role=tablist]{display:inline-flex;flex-wrap:wrap;gap:4px;padding:5px;border:1px solid #bfcdda;border-radius:9px;background:#e9eef3}
+.mode-bar [role=tab]{min-height:44px;padding:12px 22px;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--ink);font-size:.8rem;font-weight:650}
+.mode-bar [role=tab][aria-selected=true]{color:#204f80;background:white;border-color:#a1b6c8;box-shadow:0 1px 3px #17283812}
+.model-context{font-size:.82rem;color:var(--muted);line-height:1.6}
+.leverage-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0 10px;font-variant-numeric:tabular-nums}
+.leverage-results span{font-size:.75rem;color:var(--muted);display:block}.leverage-results output{display:block;font-size:1.3rem;font-weight:700}
+#leverage-chart{width:100%;display:block;font:12px system-ui;fill:#50616f}
+.leverage-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}.leverage-legend span{display:flex;gap:5px;align-items:center}
+.leverage-advanced{margin:16px 0}.leverage-advanced p,.leverage-assumptions p{font-size:.82rem;color:var(--muted);line-height:1.6}
+.leverage-equations{margin-top:0}.leverage-equations h2{font-size:.85rem;margin:0 0 8px}.leverage-assumptions{margin-bottom:24px}
+.leverage-workspace .controls-panel{display:block}.leverage-workspace .control-group{grid-template-columns:minmax(0,1fr) auto}.leverage-workspace .control-label label{font-size:.77rem}
+@media(max-width:520px){.mode-bar [role=tab]{padding:10px;font-size:.8rem}.leverage-results{grid-template-columns:repeat(2,1fr)}.leverage-results output{font-size:1.15rem}.leverage-legend{font-size:.73rem}.leverage-equations{padding:0 14px}}
+
+@media(max-width:520px){details.equation-panel{padding:16px 14px}}
 </style>
 </head>
 <body class="wacc-app">
   <a class="skip" href="#controls">Skip to controls</a>
   <header class="lab-header">
     <div class="masthead"><span>MBA INTERACTIVE LEARNING LAB</span><a class="subject-home" href="https://bpdiehl.github.io/finance_visualizations/" aria-label="Finance home">FINANCE / 03</a></div>
-    <div class="heading-row"><h1>Return on assets & WACC</h1><span class="version">Pilot · v0.3.2</span></div>
+    <div class="heading-row"><h1>Return on assets & WACC</h1><span class="version">v0.4</span></div>
   </header>
   <main class="lab-main">
+    <div class="mode-bar"><div role="tablist" aria-label="WACC model">
+      <button id="fixed-tab" role="tab" aria-selected="true" aria-controls="fixed-panel">Fixed component rates</button>
+      <button id="leverage-tab" role="tab" aria-selected="false" aria-controls="leverage-panel" tabindex="-1">Fixed asset return</button>
+    </div><button type="button" class="download-action" id="download-file">Download offline copy</button></div>
+    <section id="fixed-panel" role="tabpanel" aria-labelledby="fixed-tab">
     <div class="preset-row" aria-label="Illustrative scenarios">
       <button type="button" class="preset active" data-preset="baseline" aria-pressed="true">Starting example</button>
       <button type="button" class="preset" data-preset="all-equity" aria-pressed="false">All equity</button>
       <button type="button" class="preset" data-preset="no-tax" aria-pressed="false">No tax shield</button>
       <button type="button" class="preset" data-preset="more-debt" aria-pressed="false">More debt, same rates</button>
       <button type="button" class="reset" id="reset">Reset</button>
-      <button type="button" class="download-action" id="download-file">Download offline copy</button>
     </div>
     <p id="input-error" class="input-error" role="alert" hidden></p>
     <details class="equation-panel" aria-label="Solve return on assets, then WACC"><summary>Equations</summary>
@@ -143,8 +163,42 @@ details.equation-panel{padding:16px 26px}
     </div>
     <section class="comparison-panel" aria-label="Scenario comparison"><p id="explanation" role="status" aria-live="polite"></p><button type="button" class="secondary-action" id="save-baseline">Save comparison</button><button class="info" type="button" data-help="comparison" aria-label="Explain the saved comparison" aria-haspopup="dialog">i</button></section>
     <details class="curve-panel" id="curve-details"><summary>Explore debt share</summary><div class="curve-content"><svg id="curve" role="img" aria-labelledby="curve-title curve-description"><title id="curve-title">WACC versus debt share</title><desc id="curve-description">WACC at the current component rates.</desc></svg><p id="curve-summary" class="sr-only"></p><button class="info" type="button" data-help="curve" aria-label="Explain the debt-share chart" aria-haspopup="dialog">i</button></div></details>
+    </section>
+    <section id="leverage-panel" role="tabpanel" aria-labelledby="leverage-tab" hidden>
+      <div class="preset-row" aria-label="Fixed asset return scenarios">
+        <button class="preset" data-leverage-preset="baseline">Starting example</button>
+        <button class="preset" data-leverage-preset="all-equity">All equity</button>
+        <button class="preset" data-leverage-preset="more-debt">More debt</button>
+        <button class="preset" data-leverage-preset="no-tax">No tax shield</button>
+        <button class="reset" id="leverage-reset">Reset</button>
+      </div>
+      <details class="equation-panel leverage-equations" aria-label="Fixed asset return equations"><summary>Equations</summary>
+        <div class="equation-row"><h2>1 · Debt return schedule</h2><div class="formula"></div><div id="leverage-debt-worked" class="live-values"></div></div>
+        <div class="equation-row"><h2>2 · Equity absorbs the remaining required return</h2><div class="formula"></div><div id="leverage-equity-worked" class="live-values"></div></div>
+        <div class="equation-row"><h2>3 · Asset return stays fixed</h2><div class="formula"></div><div id="leverage-asset-worked" class="live-values"></div></div>
+        <div class="equation-row"><h2>4 · Usable interest tax adjustment</h2><div class="formula"></div><div id="leverage-wacc-worked" class="live-values"></div></div>
+      </details>
+      <p class="model-context">Hold business risk and required asset return fixed. Debt and equity returns adjust with the financing mix.</p>
+      <p id="leverage-error" class="input-error" role="alert" hidden></p>
+      <div class="workspace leverage-workspace">
+        <section class="visual-panel" aria-labelledby="leverage-chart-heading">
+          <div class="panel-heading"><h2 id="leverage-chart-heading">Returns as debt share changes</h2><span class="units">Annual required returns</span></div>
+          <div id="leverage-results" class="leverage-results" aria-live="polite"></div>
+          <svg id="leverage-chart" role="img" aria-labelledby="leverage-chart-title leverage-chart-desc"></svg>
+          <div class="leverage-legend" id="leverage-legend"></div>
+          <p id="leverage-summary" class="model-context" role="status"></p>
+        </section>
+        <section class="controls-panel" aria-label="Fixed asset return assumptions">
+          <div class="panel-heading"><h2>Assumptions</h2></div>
+          <div id="leverage-controls"></div>
+          <details class="leverage-advanced"><summary>Debt risk assumption</summary><div id="leverage-advanced-control"></div><p>λ sets how strongly debt’s required return rises with debt share. λ = 0 holds debt return at r<sub>f</sub>; λ = 1 assigns more asset risk to debt. This is an illustrative schedule.</p></details>
+        </section>
+      </div>
+      <p class="model-context">d = D/V and E/V = 1 − d are market-value weights; λ is dimensionless. All r values and WACC are annual required returns, not accounting ROA or promised payments. r<sub>f</sub> is the risk-free rate; T is the corporate tax rate.</p>
+      <details class="leverage-assumptions"><summary>Model scope and tax assumptions</summary><p>The fixed pretax blend r<sub>a</sub> is an imposed teaching assumption. The debt schedule supplies the extra relationship needed to determine both investor returns. WACC falls here when d × r<sub>d</sub> increases and T &gt; 0; with T = 0 it equals r<sub>a</sub>. This does not estimate a universal capital structure optimum or a leverage-invariant unlevered discount rate in a full corporate-tax valuation model. Distress costs, personal taxes, tax-loss limits and feedback from financing to market value are omitted. Debt return means expected required return, rather than a defaultable bond’s promised yield. At d = 0, r<sub>d</sub> is a hypothetical borrowing rate. The 90% debt limit preserves positive equity.</p></details>
+    </section>
   </main>
-  <footer class="lab-footer"><span>F3 · v0.3.2 · November 6, 2026</span><div><button class="text-info" type="button" data-help="model">Fixed-rate model ⓘ</button><button class="text-info" type="button" data-help="challenge">Try a question ⓘ</button></div><span id="download-status" role="status"></span></footer>
+  <footer class="lab-footer"><span>F3 · v0.4 · November 10, 2026</span><div><button class="text-info" type="button" data-help="model">Fixed-rate model ⓘ</button><button class="text-info" type="button" data-help="challenge">Try a question ⓘ</button></div><span id="download-status" role="status"></span></footer>
   <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title"></h2><button type="button" id="close-help" aria-label="Close explanation" autofocus>×</button></div><p id="help-body"></p><p class="help-formula" id="help-formula"></p></dialog>
   <script>/* Pure calculations. Inputs are decimal fractions; no DOM or display rounding. */
 (() => {
@@ -217,8 +271,38 @@ details.equation-panel{padding:16px 26px}
     };
   }
 
+  // An explicit illustrative risk-allocation schedule, not an empirical estimate
+  // or a corporate-tax capital-structure equilibrium model.
+  const LEVERAGE_DEFAULTS = Object.freeze({ debtWeight: .4, assetRate: .10,
+    riskFreeRate: .04, taxRate: .25, sensitivity: .5 });
+  function validateLeverage(raw) {
+    const limits = { debtWeight: .9, assetRate: .3, riskFreeRate: .3, taxRate: 1, sensitivity: 1 };
+    const errors = {};
+    for (const [key, max] of Object.entries(limits)) {
+      if (!raw || typeof raw[key] !== 'number' || !Number.isFinite(raw[key]) || raw[key] < 0 || raw[key] > max)
+        errors[key] = ({ debtWeight: 'Debt share must be between 0% and 90%.', assetRate: 'Fixed asset return must be between 0% and 30% per year.', riskFreeRate: 'Risk-free rate must be between 0% and 30% per year.', taxRate: 'Corporate tax rate must be between 0% and 100%.', sensitivity: 'Debt risk sensitivity λ must be between 0 and 1.' })[key];
+    }
+    if (raw && raw.riskFreeRate > raw.assetRate) errors.riskFreeRate = 'Risk-free rate must not exceed the fixed asset return.';
+    return { ok: !Object.keys(errors).length, errors };
+  }
+  function leveragePoint(raw, debtWeight) {
+    const { assetRate, riskFreeRate, sensitivity, taxRate } = raw;
+    const debtRate = riskFreeRate + sensitivity * debtWeight * (assetRate - riskFreeRate);
+    const equityRate = (assetRate - debtWeight * debtRate) / (1 - debtWeight);
+    return { debtWeight, equityWeight: 1-debtWeight, debtRate, equityRate,
+      assetReturn: assetRate, taxBenefit: debtWeight * debtRate * taxRate,
+      wacc: assetRate - debtWeight * debtRate * taxRate };
+  }
+  function calculateLeverage(raw) {
+    const checked = validateLeverage(raw);
+    if (!checked.ok) throw new RangeError(Object.values(checked.errors).join(' '));
+    return { inputs: { ...raw }, ...leveragePoint(raw, raw.debtWeight),
+      curve: Array.from({ length: 91 }, (_, i) => leveragePoint(raw, i / 100)) };
+  }
+
   globalThis.DemoModel = Object.freeze({
-    DEFAULTS, LABELS, PRESETS, validateInputs, calculateModel, compareScenarios
+    DEFAULTS, LABELS, PRESETS, validateInputs, calculateModel, compareScenarios,
+    LEVERAGE_DEFAULTS, validateLeverage, calculateLeverage
   });
 })();
 </script>
@@ -581,6 +665,119 @@ details.equation-panel{padding:16px 26px}
   EquationLayout.render('shield-worked',['WACC','=',wSymbol('r<sub>a</sub>'),'−',wSymbol('D/V','debtWeight'),'×',wSymbol('r<sub>d</sub>','debtRate'),'×',wSymbol('T','taxRate')],[[wValue('wacc','',3),'=',wValue('assetReturn','',3),'−',wValue('debtWeight','debtWeight'),'×',wValue('debtRate','debtRate'),'×',wValue('taxRate','taxRate')]]);
   EquationLayout.render('main-worked-equation',['WACC','=',wSymbol('E/V','debtWeight'),'×',wSymbol('r<sub>e</sub>','equityRate'),'+',wSymbol('D/V','debtWeight'),'×',wSymbol('r<sub>d</sub>','debtRate'),'×','(1 −',wSymbol('T','taxRate'),')'],[[wValue('wacc','',3),'=',wValue('equityWeight','debtWeight'),'×',wValue('equityRate','equityRate'),'+',wValue('debtWeight','debtWeight'),'×',wValue('debtRate','debtRate'),'×','(1 −',wValue('taxRate','taxRate'),')']]);
   syncControls(); render();
+})();
+
+// Fixed-asset-return teaching view. All rates and chart points come from the pure model.
+(() => {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  const M = DemoModel, $ = id => document.getElementById(id);
+  const pct = x => (x * 100).toFixed(3) + '%';
+  const fields = {
+    debtWeight: ['Debt share', 'D/V', 90, 100, '%'],
+    assetRate: ['Fixed asset return', 'r<sub>a</sub>', 30, 100, '%/yr'],
+    riskFreeRate: ['Risk-free rate', 'r<sub>f</sub>', 30, 100, '%/yr'],
+    taxRate: ['Corporate tax rate', 'T', 100, 100, '%'],
+    sensitivity: ['Debt risk sensitivity', 'λ', 1, 1, '']
+  };
+  let state = { ...M.LEVERAGE_DEFAULTS };
+  const control = key => {
+    const [label, symbol, max, scale, unit] = fields[key];
+    return `<div class="control-group"><div class="control-label"><label for="lev-${key}-number">${label} <span class="notation">${symbol}</span></label></div><div class="number-row"><input id="lev-${key}-number" type="number" min="0" max="${max}" step="0.01" value="${(state[key]*scale).toFixed(2)}"><span>${unit}</span></div><input id="lev-${key}-range" type="range" min="0" max="${max}" step="0.01" aria-label="${label} slider${unit ? ', '+unit : ''}"></div>`;
+  };
+  $('leverage-controls').innerHTML = Object.keys(fields).filter(k => k !== 'sensitivity').map(control).join('');
+  $('leverage-advanced-control').innerHTML = control('sensitivity');
+  const series = [['equityRate','Equity r<sub>e</sub>','#2458a8',''],['debtRate','Debt r<sub>d</sub>','#176d65',''],['assetReturn','Assets r<sub>a</sub>','#586777','7 5'],['wacc','WACC','#ad5b00','3 3']];
+  $('leverage-legend').innerHTML = series.map(([,label,color,dash]) => `<span><svg width="26" height="12" aria-hidden="true"><line x1="0" x2="26" y1="6" y2="6" stroke="${color}" stroke-width="3" stroke-dasharray="${dash}"></line></svg>${label}</span>`).join('');
+  function draw(r) {
+    const svg = $('leverage-chart'), width = Math.max(280, svg.getBoundingClientRect().width), height = 330;
+    const left = 58, right = width-16, top = 18, bottom = height-50;
+    const max = Math.max(.05, Math.ceil(Math.max(...r.curve.map(p => p.equityRate))/.05)*.05);
+    const x = d => left+d/.9*(right-left), y = v => bottom-v/max*(bottom-top);
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    const parts = [`<title id="leverage-chart-title">Investor returns and WACC versus debt share</title><desc id="leverage-chart-desc">${$('leverage-summary').textContent} Debt share varies from 0 to 90 percent.</desc>`];
+    for (let i=0;i<=4;i++) {
+      const v=max*i/4;
+      parts.push(`<line x1="${left}" x2="${right}" y1="${y(v)}" y2="${y(v)}" stroke="#e0e6ec"/><text x="${left-8}" y="${y(v)+4}" text-anchor="end">${(v*100).toFixed(1)}</text>`);
+    }
+    for (const d of [0,.3,.6,.9]) parts.push(`<text x="${x(d)}" y="${bottom+22}" text-anchor="middle">${(d*100).toFixed(0)}</text>`);
+    parts.push(`<text x="${(left+right)/2}" y="${height-5}" text-anchor="middle">Debt share D/V (%)</text><text transform="translate(15 ${(top+bottom)/2}) rotate(-90)" text-anchor="middle">Required return (%/year)</text>`);
+    parts.push(`<line x1="${x(state.debtWeight)}" x2="${x(state.debtWeight)}" y1="${top}" y2="${bottom}" stroke="#8293a1" stroke-dasharray="3 4"/>`);
+    for (const [key,,color,dash] of series) parts.push(`<polyline points="${r.curve.map(p => `${x(p.debtWeight)},${y(p[key])}`).join(' ')}" fill="none" stroke="${color}" stroke-width="2.5" stroke-dasharray="${dash}"/><circle cx="${x(state.debtWeight)}" cy="${y(r[key])}" r="4" fill="white" stroke="${color}" stroke-width="2"/>`);
+    svg.innerHTML=parts.join('');
+  }
+  const token = (html,key) => `<span class="eq-token" data-lev-vars="${key}">${html}</span>`;
+  function equations(r) {
+    const symbols = {d:'d',a:'r<sub>a</sub>',f:'r<sub>f</sub>',l:'λ',rd:'r<sub>d</sub>',re:'r<sub>e</sub>',t:'T',w:'WACC',e:'(1 − d)'};
+    const values = {d:(state.debtWeight).toFixed(4),a:pct(state.assetRate),f:pct(state.riskFreeRate),l:state.sensitivity.toFixed(2),rd:pct(r.debtRate),re:pct(r.equityRate),t:state.taxRate.toFixed(4),w:pct(r.wacc),e:r.equityWeight.toFixed(4)};
+    const bindings = {d:'debtWeight',a:'assetRate',f:'riskFreeRate',l:'sensitivity',rd:'debtWeight assetRate riskFreeRate sensitivity',re:'debtWeight assetRate riskFreeRate sensitivity',t:'taxRate',w:'debtWeight assetRate riskFreeRate sensitivity taxRate',e:'debtWeight'};
+    function pair(id,parts) {
+      EquationLayout.render(id, parts.map(p => p in symbols ? token(symbols[p],bindings[p]) : p), [parts.map(p => p in values ? token(values[p],bindings[p]) : p)]);
+    }
+    pair('leverage-debt-worked',['rd','=','f','+','l','×','d','×','(','a','−','f',')']);
+    pair('leverage-equity-worked',['re','=','(','a','−','d','×','rd',')','/','e']);
+    pair('leverage-asset-worked',['a','=','e','×','re','+','d','×','rd']);
+    pair('leverage-wacc-worked',['w','=','a','−','d','×','rd','×','t']);
+  }
+  function render(edited) {
+    const checked = M.validateLeverage(state);
+    $('leverage-error').hidden = checked.ok;
+    $('leverage-error').textContent = Object.values(checked.errors).join(' ');
+    for (const key of Object.keys(fields)) $(`lev-${key}-number`).setAttribute('aria-invalid',String(!!checked.errors[key]));
+    for (const el of document.querySelectorAll('#leverage-panel .live-values')) el.hidden = !checked.ok;
+    if (!checked.ok) {
+      $('leverage-results').replaceChildren(); $('leverage-chart').replaceChildren();
+      $('leverage-summary').textContent = 'Enter valid assumptions to show returns.';
+      return;
+    }
+    const r = M.calculateLeverage(state);
+    $('leverage-results').innerHTML = series.map(([key,label])=>`<div><span>${label}</span><output>${pct(r[key])}</output></div>`).join('');
+    $('leverage-summary').textContent = `At ${(state.debtWeight*100).toFixed(2)}% debt, asset return stays ${pct(r.assetReturn)}; the tax adjustment is ${(r.taxBenefit*100).toFixed(3)} percentage points. ${(state.taxRate===0 || (state.riskFreeRate===0 && state.sensitivity*(state.assetRate-state.riskFreeRate)===0))?'With no interest tax benefit, WACC stays equal to the asset return.':'With a usable tax shield, WACC falls as debt share rises in this model.'}`;
+    equations(r); draw(r);
+    if (edited) document.querySelectorAll('[data-lev-vars]').forEach(el=>el.classList.toggle('is-editing',el.dataset.levVars.split(' ').includes(edited)));
+    document.querySelectorAll('[data-leverage-preset]').forEach(b=>b.setAttribute('aria-pressed',String(Object.keys(state).every(k=>state[k]===preset(b.dataset.leveragePreset)[k]))));
+  }
+  function sync() {
+    for (const [key,[,,,scale]] of Object.entries(fields)) {
+      $(`lev-${key}-number`).value=(state[key]*scale).toFixed(2);
+      $(`lev-${key}-range`).value=state[key]*scale;
+    }
+  }
+  let timer;
+  for (const [key,[,,,scale]] of Object.entries(fields)) {
+    for (const kind of ['number','range']) {
+      const el=$(`lev-${key}-${kind}`);
+      el.addEventListener('input',()=>{
+        state[key]=el.valueAsNumber/scale;
+        const other=$(`lev-${key}-${kind==='number'?'range':'number'}`);
+        if (kind==='range') other.value=(state[key]*scale).toFixed(2);
+        else if(Number.isFinite(state[key])) other.value=el.value;
+        render(key); clearTimeout(timer);
+        timer=setTimeout(()=>document.querySelectorAll('#leverage-panel .is-editing').forEach(n=>n.classList.remove('is-editing')),900);
+      });
+      el.addEventListener('blur',()=>{
+        if(Number.isFinite(state[key])) {state[key]=Number((state[key]*scale).toFixed(2))/scale;el.value=(state[key]*scale).toFixed(2);render();}
+      });
+    }
+  }
+  function preset(id) {return {...M.LEVERAGE_DEFAULTS,...({'all-equity':{debtWeight:0},'more-debt':{debtWeight:.6},'no-tax':{taxRate:0}}[id]||{})};}
+  document.querySelectorAll('[data-leverage-preset]').forEach(b=>b.addEventListener('click',()=>{state=preset(b.dataset.leveragePreset);sync();render();}));
+  $('leverage-reset').addEventListener('click',()=>{state={...M.LEVERAGE_DEFAULTS};sync();render();});
+  const tabs = [$('fixed-tab'),$('leverage-tab')];
+  function selectTab(index, focus=false) {
+    tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;$(tab.getAttribute('aria-controls')).hidden=i!==index;});
+    document.querySelector('.skip').setAttribute('href',index===1?'#leverage-controls':'#controls');
+    document.querySelector('.lab-footer > div').hidden=index===1;
+    if(focus) tabs[index].focus();
+    if(index===1)render();
+    else window.dispatchEvent(new Event('resize'));
+  }
+  tabs.forEach((tab,index)=>{
+    tab.addEventListener('click',()=>selectTab(index));
+    tab.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();selectTab(e.key==='Home'?0:e.key==='End'?1:1-index,true);}});
+  });
+  window.addEventListener('resize',()=>{if(!$('leverage-panel').hidden)render();});
+  sync();render();selectTab(0);
 })();
 </script>
 </body>

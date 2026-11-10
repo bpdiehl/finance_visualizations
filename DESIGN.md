@@ -50,3 +50,8 @@ Prefer textbook stacked fractions to slash division in displayed symbolic equati
 ## Attention and legend styling
 
 Use shared amber attention tokens for edited values, selected symbols, linked plot bands and statement rows. Preserve semantic data-series colors. Notation keys share neutral bordered44px symbol buttons, amber selected states, consistent row spacing and muted units; retain one/two-column layouts appropriate to key size. Graph legends share typography/spacing while retaining meaningful line, dot and swatch shapes. Respect reduced motion.
+
+
+## Current owner correction — November 10, 2026
+
+Equations should be collapsible and initially collapsed, with the native disclosure triangle on the left. Place the Equations section above the main workspace in both WACC modes. This supersedes the earlier requirement to keep core equations always expanded. Preserve governing equations, live numerical substitutions, units and aligned notation inside the disclosure. Mode selectors should use the existing rounded segmented style: muted gray-blue container and white selected button, as in Time Value and Risk/CAPM.

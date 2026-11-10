@@ -1,3 +1,10 @@
+# Local review — November 10, 2026
+
+- WACC v0.4 adds a Fixed asset return tab with adjustable illustrative debt risk, solved equity returns, four curves, live equations, presets and input validation.
+- Risk/CAPM v0.4.2 replaces Market beta with Equity beta across its interface and explains the market portfolio benchmark. Governing equations use initially collapsed disclosures in both affected demos; Risk/CAPM layout now adapts to phone widths.
+- WACC equations sit above the workspace in both modes; its mode selector matches the collection’s rounded segmented style.
+- 100 automated checks pass. Browser evidence, mathematical assumptions and remaining coverage limits: verification/finance-feedback.md. Local review only; no publication.
+
 # Change log
 
 ## November 9, 2026 — Finance presentation release

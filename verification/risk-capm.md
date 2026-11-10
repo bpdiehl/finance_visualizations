@@ -92,3 +92,8 @@ CAL borrowed allocation150% inspected:0.1200−0.0300=1.5000×(0.0900−0.0300).
 ## Local presentation review
 
 See [Finance refinement evidence](finance-review-refinements.md) for the current uncommitted equation/layout/scale changes and browser coverage.
+
+
+## November 10, 2026 — Local feedback revision
+
+See [feedback implementation evidence](finance-feedback.md) for the current model/terminology changes, numerical and browser checks, and remaining coverage limits. Local review only; earlier public-release records remain historical.
